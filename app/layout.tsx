@@ -1,3 +1,5 @@
+import { GlobalStyles } from './globalStyles';
+
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     // <!DOCTYPE html>
@@ -18,6 +20,8 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
         />
       </head>
       <body>
+        <GlobalStyles />
+        <h2>가나다</h2>
         <div>{children}</div>
       </body>
     </html>
