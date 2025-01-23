@@ -5,7 +5,9 @@ import { IoIosArrowForward } from 'react-icons/io';
 import { TbRestore, TbTrash } from 'react-icons/tb';
 import styled from 'styled-components';
 import ConListBadge from './ConListBadge';
+import { Categories } from '@/types/categories';
 
+/* ---------------------------------- style --------------------------------- */
 const ConContainer = styled.div`
   cursor: pointer;
   width: 90%;
@@ -53,7 +55,7 @@ const ConLeftBadge = styled.div`
   top: -15px;
 `;
 
-const ConLeftExpiredText = styled.p`
+const ConLeftExpiredText = styled.span`
   width: 100%;
   height: 100%;
   display: flex;
@@ -78,7 +80,7 @@ const ConCenterWrapper = styled.div<{ $isTrash: boolean }>`
   align-items: flex-start;
 `;
 
-const ConCategoryText = styled.p`
+const ConCategoryText = styled.span`
   font-size: 0.7rem;
   padding: 3px 1.5rem;
   border: 1px solid var(--sub);
@@ -86,7 +88,7 @@ const ConCategoryText = styled.p`
   background-color: var(--white);
 `;
 
-const ConTitleText = styled.h1`
+const ConTitleText = styled.h3`
   width: 100%;
   font-size: 1rem;
   margin-bottom: 5px;
@@ -95,7 +97,7 @@ const ConTitleText = styled.h1`
   text-overflow: ellipsis;
 `;
 
-const ConDueDate = styled.p`
+const ConDueDate = styled.span`
   font-size: 0.7rem;
 `;
 
@@ -147,16 +149,16 @@ const ConRightTrashButton = styled.button<{ $restore: boolean }>`
   }
 `;
 
-// 프롭스
+/* ---------------------------------- type ---------------------------------- */
 type ConListProps = {
-  category: string;
+  category: Categories;
   brand: string;
   name: string;
   duedate: string;
   isDeleted: boolean;
 };
 
-// 컴포넌트
+/* -------------------------------- component ------------------------------- */
 export default function ConList({
   category,
   brand,
@@ -183,7 +185,6 @@ export default function ConList({
 
   const isTrash: boolean = isDeleted || isExpired;
 
-  // 컴포넌트
   return (
     <ConContainer>
       <ConLeftWrapper>

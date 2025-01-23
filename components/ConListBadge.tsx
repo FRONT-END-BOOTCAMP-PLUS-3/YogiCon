@@ -2,13 +2,14 @@
 
 import styled from 'styled-components';
 
+/* ---------------------------------- style --------------------------------- */
 const BadgeWrapper = styled.div<{ $isLarge: boolean }>`
   width: ${(props) => (props.$isLarge ? '50px' : '30px')};
   height: ${(props) => (props.$isLarge ? '50px' : '30px')};
   background-color: transparent;
 `;
 
-const BadgeBox = styled.div<{ $isDue: boolean }>`
+const BadgeBox = styled.div<{ $isWarning: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -18,7 +19,7 @@ const BadgeBox = styled.div<{ $isDue: boolean }>`
   text-align: center;
   border-radius: 50%;
   background-color: ${(props) =>
-    props.$isDue ? 'var(--warning)' : 'var(--safety)'};
+    props.$isWarning ? 'var(--warning)' : 'var(--safety)'};
 `;
 
 const BadgeDayText = styled.p<{ $isLarge: boolean }>`
@@ -27,13 +28,13 @@ const BadgeDayText = styled.p<{ $isLarge: boolean }>`
   font-size: ${(props) => (props.$isLarge ? '0.9rem' : '0.4rem')};
 `;
 
-// 프롭스
+/* ---------------------------------- type --------------------------------- */
 type ConListBadgeProps = {
   duedate: string;
   isLarge: boolean;
 };
 
-// 컴포넌트
+/* ---------------------------------- component --------------------------------- */
 export default function ConListBadge({ duedate, isLarge = true }: ConListBadgeProps) {
 
   const dateObject: Date = new Date(duedate);
@@ -56,8 +57,8 @@ export default function ConListBadge({ duedate, isLarge = true }: ConListBadgePr
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // 밀리초를 하루 단위로 변환
 
   return (
-    <BadgeWrapper $isLarge={isLarge}>
-      <BadgeBox $isDue={diffDays <= 3}>
+    <BadgeWrapper $isLarge={isLarge} >
+      <BadgeBox $isWarning={diffDays <= 3}>
         <BadgeDayText $isLarge={isLarge}>
           {diffDays === 0 ? "D-0" : `D-${Math.abs(diffDays)}`}
         </BadgeDayText>
