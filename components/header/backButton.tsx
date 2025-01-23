@@ -16,20 +16,19 @@ const StyledBackButton = styled.button`
         }
     }
 `;
+ type BackButtonProps = {
+    route?: string;
+ }
 
-
-const BackButton = () => {
+const BackButton: React.FC<BackButtonProps> = ({ route }) => {
     const router = useRouter();
 
     const handleBackbutton = () => {
-        try {
+        if (route) {
+            router.push(route);
+        } else if (window.history.length > 1) {
             router.back();
-            // 에러 발생 시
-
         }
-        catch (error) {
-            router.push('/home');
-        };
     };
     return (
         <StyledBackButton>
@@ -40,4 +39,3 @@ const BackButton = () => {
 
 export default BackButton;
 
-// 예외적인 상황을 대비해서 특정 경로로 보내기 추가
