@@ -1,10 +1,8 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import { JSX } from 'react/jsx-dev-runtime';
 import BackButtonHeader from './headerComponents/backButtonHeader';
-import HomeHeader from './headerComponents/homeHeader';
-import MyPageHeader from './headerComponents/myPageHeader';
+import LogoHeader from './headerComponents/logoHeader';
 
 
 const Header = () => {
@@ -16,14 +14,19 @@ const Header = () => {
         '/giftcon-detail'
     ];
 
-    const headerComponents: { [key: string]: JSX.Element } = {
-        '/home': <HomeHeader />,
-        '/mypage': <MyPageHeader />
-    };
-
+    const logoButtonPath = [
+        '/',
+        '/mypage'
+    ];
     return (
         <div>
-            {headerComponents[pathname] || (backButtonPath.includes(pathname) ? <BackButtonHeader /> : <HomeHeader />)}
+            {logoButtonPath.includes(pathname) ? (
+                <LogoHeader />
+            ) : backButtonPath.includes(pathname) ? (
+                <BackButtonHeader />
+            ) : (
+                <LogoHeader />
+            )}
         </div>
     );
 };

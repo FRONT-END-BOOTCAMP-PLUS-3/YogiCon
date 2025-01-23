@@ -6,7 +6,7 @@ const SubTitle = styled.div`
 font-weight: 700;
 font-size: 1.5625rem;
 letter-spacing: -0.02rem;
-color: #FF5E5E;
+color: var(--main);
 text-align: center;
 `;
 
