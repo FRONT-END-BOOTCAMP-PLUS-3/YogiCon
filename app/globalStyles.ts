@@ -59,6 +59,7 @@ export const GlobalStyles = createGlobalStyle`
   }
   button, input, select{
     margin:0
+    border:0
   }
 
   // global variables
