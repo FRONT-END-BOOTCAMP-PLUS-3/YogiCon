@@ -2,29 +2,28 @@
 
 import { usePathname } from 'next/navigation';
 import { JSX } from 'react/jsx-dev-runtime';
+import BackButtonHeader from './headerComponents/backButtonHeader';
 import HomeHeader from './headerComponents/homeHeader';
-import MapHeader from './headerComponents/mapHeader';
 import MyPageHeader from './headerComponents/myPageHeader';
-import GetGiftconHeader from './headerComponents/getGiftconHeader';
-import GiftconDetailHeader from './headerComponents/giftconDetailHeader';
-import TrashHeader from './headerComponents/trashHeader';
 
 
 const Header = () => {
     const pathname = usePathname();
+    const backButtonPath = [
+        '/map',
+        '/trash',
+        '/get-giftcon',
+        '/giftcon-detail'
+    ];
 
     const headerComponents: { [key: string]: JSX.Element } = {
         '/home': <HomeHeader />,
-        '/map': <MapHeader />,
-        '/mypage': <MyPageHeader />,
-        '/trash': <TrashHeader />,
-        '/get-giftcon': <GetGiftconHeader />,
-        '/giftcon-detail': <GiftconDetailHeader />
+        '/mypage': <MyPageHeader />
     };
 
     return (
         <div>
-            {headerComponents[pathname] || <HomeHeader />}
+            {headerComponents[pathname] || (backButtonPath.includes(pathname) ? <BackButtonHeader /> : <HomeHeader />)}
         </div>
     );
 };
