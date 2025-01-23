@@ -18,16 +18,14 @@ const NavbarBox = styled.div`
   border-top: 1px solid var(--disabled);
 `;
 
-const NavbarItem = styled(Link).withConfig({
-  shouldForwardProp: (prop) => prop !== 'isActive',
-})<NavbarItemProps>`
+const NavbarItem = styled(Link)<NavbarItemProps>`
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 2.5rem;
   cursor: pointer;
-  color: ${(props) => (props.isActive ? `var(--main)` : `var(--sub)`)};
+  color: ${(props) => (props.$isActive ? `var(--main)` : `var(--sub)`)};
 `;
 
 type NavItems = {
@@ -37,7 +35,7 @@ type NavItems = {
 };
 
 type NavbarItemProps = {
-  isActive: boolean;
+  $isActive: boolean;
 };
 
 const Navbar: React.FC = () => {
@@ -55,7 +53,7 @@ const Navbar: React.FC = () => {
           item.path === '/' ? pathname === '/' : pathname.startsWith(item.path);
 
         return (
-          <NavbarItem key={item.name} isActive={isActive} href={item.path}>
+          <NavbarItem key={item.name} $isActive={isActive} href={item.path}>
             {item.icon}
           </NavbarItem>
         );
