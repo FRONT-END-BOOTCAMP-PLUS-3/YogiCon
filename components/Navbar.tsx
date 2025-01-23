@@ -18,11 +18,21 @@ const NavbarBox = styled.nav`
   border-top: 1px solid var(--disabled);
 `;
 
-const NavbarLink = styled(Link)<{ $isActive: boolean }>`
+const NavbarList = styled.ul`
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+`;
+
+const NavbarItem = styled.li`
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const NavbarLink = styled(Link)<{ $isActive: boolean }>`
+  width: fit-content;
   font-size: 2.5rem;
   cursor: pointer;
   color: ${(props) => (props.$isActive ? `var(--main)` : `var(--sub)`)};
@@ -44,16 +54,22 @@ const Navbar: React.FC = () => {
 
   return (
     <NavbarBox>
-      {navItems.map((item) => {
-        const isActive: boolean =
-          item.path === '/' ? pathname === '/' : pathname.startsWith(item.path);
+      <NavbarList>
+        {navItems.map((item) => {
+          const isActive: boolean =
+            item.path === '/'
+              ? pathname === '/'
+              : pathname.startsWith(item.path);
 
-        return (
-          <NavbarLink key={item.name} $isActive={isActive} href={item.path}>
-            {item.icon}
-          </NavbarLink>
-        );
-      })}
+          return (
+            <NavbarItem key={item.name}>
+              <NavbarLink $isActive={isActive} href={item.path}>
+                {item.icon}
+              </NavbarLink>
+            </NavbarItem>
+          );
+        })}
+      </NavbarList>
     </NavbarBox>
   );
 };
