@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import { BiHome, BiMapAlt, BiUser } from 'react-icons/bi';
 import styled from 'styled-components';
 
-const NavbarBox = styled.div`
+const NavbarBox = styled.nav`
   display: flex;
   justify-content: space-around;
   position: fixed;
@@ -18,7 +18,7 @@ const NavbarBox = styled.div`
   border-top: 1px solid var(--disabled);
 `;
 
-const NavbarItem = styled(Link)<NavbarItemProps>`
+const NavbarLink = styled(Link)<{ $isActive: boolean }>`
   flex: 1;
   display: flex;
   justify-content: center;
@@ -34,16 +34,12 @@ type NavItems = {
   path: string;
 };
 
-type NavbarItemProps = {
-  $isActive: boolean;
-};
-
 const Navbar: React.FC = () => {
   const pathname = usePathname();
   const navItems: NavItems[] = [
     { name: 'Home', icon: <BiHome />, path: '/' },
     { name: 'Map', icon: <BiMapAlt />, path: '/map' },
-    { name: 'MyInfo', icon: <BiUser />, path: '/mypage' },
+    { name: 'MyInfo', icon: <BiUser />, path: '/my' },
   ];
 
   return (
@@ -53,9 +49,9 @@ const Navbar: React.FC = () => {
           item.path === '/' ? pathname === '/' : pathname.startsWith(item.path);
 
         return (
-          <NavbarItem key={item.name} $isActive={isActive} href={item.path}>
+          <NavbarLink key={item.name} $isActive={isActive} href={item.path}>
             {item.icon}
-          </NavbarItem>
+          </NavbarLink>
         );
       })}
     </NavbarBox>
