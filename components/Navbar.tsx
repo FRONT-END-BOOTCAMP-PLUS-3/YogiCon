@@ -10,7 +10,6 @@ const NavbarBox = styled.div`
   justify-content: space-around;
   position: fixed;
   bottom: 0px;
-  align-items: center;
   width: 100%;
   max-width: 768px;
   left: 50%;
@@ -22,6 +21,10 @@ const NavbarBox = styled.div`
 const NavbarItem = styled(Link).withConfig({
   shouldForwardProp: (prop) => prop !== 'isActive',
 })<NavbarItemProps>`
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-size: 2.5rem;
   cursor: pointer;
   color: ${(props) => (props.isActive ? `var(--main)` : `var(--sub)`)};
@@ -48,7 +51,9 @@ const Navbar: React.FC = () => {
   return (
     <NavbarBox>
       {navItems.map((item) => {
-        const isActive: boolean = pathname === item.path;
+        const isActive: boolean =
+          item.path === '/' ? pathname === '/' : pathname.startsWith(item.path);
+
         return (
           <NavbarItem key={item.name} isActive={isActive} href={item.path}>
             {item.icon}
