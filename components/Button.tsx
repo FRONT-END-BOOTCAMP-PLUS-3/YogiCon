@@ -21,7 +21,7 @@ const StyledButton = styled.button<ButtonProps>`
   }};
   padding: ${({ isLong }) => (isLong ? '0.5rem' : '0.625rem')};
   font-size: 1rem;
-  font-weight: 700;
+  font-weight: bold;
   color: ${({ color }) =>
     color === 'white' ? 'var(--black)' : 'var(--white)'};
   line-height: 1.25rem;
