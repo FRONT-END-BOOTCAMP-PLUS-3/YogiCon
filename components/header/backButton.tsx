@@ -9,12 +9,6 @@ const StyledBackButton = styled.button`
  margin: 7px;
  border: 0;
  background-color: transparent;
-    svg {
-        
-        &:hover {
-            color: #D9D9D9;
-        }
-    }
 `;
  type BackButtonProps = {
     route?: string;
