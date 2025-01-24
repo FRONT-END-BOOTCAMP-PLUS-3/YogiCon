@@ -21,7 +21,7 @@ const TitleText = styled.h1`
   text-align: center;
 `;
 const SpacerBox = styled.div`
-  height: 3.375rem;
+  padding-top: 3.375rem;
 `;
 
 /* -------------------------------- component ------------------------------- */
