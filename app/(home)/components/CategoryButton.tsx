@@ -72,6 +72,7 @@ const CategoryButton = ({ category, isSelected, onClick }: CategoryButton) => {
       type="button"
       $isSelected={isSelected}
       onClick={onClick(category)}
+      aria-selected={isSelected}
     >
       <IconBox>{iconOfCategory[category]}</IconBox>
       {category}
