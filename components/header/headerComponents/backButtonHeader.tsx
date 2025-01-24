@@ -2,12 +2,16 @@ import styled from 'styled-components';
 import BackButton from '../backButton';
 import { usePathname } from 'next/navigation';
 
-const SubTitle = styled.div`
-font-weight: 700;
-font-size: 1.5625rem;
-letter-spacing: -0.02rem;
-color: var(--main);
-text-align: center;
+const SubTitle = styled.h1`
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: 700;
+    font-size: 1.5625rem;
+    letter-spacing: -0.02rem;
+    color: var(--main);
+    text-align: center;
+    height: 3.375rem;
 `;
 
 const BackButtonHeader = () => {
@@ -20,13 +24,13 @@ const BackButtonHeader = () => {
     };
     const headerText = headerComponents[pathname];
 
-    return(
-    <div>
-        <BackButton />
-        <SubTitle>
-            {headerText}
-        </SubTitle>
-    </div>
+    return (
+        <div>
+            <BackButton />
+            <SubTitle>
+                {headerText}
+            </SubTitle>
+        </div>
     )
 }
 

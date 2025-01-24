@@ -16,7 +16,7 @@ const Header = () => {
 
     const logoButtonPath = [
         '/',
-        '/mypage'
+        '/my'
     ];
     return (
         <div>
