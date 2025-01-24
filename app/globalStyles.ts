@@ -70,5 +70,6 @@ export const GlobalStyles = createGlobalStyle`
   --safety: #4dcfca;
   --disabled: #d9d9d9;
   --white: #ffffff;
+  --black: #000000;
   }
 `;
