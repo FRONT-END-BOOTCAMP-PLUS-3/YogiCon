@@ -19,7 +19,7 @@ const IconButton = styled.button<{ $isSelected: boolean }>`
   gap: 0.25rem;
   align-items: center;
   border-radius: 0.625rem;
-  padding: 0.3125rem 0.625rem 0.6875rem 0.625rem;
+  padding: 0.3125rem 0.625rem 0 0.625rem;
   font-size: 0.6875rem;
   line-height: 0.6875rem;
   letter-spacing: -0.02rem;
@@ -37,6 +37,13 @@ const IconBox = styled.div`
   border: 1px solid var(--disabled);
   border-radius: 50%;
   font-size: 2rem;
+`;
+
+const HighlightBox = styled.div`
+  width: 100%;
+  height: 0.125rem;
+  background-color: var(--main);
+  margin-top: 0.6875rem;
 `;
 
 /* ---------------------------------- type ---------------------------------- */
@@ -68,6 +75,7 @@ const CategoryButton = ({ category, isSelected, onClick }: CategoryButton) => {
     >
       <IconBox>{iconOfCategory[category]}</IconBox>
       {category}
+      {isSelected && <HighlightBox />}
     </IconButton>
   );
 };
