@@ -1,4 +1,5 @@
 import { GlobalStyles } from './globalStyles';
+import Header from '@/components/header/Header';
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -18,10 +19,14 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
           href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap"
           rel="stylesheet"
         />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Caprasimo&display=swap"
+          rel="stylesheet"
+        />
       </head>
       <body>
         <GlobalStyles />
-        <h2>가나다</h2>
+        <Header />
         <div>{children}</div>
       </body>
     </html>

@@ -2,13 +2,15 @@
 
 import styled from 'styled-components';
 
+type ButtonColor = 'main' | 'sub' | 'white' | 'disabled';
+
 /* ---------------------------------- style --------------------------------- */
-const StyledButton = styled.button<ButtonProps>`
+const StyledButton = styled.button<{ $isLong: boolean; $color: ButtonColor }>`
   width: 100%;
   min-width: 6.8125rem;
-  border-radius: ${({ type }) => (type === 'long' ? '0.9375rem' : '0.625rem')};
-  background-color: ${({ color }) => {
-    switch (color) {
+  border-radius: ${({ $isLong }) => ($isLong ? '0.9375rem' : '0.625rem')};
+  background-color: ${({ $color }) => {
+    switch ($color) {
       case 'main':
         return 'var(--main)';
       case 'sub':
@@ -19,35 +21,37 @@ const StyledButton = styled.button<ButtonProps>`
         return 'var(--disabled)';
     }
   }};
-  padding: ${({ type }) => (type === 'long' ? '0.5rem' : '0.625rem')};
+  padding: ${({ $isLong }) => ($isLong ? '0.5rem' : '0.625rem')};
   font-size: 1rem;
-  font-weight: 700;
-  color: ${({ color }) =>
-    color === 'white' ? 'var(--black)' : 'var(--white)'};
+  font-weight: bold;
+  color: ${({ $color }) =>
+    $color === 'white' ? 'var(--black)' : 'var(--white)'};
   line-height: 1.25rem;
-  box-shadow: ${({ type }) =>
-    type === 'long' ? '0px 4px 4px 0px rgba(0, 0, 0, 0.25)' : ''};
-  cursor: ${({ color }) => (color === 'disabled' ? 'not-allowed' : 'pointer')};
-  border: ${({ color }) =>
-    `0.0625rem solid ${color === 'white' ? 'var(--disabled)' : 'transparent'}`};
+  box-shadow: ${({ $isLong }) =>
+    $isLong ? '0px 4px 4px 0px rgba(0, 0, 0, 0.25)' : ''};
+  cursor: ${({ $color }) =>
+    $color === 'disabled' ? 'not-allowed' : 'pointer'};
+  border: ${({ $color }) =>
+    `0.0625rem solid ${$color === 'white' ? 'var(--disabled)' : 'transparent'}`};
 `;
 
 /* ---------------------------------- type ---------------------------------- */
+
 type ButtonProps = {
   children?: string;
-  type: 'long' | 'short';
-  color: 'main' | 'sub' | 'white' | 'disabled';
+  isLong: boolean;
+  color: ButtonColor;
   onClick?: () => void;
 };
 
 /* -------------------------------- component ------------------------------- */
-const Button = ({ children, type, color, onClick }: ButtonProps) => {
+const Button = ({ children, isLong, color, onClick }: ButtonProps) => {
   const isDisabled = color === 'disabled';
 
   return (
     <StyledButton
-      type={type}
-      color={color}
+      $isLong={isLong}
+      $color={color}
       disabled={isDisabled}
       onClick={onClick}
     >

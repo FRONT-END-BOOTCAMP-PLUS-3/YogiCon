@@ -13,6 +13,7 @@ const OverLayBox = styled.div`
   left: 0;
   width: 100%;
   height: 100vh;
+  z-index: 9999;
 `;
 const DialogBox = styled.div`
   background-color: var(--white);
@@ -30,17 +31,17 @@ const ButtonWrapper = styled.div`
 
 /* -------------------------------- type ------------------------------- */
 type ModalDialogProps = {
-  children: ReactNode;
-  type: 'one-button' | 'two-button';
+  children?: ReactNode;
+  buttonCount: 0 | 1 | 2;
   isOpen: boolean;
   onConfirm?: () => void;
-  onClose: () => void;
+  onClose?: () => void;
 };
 
 /* -------------------------------- component ------------------------------- */
 const ModalDialog = ({
   children,
-  type,
+  buttonCount,
   isOpen,
   onConfirm,
   onClose,
@@ -48,27 +49,30 @@ const ModalDialog = ({
   useBodyScrollLock(isOpen);
 
   const handleOverLayClick = (e: MouseEvent) => {
-    if (e.target === e.currentTarget) onClose();
+    if (e.target === e.currentTarget) onClose?.();
   };
 
   const renderButtons = () => {
-    if (type === 'one-button') {
-      return (
-        <Button type="short" color="main" onClick={onClose}>
-          예
-        </Button>
-      );
-    } else if (type === 'two-button') {
-      return (
-        <ButtonWrapper>
-          <Button type="short" color="main" onClick={onConfirm}>
+    switch (buttonCount) {
+      case 0:
+        return <></>;
+      case 1:
+        return (
+          <Button isLong={false} color="main" onClick={onClose}>
             예
           </Button>
-          <Button type="short" color="white" onClick={onClose}>
-            아니오
-          </Button>
-        </ButtonWrapper>
-      );
+        );
+      case 2:
+        return (
+          <ButtonWrapper>
+            <Button isLong={false} color="main" onClick={onConfirm}>
+              예
+            </Button>
+            <Button isLong={false} color="white" onClick={onClose}>
+              아니오
+            </Button>
+          </ButtonWrapper>
+        );
     }
   };
 

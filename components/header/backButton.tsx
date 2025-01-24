@@ -1,41 +1,38 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { FaArrowLeft } from "react-icons/fa";
+import { FaArrowLeft } from 'react-icons/fa';
 import styled from 'styled-components';
 
+/* ---------------------------------- style --------------------------------- */
 const StyledBackButton = styled.button`
- position: absolute;
- margin: 7px;
- border: 0;
- background-color: transparent;
-    svg {
-        
-        &:hover {
-            color: #D9D9D9;
-        }
-    }
+  position: absolute;
+  left: 1.25rem;
+  border: 0;
+  background-color: transparent;
 `;
- type BackButtonProps = {
-    route?: string;
- }
 
+/* ---------------------------------- type ---------------------------------- */
+type BackButtonProps = {
+  route?: string;
+};
+
+/* -------------------------------- component ------------------------------- */
 const BackButton: React.FC<BackButtonProps> = ({ route }) => {
-    const router = useRouter();
+  const router = useRouter();
 
-    const handleBackbutton = () => {
-        if (route) {
-            router.push(route);
-        } else if (window.history.length > 1) {
-            router.back();
-        }
-    };
-    return (
-        <StyledBackButton>
-            <FaArrowLeft onClick={handleBackbutton} />
-        </StyledBackButton>
-    );
+  const handleBackbutton = () => {
+    if (route) {
+      router.push(route);
+    } else if (window.history.length > 1) {
+      router.back();
+    }
+  };
+  return (
+    <StyledBackButton>
+      <FaArrowLeft onClick={handleBackbutton} />
+    </StyledBackButton>
+  );
 };
 
 export default BackButton;
-
