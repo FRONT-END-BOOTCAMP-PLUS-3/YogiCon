@@ -13,6 +13,7 @@ const OverLayBox = styled.div`
   left: 0;
   width: 100%;
   height: 100vh;
+  z-index: 9999;
 `;
 const DialogBox = styled.div`
   background-color: var(--white);
