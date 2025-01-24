@@ -24,8 +24,8 @@ const ConContainer = styled.div`
   transition: 0.3s ease all;
 
   &:hover {
-    & img {
-      transform: scale(1.1);
+    & > div:first-child {
+      background-color: var(--sub);
     }
   }
 `;
@@ -38,15 +38,13 @@ const ConLeftWrapper = styled.div`
   border: 1px solid var(--disabled);
   background-color: var(--white);
   position: relative;
-  overflow: hidden;
+  transition: 0.3s ease all;
 `;
 
 const ConLeftImage = styled(Image)`
   width: 100%;
   height: 100%;
   object-fit: contain;
-  transform: scale(1);
-  transition: 0.3s ease all;
 `;
 
 const ConLeftBadge = styled.div`
