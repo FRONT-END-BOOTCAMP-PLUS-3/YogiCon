@@ -50,6 +50,7 @@ const Button = ({ children, isLong, color, onClick }: ButtonProps) => {
 
   return (
     <StyledButton
+      type="button"
       $isLong={isLong}
       $color={color}
       disabled={isDisabled}

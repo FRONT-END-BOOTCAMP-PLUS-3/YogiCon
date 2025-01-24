@@ -21,7 +21,7 @@ const TitleText = styled.h1`
   text-align: center;
 `;
 const SpacerBox = styled.div`
-  height: 3.375rem;
+  padding-top: 3.375rem;
 `;
 
 /* -------------------------------- component ------------------------------- */
@@ -30,8 +30,8 @@ const BackButtonHeader = () => {
   const headerComponents: { [key: string]: string } = {
     '/map': '근처 매장 찾기',
     '/trash': '휴지통',
-    '/get-giftcon': '기프티콘 등록',
-    '/giftcon-detail': '기프티콘 상세',
+    '/add-con': '기프티콘 등록',
+    '/view-con': '기프티콘 상세',
   };
   const headerText = headerComponents[pathname];
 

@@ -7,8 +7,8 @@ import { usePathname } from 'next/navigation';
 const StyledHeader = styled.header`
   display: flex;
   align-items: center;
-  margin: 0.9375rem;
   width: 100%;
+  padding: 0 0.9375rem;
   position: fixed;
   left: 50%;
   translate: -50% 0;
@@ -21,10 +21,10 @@ const TitleText = styled.h1<{ $isHome: boolean }>`
   color: var(--main);
   font-family: ${(props) =>
     props.$isHome ? "'Caprasimo', sans-serif" : 'sans-serif'};
-  height: 1.5rem;
 `;
 const SpacerBox = styled.div`
-  height: 1.5rem;
+  width: 100%;
+  padding-top: 1.5rem;
 `;
 
 /* -------------------------------- component ------------------------------- */

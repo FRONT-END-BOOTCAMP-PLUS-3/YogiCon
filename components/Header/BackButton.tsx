@@ -29,7 +29,7 @@ const BackButton: React.FC<BackButtonProps> = ({ route }) => {
     }
   };
   return (
-    <StyledBackButton>
+    <StyledBackButton type="button">
       <FaArrowLeft onClick={handleBackbutton} />
     </StyledBackButton>
   );
