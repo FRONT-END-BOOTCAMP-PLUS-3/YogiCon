@@ -52,7 +52,8 @@ export const GlobalStyles = createGlobalStyle`
 
   // mini-reset
   html{
-    box-sizing:border-box
+    box-sizing: border-box;
+    overflow-y: hidden;
   }
   *,*::before,*::after{
       box-sizing:inherit
