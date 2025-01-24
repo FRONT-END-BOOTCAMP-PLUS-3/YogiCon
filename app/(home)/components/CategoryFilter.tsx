@@ -9,6 +9,9 @@ import CategoryButton from './CategoryButton';
 const CategoryButtonContainer = styled.div`
   width: 100%;
   overflow-x: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const CategoryButtonList = styled.ul`
