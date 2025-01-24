@@ -58,7 +58,8 @@ export const GlobalStyles = createGlobalStyle`
       box-sizing:inherit
   }
   button, input, select{
-    margin:0
+    margin:0;
+    border:0;
   }
 
   // global variables
@@ -69,5 +70,6 @@ export const GlobalStyles = createGlobalStyle`
   --safety: #4dcfca;
   --disabled: #d9d9d9;
   --white: #ffffff;
+  --black: #000000;
   }
 `;
