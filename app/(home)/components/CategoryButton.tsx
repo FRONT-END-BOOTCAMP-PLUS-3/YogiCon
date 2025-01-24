@@ -61,7 +61,11 @@ const iconOfCategory = {
 
 const CategoryButton = ({ category, isSelected, onClick }: CategoryButton) => {
   return (
-    <IconButton $isSelected={isSelected} onClick={onClick(category)}>
+    <IconButton
+      type="button"
+      $isSelected={isSelected}
+      onClick={onClick(category)}
+    >
       <IconBox>{iconOfCategory[category]}</IconBox>
       {category}
     </IconButton>

@@ -210,11 +210,11 @@ export default function ConList({
 
       {isTrash ? (
         <ConRightTrashWrapper>
-          <ConRightTrashButton $restore={false}>
+          <ConRightTrashButton type="button" $restore={false}>
             <TbTrash />
             &nbsp;영구삭제
           </ConRightTrashButton>
-          <ConRightTrashButton $restore={true}>
+          <ConRightTrashButton type="button" $restore={true}>
             <TbRestore />
             &nbsp;복원
           </ConRightTrashButton>
