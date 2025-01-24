@@ -1,5 +1,5 @@
 import { GlobalStyles } from './globalStyles';
-import Header from '@/components/header/Header';
+import Header from '@/components/Header/Header';
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (

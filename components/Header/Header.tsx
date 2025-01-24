@@ -1,8 +1,8 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import BackButtonHeader from './headerComponents/BackButtonHeader';
-import LogoHeader from './headerComponents/LogoHeader';
+import BackButtonHeader from './HeaderComponents/BackButtonHeader';
+import LogoHeader from './HeaderComponents/LogoHeader';
 
 const Header = () => {
   const pathname = usePathname();
