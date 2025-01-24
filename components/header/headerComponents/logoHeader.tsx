@@ -1,37 +1,53 @@
-"use client";
+'use client';
 
 import styled from 'styled-components';
 import { usePathname } from 'next/navigation';
 
-const SubTitle = styled.h1<{ $isHome: boolean }>`
-    position: fixed;
-    font-weight: 700;
-    font-size: 1.5625rem;
-    letter-spacing: -0.02rem;
-    color: var(--main);
-    font-family: ${props => (props.$isHome ? "'Caprasimo', sans-serif" : "sans-serif")};
-    height: 1.5rem;
+/* ---------------------------------- style --------------------------------- */
+const StyledHeader = styled.header`
+  display: flex;
+  align-items: center;
+  margin: 0.9375rem;
+  width: 100%;
+  position: fixed;
+  left: 50%;
+  translate: -50% 0;
+  height: 1.5rem;
+`;
+const TitleText = styled.h1<{ $isHome: boolean }>`
+  font-weight: 700;
+  font-size: 1.5625rem;
+  letter-spacing: -0.02rem;
+  color: var(--main);
+  font-family: ${(props) =>
+    props.$isHome ? "'Caprasimo', sans-serif" : 'sans-serif'};
+  height: 1.5rem;
+`;
+const SpacerBox = styled.div`
+  height: 1.5rem;
 `;
 
+/* -------------------------------- component ------------------------------- */
 const LogoHeader = () => {
-    const pathname = usePathname();
+  const pathname = usePathname();
 
-    // 페이지 경로에 따른 제목
-    const headerComponents: { [key: string]: string } = {
-        '/': "YOGICON",
-        '/my': "마이페이지"
-    };
+  // 페이지 경로에 따른 제목
+  const headerComponents: { [key: string]: string } = {
+    '/': 'YOGICON',
+    '/my': '마이페이지',
+  };
 
-    const headerText = headerComponents[pathname] || "YOGICON"; // 기본값 설정
-    const isHome = pathname === '/';
+  const headerText = headerComponents[pathname] || 'YOGICON'; // 기본값 설정
+  const isHome = pathname === '/';
 
-    return (
-        <div>
-            <SubTitle $isHome={isHome}>
-                {headerText}
-            </SubTitle>
-        </div>
-    );
-}
+  return (
+    <>
+      <StyledHeader>
+        <TitleText $isHome={isHome}>{headerText}</TitleText>
+      </StyledHeader>
+      <SpacerBox></SpacerBox>
+    </>
+  );
+};
 
 export default LogoHeader;
