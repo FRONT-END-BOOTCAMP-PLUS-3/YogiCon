@@ -11,13 +11,38 @@ import { RiCake3Line } from 'react-icons/ri';
 import styled from 'styled-components';
 
 /* ---------------------------------- style --------------------------------- */
-const IconButton = styled.button``;
+const IconButton = styled.button<{ $isSelected: boolean }>`
+  background-color: ${({ $isSelected }) =>
+    $isSelected ? 'rgba(255, 192, 192, 0.40)' : 'transparent'};
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  align-items: center;
+  border-radius: 0.625rem;
+  padding: 0.3125rem 0.625rem 0.6875rem 0.625rem;
+  font-size: 0.6875rem;
+  line-height: 0.6875rem;
+  letter-spacing: -0.02rem;
+  cursor: pointer;
+`;
 
-const IconBox = styled.div``;
+const IconBox = styled.div`
+  background-color: var(--white);
+  width: 3.125rem;
+  height: 3.125rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.375rem;
+  border: 1px solid var(--disabled);
+  border-radius: 50%;
+  font-size: 2rem;
+`;
 
 /* ---------------------------------- type ---------------------------------- */
 type CategoryButton = {
   category: CategoryListItem;
+  isSelected: boolean;
   onClick: (value: CategoryListItem) => () => void;
 };
 
@@ -34,10 +59,10 @@ const iconOfCategory = {
   기타: <HiOutlineDotsCircleHorizontal />,
 };
 
-const CategoryButton = ({ category, onClick }: CategoryButton) => {
+const CategoryButton = ({ category, isSelected, onClick }: CategoryButton) => {
   return (
-    <IconButton>
-      <IconBox onClick={onClick(category)}>{iconOfCategory[category]}</IconBox>
+    <IconButton $isSelected={isSelected} onClick={onClick(category)}>
+      <IconBox>{iconOfCategory[category]}</IconBox>
       {category}
     </IconButton>
   );

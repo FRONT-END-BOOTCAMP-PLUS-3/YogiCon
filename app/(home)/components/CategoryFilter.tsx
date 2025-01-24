@@ -5,26 +5,46 @@ import { CategoryListItem } from '@/types/categories';
 import styled from 'styled-components';
 import CategoryButton from './CategoryButton';
 
-const CategoryButtonList = styled.ul``;
+/* ---------------------------------- style --------------------------------- */
+const CategoryButtonContainer = styled.div`
+  width: 100%;
+  overflow-x: scroll;
+`;
+
+const CategoryButtonList = styled.ul`
+  display: flex;
+  padding: 0 1.1875rem;
+  gap: 0.8125rem;
+  width: 100%;
+`;
 const CategoryItem = styled.li``;
 
+/* ---------------------------------- type ---------------------------------- */
 type CategoryFilterProps = {
+  selectedCategory: CategoryListItem;
   onSelect: (value: CategoryListItem) => () => void;
 };
 
-const CategoryFilter = ({ onSelect }: CategoryFilterProps) => {
+/* -------------------------------- component ------------------------------- */
+const CategoryFilter = ({
+  selectedCategory,
+  onSelect,
+}: CategoryFilterProps) => {
   return (
-    <CategoryButtonList>
-      {CATEGORY_LIST.map((category) => (
-        <CategoryItem key={category}>
-          <CategoryButton
-            key={category}
-            category={category}
-            onClick={onSelect}
-          />
-        </CategoryItem>
-      ))}
-    </CategoryButtonList>
+    <CategoryButtonContainer>
+      <CategoryButtonList>
+        {CATEGORY_LIST.map((category) => (
+          <CategoryItem key={category}>
+            <CategoryButton
+              key={category}
+              category={category}
+              isSelected={category === selectedCategory}
+              onClick={onSelect}
+            />
+          </CategoryItem>
+        ))}
+      </CategoryButtonList>
+    </CategoryButtonContainer>
   );
 };
 
