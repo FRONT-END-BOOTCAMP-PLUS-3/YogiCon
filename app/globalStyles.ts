@@ -58,7 +58,8 @@ export const GlobalStyles = createGlobalStyle`
       box-sizing:inherit
   }
   button, input, select{
-    margin:0
+    margin:0;
+    border:0;
   }
 
   // global variables
