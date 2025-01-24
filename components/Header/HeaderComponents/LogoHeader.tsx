@@ -13,6 +13,8 @@ const StyledHeader = styled.header`
   left: 50%;
   translate: -50% 0;
   height: 1.5rem;
+  background-color: var(--white);
+  z-index: 9998;
 `;
 const TitleText = styled.h1<{ $isHome: boolean }>`
   font-weight: 700;

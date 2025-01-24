@@ -16,6 +16,8 @@ const NavbarBox = styled.nav`
   transform: translateX(-50%);
   height: 5.313rem;
   border-top: 1px solid var(--disabled);
+  background-color: var(--white);
+  z-index: 9998;
 `;
 
 const NavbarList = styled.ul`
