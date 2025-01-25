@@ -18,16 +18,9 @@ const ConContainer = styled.div`
   justify-content: space-between;
   align-items: stretch;
   gap: 15px;
-  border-top: 1px solid var(--disabled);
   border-bottom: 1px solid var(--disabled);
   background-color: var(--white);
   transition: 0.3s ease all;
-
-  &:hover {
-    & > div:first-child {
-      background-color: var(--sub);
-    }
-  }
 `;
 
 // 왼쪽
@@ -157,7 +150,7 @@ type ConListProps = {
 };
 
 /* -------------------------------- component ------------------------------- */
-export default function ConList({
+export default function ConListItem({
   category,
   brand,
   name,
