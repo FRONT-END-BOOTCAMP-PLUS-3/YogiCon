@@ -9,8 +9,6 @@ const StyledHeader = styled.header`
   justify-content: center;
   width: 100%;
   position: fixed;
-  left: 50%;
-  translate: -50% 0;
   height: 3.375rem;
   background-color: var(--white);
   z-index: 9998;

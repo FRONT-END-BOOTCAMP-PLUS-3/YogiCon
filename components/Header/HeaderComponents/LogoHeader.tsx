@@ -10,15 +10,14 @@ const StyledHeader = styled.header`
   width: 100%;
   padding: 0 0.9375rem;
   position: fixed;
-  left: 50%;
-  translate: -50% 0;
   height: 1.5rem;
   background-color: var(--white);
   z-index: 9998;
 `;
 const TitleText = styled.h1<{ $isHome: boolean }>`
   font-weight: 700;
-  font-size: 1.5625rem;
+  font-size: 1.375rem;
+  line-height: 1.5rem;
   letter-spacing: -0.02rem;
   color: var(--main);
   font-family: ${(props) =>
