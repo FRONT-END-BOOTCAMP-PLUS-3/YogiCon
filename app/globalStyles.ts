@@ -33,6 +33,8 @@ export const GlobalStyles = createGlobalStyle`
     line-height: 1;
     max-width: 768px;
     margin: 0 auto;
+    overscroll-behavior: none; /* 오버스크롤 방지 */
+    min-height: 100vh;
   }
   ol, ul {
     list-style: none;
@@ -52,6 +54,7 @@ export const GlobalStyles = createGlobalStyle`
 
   // mini-reset
   html{
+    overscroll-behavior: none; /* 오버스크롤 방지 */
     box-sizing:border-box
   }
   *,*::before,*::after{
