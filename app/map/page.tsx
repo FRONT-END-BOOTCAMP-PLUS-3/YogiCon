@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import styled from 'styled-components';
 import ReactKakaoMap from '@/app/map/components/KakaoMap';
 import { MdMyLocation } from 'react-icons/md';
@@ -43,12 +44,36 @@ const MyLocation = styled.button`
 /* ---------------------------------- component --------------------------------- */
 export default function Map() {
   const [selectedItemKey, setSelectedItemKey] = useState<string | null>(null);
+  const mapRef = useRef<any>(null);
+
+  const findMyLocation = () => {
+    if (!navigator.geolocation) {
+      alert('브라우저가 사용자 위치 파악 api를 지원하지 않습니다.');
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        console.log('현재 위치:', longitude, latitude);
+
+        if (mapRef.current) {
+          const newCenter = new window.kakao.maps.LatLng(latitude, longitude);
+          mapRef.current.setCenter(newCenter);
+        }
+      },
+      (error) => {
+        console.error('Error fetching location:', error);
+        alert('위치를 가져오는 데 실패했습니다.');
+      }
+    );
+  };
 
   return (
     <Wrapper>
       <MapContainer>
-        <ReactKakaoMap />
-        <MyLocation>
+        <ReactKakaoMap onMapLoad={(map) => (mapRef.current = map)} />
+        <MyLocation onClick={findMyLocation}>
           <MdMyLocation />
         </MyLocation>
         <BottomSheet

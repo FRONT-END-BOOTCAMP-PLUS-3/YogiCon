@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { useEffect } from 'react';
@@ -9,13 +10,13 @@ declare global {
   }
 }
 
-const ReactKakaoMap = () => {
+const ReactKakaoMap = ({ onMapLoad }: { onMapLoad: (map: any) => void }) => {
   const apiKey: string | undefined = process.env.NEXT_PUBLIC_KAKAO_KEY;
-  const {location} = useGeolocation()
+  const { location } = useGeolocation();
 
   useEffect(() => {
     if (!apiKey || !location) return;
-    
+
     const script: HTMLScriptElement = document.createElement('script');
     script.async = true;
     script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${apiKey}&autoload=false`;
@@ -25,7 +26,7 @@ const ReactKakaoMap = () => {
       window.kakao.maps.load(() => {
         const container = document.getElementById('map');
         const coords = new window.kakao.maps.LatLng(
-          location?.latitude as number, 
+          location?.latitude as number,
           location?.longitude as number
         );
 
@@ -33,13 +34,14 @@ const ReactKakaoMap = () => {
           center: coords,
           level: 3,
         };
-        const map = new window.kakao.maps.Map(container, options);
 
+        const map = new window.kakao.maps.Map(container, options);
         map.setCenter(coords);
-        console.log("셋했다:", coords)
+        console.log('셋했다:', coords);
+        onMapLoad(map);
       });
     });
-  }, [apiKey, location]);
+  }, [apiKey, location, onMapLoad]);
 
   return <div id="map" style={{ height: '100%', width: '100%' }} />;
 };
