@@ -13,12 +13,12 @@ const Container = styled(motion.div)<{ height: number }>`
 
   position: fixed;
   z-index: 1;
-  top: calc(100vh - 160px); /*시트가 얼마나 높이 위치할지*/
+  top: calc(100vh - 120px); /*시트가 얼마나 높이 위치할지*/
 
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
   box-shadow: 0px 0px 10px var(--disabled);
-  height: ${({ height }) => height}px;
+  height: ${({ height }) => height + 10}px;
   width: 100%;
   max-width: 768px;
   left: 50%;
