@@ -7,6 +7,7 @@ import useBottomSheet from '@/hooks/useBottomSheet';
 import BottomSheetHeader from './Header';
 import BottomSheetContent from './Content';
 
+/* ---------------------------------- style --------------------------------- */
 const Container = styled(motion.div)<{ height: number }>`
   display: flex;
   flex-direction: column;
@@ -18,7 +19,7 @@ const Container = styled(motion.div)<{ height: number }>`
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
   box-shadow: 0px 0px 10px var(--disabled);
-  height: ${({ height }) => height + 10}px;
+  height: ${({ height }) => height - 30}px;
   width: 100%;
   max-width: 768px;
   left: 50%;
@@ -42,8 +43,18 @@ const BSContentBox = styled.div`
   }
 `;
 
-function BottomSheet() {
-  const { sheet, content } = useBottomSheet();
+/* ---------------------------------- type --------------------------------- */
+type BottomSheetProps = {
+  selectedItemKey: string | null;
+  setSelectedItemKey: (key: string) => void;
+};
+
+/* ---------------------------------- component --------------------------------- */
+function BottomSheet({
+  selectedItemKey,
+  setSelectedItemKey,
+}: BottomSheetProps) {
+  const { sheet, content, moveSheetToBottom } = useBottomSheet();
   const { bottomSheetHeight } = useBottomSheetDimensions();
 
   if (bottomSheetHeight === null) return null;
@@ -51,7 +62,11 @@ function BottomSheet() {
     <Container ref={sheet} height={bottomSheetHeight}>
       <BottomSheetHeader />
       <BSContentBox ref={content}>
-        <BottomSheetContent />
+        <BottomSheetContent
+          selectedItemKey={selectedItemKey}
+          setSelectedItemKey={setSelectedItemKey}
+          moveSheetToBottom={moveSheetToBottom}
+        />
       </BSContentBox>
     </Container>
   );

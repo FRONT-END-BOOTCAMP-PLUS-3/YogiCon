@@ -156,5 +156,12 @@ export default function useBottomSheet() {
     };
   }, [maxY]);
 
-  return { sheet, content }
+
+  const moveSheetToBottom = () => {
+    if (sheet.current) {
+      sheet.current.style.setProperty("transform", "translate(-50%, 0)");
+    }
+  };
+
+  return { sheet, content, moveSheetToBottom }
 }
