@@ -15,61 +15,63 @@ export default function BottomSheetContent() {
       <ConListItem
         category={'패스트푸드'}
         brand={'BHC'}
-        name={'뿌링클 콤보뿌링클 콤보뿌링클 콤보뿌링클 콤보'}
+        name={'1번뿌링클 콤보뿌링클 콤보뿌링클 콤보뿌링클 콤보'}
         duedate={'2026-01-26T00:00:00.000Z'}
         isDeleted={false}
       />
       <ConListItem
         category={'패스트푸드'}
         brand={'BHC'}
-        name={'뿌링클 콤보뿌링클 콤보뿌링클 콤보뿌링클 콤보'}
+        name={'2번뿌링클 콤보뿌링클 콤보뿌링클 콤보뿌링클 콤보'}
         duedate={'2026-01-26T00:00:00.000Z'}
         isDeleted={false}
       />
       <ConListItem
         category={'패스트푸드'}
         brand={'BHC'}
-        name={'뿌링클 콤보뿌링클 콤보뿌링클 콤보뿌링클 콤보'}
+        name={'3번뿌링클 콤보뿌링클 콤보뿌링클 콤보뿌링클 콤보'}
         duedate={'2026-01-26T00:00:00.000Z'}
         isDeleted={false}
       />
       <ConListItem
         category={'패스트푸드'}
         brand={'BHC'}
-        name={'뿌링클 콤보뿌링클 콤보뿌링클 콤보뿌링클 콤보'}
+        name={'4번뿌링클 콤보뿌링클 콤보뿌링클 콤보뿌링클 콤보'}
         duedate={'2026-01-26T00:00:00.000Z'}
         isDeleted={false}
       />
       <ConListItem
         category={'패스트푸드'}
         brand={'BHC'}
-        name={'뿌링클 콤보뿌링클 콤보뿌링클 콤보뿌링클 콤보'}
+        name={'5번뿌링클 콤보뿌링클 콤보뿌링클 콤보뿌링클 콤보'}
         duedate={'2026-01-26T00:00:00.000Z'}
         isDeleted={false}
       />
       <ConListItem
         category={'패스트푸드'}
         brand={'BHC'}
-        name={'뿌링클 콤보뿌링클 콤보뿌링클 콤보뿌링클 콤보'}
+        name={'6번뿌링클 콤보뿌링클 콤보뿌링클 콤보뿌링클 콤보'}
         duedate={'2026-01-26T00:00:00.000Z'}
         isDeleted={false}
       />
       <ConListItem
         category={'패스트푸드'}
         brand={'BHC'}
-        name={'뿌링클 콤보뿌링클 콤보뿌링클 콤보뿌링클 콤보'}
+        name={'7번뿌링클 콤보뿌링클 콤보뿌링클 콤보뿌링클 콤보'}
         duedate={'2026-01-26T00:00:00.000Z'}
         isDeleted={false}
       />
       <ConListItem
         category={'패스트푸드'}
         brand={'BHC'}
-        name={'뿌링클 콤보뿌링클 콤보뿌링클 콤보뿌링클 콤보'}
+        name={'8번뿌링클 콤보뿌링클 콤보뿌링클 콤보뿌링클 콤보'}
         duedate={'2026-01-26T00:00:00.000Z'}
         isDeleted={false}
       />
 
-      <div style={{ paddingTop: '80px' }}></div>
+      <div style={{ padding: '20px 0' }}>
+        <p>더 이상 기프티콘이 없어요!</p>
+      </div>
     </BSContentContainer>
   );
 }
