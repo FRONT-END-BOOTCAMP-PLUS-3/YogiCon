@@ -1,9 +1,12 @@
 'use client';
 
 import ConListItem from '@/components/ConListItem';
-import { Categories, CategoryListItem } from '@/types/categories';
+import { CategoryListItem } from '@/types/categories';
+import { useRouter } from 'next/navigation';
 import { FormEvent, useState } from 'react';
+import { LuPlus } from 'react-icons/lu';
 import styled from 'styled-components';
+import { giftList } from '../giftData';
 import CategoryFilter from './components/CategoryFilter';
 import SearchForm from './components/SearchForm';
 
@@ -15,20 +18,36 @@ const FilterSection = styled.section`
   top: 1.5rem;
   z-index: 9998;
   background-color: var(--white);
-  border-bottom: 0.0625rem solid #e7e7e7;
+  border-bottom: 0.1px solid #e7e7e7;
 `;
 
 const ConListSection = styled.section`
-  padding-top: 1.9375rem;
-  padding-bottom: 5.375rem;
+  padding: 0 0.9375rem 5.375rem 1.5rem;
+`;
+
+const ConList = styled.ul``;
+
+const RegisterButton = styled.button`
+  position: fixed;
+  font-size: 1.125rem;
+  padding: 0.625rem 1rem;
+  border-radius: 1.25rem;
+  background-color: var(--main);
+  color: var(--white);
+  z-index: 9998;
+  bottom: 6.875rem;
+  right: 1.5625rem;
   display: flex;
+  justify-content: center;
   align-items: center;
-  flex-direction: column;
-  gap: 1.9375rem;
+  line-height: 1.375rem;
+  font-weight: bold;
+  cursor: pointer;
 `;
 
 /* -------------------------------- page ------------------------------- */
 const Home = () => {
+  const router = useRouter();
   const [selectedCategory, setSelectedCategory] =
     useState<CategoryListItem>('전체');
 
@@ -40,6 +59,10 @@ const Home = () => {
     e.preventDefault();
   };
 
+  const handleRegisterClick = () => {
+    router.push('/add-con');
+  };
+
   return (
     <HomeLayout>
       <FilterSection aria-label="검색 및 필터링">
@@ -49,84 +72,31 @@ const Home = () => {
           onSelect={handleCategoryButtonClick}
         />
       </FilterSection>
-      <ConListSection>
-        {dummyConList.map(
-          (item, index) =>
-            (selectedCategory === '전체' ||
-              selectedCategory === item.category) && (
-              <ConListItem
-                key={index}
-                category={item.category as Categories}
-                brand={item.brand}
-                name={item.name}
-                duedate={item.duedate}
-                isDeleted={item.isDeleted}
-              />
-            )
-        )}
+
+      <ConListSection aria-label="기프티콘 목록">
+        <ConList>
+          {/* 더미 데이터 */}
+          {giftList.map(
+            (item, index) =>
+              (selectedCategory === '전체' ||
+                selectedCategory === item.category) && (
+                <ConListItem key={index} {...item} />
+              )
+          )}
+        </ConList>
       </ConListSection>
+
+      <RegisterButton type="button" onClick={handleRegisterClick}>
+        <LuPlus
+          size={'1.5rem'}
+          style={{
+            marginRight: '0.25rem',
+          }}
+        />
+        등록하기
+      </RegisterButton>
     </HomeLayout>
   );
 };
 
 export default Home;
-
-/* ------------------------------- dummy data ------------------------------- */
-const dummyConList = [
-  {
-    category: '패스트푸드',
-    brand: 'BHC',
-    name: '뿌링클',
-    duedate: '2025/01/28',
-    isDeleted: false,
-  },
-  {
-    category: '패스트푸드',
-    brand: 'BHC',
-    name: '뿌링클',
-    duedate: '2025/01/31',
-    isDeleted: false,
-  },
-  {
-    category: '패스트푸드',
-    brand: 'BHC',
-    name: '뿌링클',
-    duedate: '2025/02/03',
-    isDeleted: false,
-  },
-  {
-    category: '패스트푸드',
-    brand: 'BHC',
-    name: '뿌링클',
-    duedate: '2025/02/11',
-    isDeleted: false,
-  },
-  {
-    category: '패스트푸드',
-    brand: 'BHC',
-    name: '뿌링클',
-    duedate: '2025/02/13',
-    isDeleted: false,
-  },
-  {
-    category: '패스트푸드',
-    brand: 'BHC',
-    name: '뿌링클',
-    duedate: '2025/02/20',
-    isDeleted: false,
-  },
-  {
-    category: '패스트푸드',
-    brand: 'BHC',
-    name: '뿌링클',
-    duedate: '2025/02/25',
-    isDeleted: false,
-  },
-  {
-    category: '패스트푸드',
-    brand: 'BHC',
-    name: '뿌링클',
-    duedate: '2025/02/25',
-    isDeleted: false,
-  },
-];
