@@ -23,7 +23,7 @@ const SearchInput = styled.input`
   line-height: 1.3125rem;
   letter-spacing: -0.02rem;
   border-radius: 1.875rem;
-  border: 0.0625rem solid var(--disabled);
+  border: 1px solid var(--disabled);
 
   &::placeholder {
     color: #b7b7b7;
