@@ -33,6 +33,7 @@ export const GlobalStyles = createGlobalStyle`
     line-height: 1;
     max-width: 768px;
     margin: 0 auto;
+    min-height: 100vh;
   }
   ol, ul {
     list-style: none;
@@ -51,8 +52,10 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   // mini-reset
-  html{
-    box-sizing:border-box
+   html{
+    box-sizing:border-box;
+    max-width: 768px;
+    margin: 0 auto; 
   }
   *,*::before,*::after{
       box-sizing:inherit
@@ -60,6 +63,7 @@ export const GlobalStyles = createGlobalStyle`
   button, input, select{
     margin:0;
     border:0;
+    outline: none;
   }
 
   // global variables
@@ -71,5 +75,7 @@ export const GlobalStyles = createGlobalStyle`
   --disabled: #d9d9d9;
   --white: #ffffff;
   --black: #000000;
+  --deepgray: #777777;
+  --lightgray: #f0f0f0;
   }
 `;
