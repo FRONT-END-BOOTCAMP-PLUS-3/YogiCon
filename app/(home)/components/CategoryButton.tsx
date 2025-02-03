@@ -23,6 +23,7 @@ const IconButton = styled.button<{ $isSelected: boolean }>`
   font-size: 0.6875rem;
   line-height: 0.6875rem;
   letter-spacing: -0.02rem;
+  color: var(--black);
   cursor: pointer;
 `;
 
