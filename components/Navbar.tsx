@@ -46,7 +46,7 @@ type NavItems = {
   path: string;
 };
 
-const Navbar: React.FC = () => {
+const Navbar = () => {
   const pathname = usePathname();
   const navItems: NavItems[] = [
     { name: 'Home', icon: <BiHome />, path: '/' },

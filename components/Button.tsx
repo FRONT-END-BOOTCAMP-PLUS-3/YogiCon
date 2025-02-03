@@ -32,25 +32,32 @@ const StyledButton = styled.button<{ $isLong: boolean; $color: ButtonColor }>`
   cursor: ${({ $color }) =>
     $color === 'disabled' ? 'not-allowed' : 'pointer'};
   border: ${({ $color }) =>
-    `0.0625rem solid ${$color === 'white' ? 'var(--disabled)' : 'transparent'}`};
+    `1px solid ${$color === 'white' ? 'var(--disabled)' : 'transparent'}`};
 `;
 
 /* ---------------------------------- type ---------------------------------- */
 
 type ButtonProps = {
   children?: string;
+  type?: 'button' | 'submit' | 'reset';
   isLong: boolean;
   color: ButtonColor;
   onClick?: () => void;
 };
 
 /* -------------------------------- component ------------------------------- */
-const Button = ({ children, isLong, color, onClick }: ButtonProps) => {
+const Button = ({
+  children,
+  isLong,
+  color,
+  onClick,
+  type = 'button',
+}: ButtonProps) => {
   const isDisabled = color === 'disabled';
 
   return (
     <StyledButton
-      type="button"
+      type={type}
       $isLong={isLong}
       $color={color}
       disabled={isDisabled}
