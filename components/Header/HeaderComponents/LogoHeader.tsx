@@ -1,7 +1,6 @@
 'use client';
 
 import styled from 'styled-components';
-import { usePathname } from 'next/navigation';
 
 /* ---------------------------------- style --------------------------------- */
 const StyledHeader = styled.header`
@@ -28,10 +27,13 @@ const SpacerBox = styled.div`
   padding-top: 1.5rem;
 `;
 
-/* -------------------------------- component ------------------------------- */
-const LogoHeader = () => {
-  const pathname = usePathname();
+/* ---------------------------------- type ---------------------------------- */
+type LogoHeaderProps = {
+  pathname: string;
+};
 
+/* -------------------------------- component ------------------------------- */
+const LogoHeader = ({ pathname }: LogoHeaderProps) => {
   // 페이지 경로에 따른 제목
   const headerComponents: { [key: string]: string } = {
     '/': 'YOGICON',

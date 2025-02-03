@@ -33,7 +33,6 @@ export const GlobalStyles = createGlobalStyle`
     line-height: 1;
     max-width: 768px;
     margin: 0 auto;
-    overscroll-behavior: none; /* 오버스크롤 방지 */
     min-height: 100vh;
   }
   ol, ul {
@@ -53,9 +52,10 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   // mini-reset
-  html{
-    overscroll-behavior: none; /* 오버스크롤 방지 */
-    box-sizing:border-box
+   html{
+    box-sizing:border-box;
+    max-width: 768px;
+    margin: 0 auto; 
   }
   *,*::before,*::after{
       box-sizing:inherit
@@ -63,6 +63,7 @@ export const GlobalStyles = createGlobalStyle`
   button, input, select{
     margin:0;
     border:0;
+    outline: none;
   }
 
   // global variables
@@ -74,6 +75,8 @@ export const GlobalStyles = createGlobalStyle`
   --disabled: #d9d9d9;
   --white: #ffffff;
   --black: #000000;
+  --deepgray: #777777;
+  --lightgray: #f0f0f0;
   }
 `;
 

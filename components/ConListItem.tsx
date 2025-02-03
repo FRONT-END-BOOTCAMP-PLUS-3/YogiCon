@@ -8,16 +8,16 @@ import ConListBadge from './ConListBadge';
 import { Categories } from '@/types/categories';
 
 /* ---------------------------------- style --------------------------------- */
-const ConContainer = styled.div`
+const ConContainer = styled.li`
   cursor: pointer;
-  width: 90%;
+  width: 100%;
   height: fit-content;
-  padding: 20px 10px;
+  padding: 1.25rem 0;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: stretch;
-  gap: 15px;
+  gap: 0.9rem;
   border-bottom: 1px solid var(--disabled);
   background-color: var(--white);
   transition: 0.3s ease all;
@@ -42,8 +42,8 @@ const ConLeftImage = styled(Image)`
 
 const ConLeftBadge = styled.div`
   position: absolute;
-  right: -15px;
-  top: -15px;
+  right: -0.9375rem;
+  top: -0.9375rem;
 `;
 
 const ConLeftExpiredText = styled.span`
@@ -82,7 +82,7 @@ const ConCategoryText = styled.span`
 const ConTitleText = styled.h3`
   width: 100%;
   font-size: 1rem;
-  margin-bottom: 5px;
+  margin-bottom: 0.3125rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -108,7 +108,7 @@ const ConRightTrashWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 0.625rem;
 `;
 
 const ConRightTrashButton = styled.button<{ $restore: boolean }>`
@@ -142,20 +142,24 @@ const ConRightTrashButton = styled.button<{ $restore: boolean }>`
 
 /* ---------------------------------- type ---------------------------------- */
 type ConListProps = {
+  image_url: string;
   category: Categories;
   brand: string;
   name: string;
   duedate: string;
   isDeleted: boolean;
+  onClick?: () => void;
 };
 
 /* -------------------------------- component ------------------------------- */
 export default function ConListItem({
+  image_url,
   category,
   brand,
   name,
   duedate,
   isDeleted,
+  onClick,
 }: ConListProps) {
   const dateObject: Date = new Date(duedate);
   const dueDateString: string = dateObject.toISOString().split('T')[0];
@@ -177,14 +181,9 @@ export default function ConListItem({
   const isTrash: boolean = isDeleted || isExpired;
 
   return (
-    <ConContainer>
+    <ConContainer onClick={onClick}>
       <ConLeftWrapper>
-        <ConLeftImage
-          src="/gifticon.jpg"
-          alt="Example Image"
-          width={100}
-          height={100}
-        />
+        <ConLeftImage src={image_url} alt="gifticon" width={100} height={100} />
         {isDeleted && !isExpired && (
           <ConLeftBadge>
             <ConListBadge duedate={duedate} isLarge={false} />
