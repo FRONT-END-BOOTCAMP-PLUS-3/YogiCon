@@ -13,11 +13,11 @@ const Header = () => {
   return (
     <>
       {logoButtonPath.includes(pathname) ? (
-        <LogoHeader />
+        <LogoHeader pathname={pathname} />
       ) : backButtonPath.includes(pathname) ? (
-        <BackButtonHeader />
+        <BackButtonHeader pathname={pathname} />
       ) : (
-        <LogoHeader />
+        <LogoHeader pathname={pathname} />
       )}
     </>
   );

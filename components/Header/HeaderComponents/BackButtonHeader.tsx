@@ -1,6 +1,7 @@
+'use client';
+
 import styled from 'styled-components';
 import BackButton from '../BackButton';
-import { usePathname } from 'next/navigation';
 
 /* ---------------------------------- style --------------------------------- */
 const StyledHeader = styled.header`
@@ -9,8 +10,6 @@ const StyledHeader = styled.header`
   justify-content: center;
   width: 100%;
   position: fixed;
-  left: 50%;
-  translate: -50% 0;
   height: 3.375rem;
   background-color: var(--white);
   z-index: 9998;
@@ -26,9 +25,13 @@ const SpacerBox = styled.div`
   padding-top: 3.375rem;
 `;
 
+/* ---------------------------------- type ---------------------------------- */
+type BackButtonHeaderProps = {
+  pathname: string;
+};
+
 /* -------------------------------- component ------------------------------- */
-const BackButtonHeader = () => {
-  const pathname = usePathname();
+const BackButtonHeader = ({ pathname }: BackButtonHeaderProps) => {
   const headerComponents: { [key: string]: string } = {
     '/map': '근처 매장 찾기',
     '/trash': '휴지통',
