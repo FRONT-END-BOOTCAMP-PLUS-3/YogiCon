@@ -3,12 +3,13 @@
 import styled from 'styled-components';
 import { MdOutlineStorefront } from 'react-icons/md';
 
+/* ---------------------------------- style --------------------------------- */
 const Wrapper = styled.div`
   min-height: 120px;
   border-top-left-radius: 12px;
   border-bottom-right-radius: 12px;
   position: relative;
-  padding-top: 12px;
+  padding: 0.75rem 0 0.25rem 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -27,7 +28,7 @@ const DcContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  gap: 15px;
+  gap: 0.9rem;
   align-items: center;
   color: #777777;
 `;
@@ -50,6 +51,7 @@ const Line = styled.hr`
   width: 90%;
 `;
 
+/* ---------------------------------- component --------------------------------- */
 const BottomSheetHeader = () => {
   return (
     <Wrapper>
