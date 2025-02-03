@@ -19,11 +19,30 @@ const ReactKakaoMap = ({ onMapLoad }: { onMapLoad: (map: any) => void }) => {
 
     const script: HTMLScriptElement = document.createElement('script');
     script.async = true;
-    script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${apiKey}&autoload=false`;
+    script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${apiKey}&autoload=false&libraries=services`;
     document.head.appendChild(script);
 
     script.addEventListener('load', () => {
       window.kakao.maps.load(() => {
+        // 현재 위치 마커를 표시하는 함수
+        function displayMarker(locPosition: any, message: string) {
+          const marker = new window.kakao.maps.Marker({
+            map: map,
+            position: locPosition,
+          });
+
+          const iwContent = message,
+            iwRemoveable = true;
+
+          const infowindow = new window.kakao.maps.InfoWindow({
+            content: iwContent,
+            removable: iwRemoveable,
+          });
+
+          infowindow.open(map, marker);
+
+          map.setCenter(locPosition);
+        }
         const container = document.getElementById('map');
         const coords = new window.kakao.maps.LatLng(
           location?.latitude as number,
@@ -39,6 +58,9 @@ const ReactKakaoMap = ({ onMapLoad }: { onMapLoad: (map: any) => void }) => {
         map.setCenter(coords);
         console.log('셋했다:', coords);
         onMapLoad(map);
+
+        const message = '<div style="padding:5px;">현재위치</div>';
+        displayMarker(coords, message);
       });
     });
   }, [apiKey, location, onMapLoad]);
