@@ -19,7 +19,7 @@ const Handle = styled.div`
   width: 100px;
   height: 4px;
   border-radius: 2px;
-  background-color: #777777;
+  background-color: var(--deepgray);
   margin: auto;
 `;
 
@@ -30,7 +30,7 @@ const DcContainer = styled.div`
   justify-content: center;
   gap: 0.9rem;
   align-items: center;
-  color: #777777;
+  color: var(--deepgray);
 `;
 
 const DcSvg = styled(MdOutlineStorefront)`
@@ -46,7 +46,7 @@ const DcText = styled.span`
 
 const Line = styled.hr`
   margin: 0;
-  border: 1.2px solid #777777;
+  border: 1.2px solid var(--deepgray);
   border-radius: 10px;
   width: 90%;
 `;
