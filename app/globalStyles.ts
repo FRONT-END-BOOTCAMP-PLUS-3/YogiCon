@@ -23,6 +23,10 @@ export const GlobalStyles = createGlobalStyle`
     border: 0;
     font-size: 100%;
     vertical-align: baseline;
+
+    @media (max-width: 480px) {
+      font-size: 90%; /* 1rem = 14.4px */
+    }
   }
   /* HTML5 display-role reset for older browsers */
   article, aside, details, figcaption, figure, 
@@ -75,6 +79,7 @@ export const GlobalStyles = createGlobalStyle`
   --disabled: #d9d9d9;
   --white: #ffffff;
   --black: #000000;
+  --gray: #b7b7b7;
   --deepgray: #777777;
   --lightgray: #f0f0f0;
   }
