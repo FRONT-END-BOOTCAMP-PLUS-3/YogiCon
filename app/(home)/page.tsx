@@ -11,7 +11,7 @@ import CategoryFilter from './components/CategoryFilter';
 import SearchForm from './components/SearchForm';
 
 /* ---------------------------------- style --------------------------------- */
-const HomeLayout = styled.div``;
+const HomeContainer = styled.div``;
 
 const FilterSection = styled.section`
   position: sticky;
@@ -64,7 +64,7 @@ const Home = () => {
   };
 
   return (
-    <HomeLayout>
+    <HomeContainer>
       <FilterSection aria-label="검색 및 필터링">
         <SearchForm onSubmit={handleSearch} />
         <CategoryFilter
@@ -95,7 +95,7 @@ const Home = () => {
         />
         등록하기
       </RegisterButton>
-    </HomeLayout>
+    </HomeContainer>
   );
 };
 
