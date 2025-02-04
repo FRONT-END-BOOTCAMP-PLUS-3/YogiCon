@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { FormEvent, useEffect, useState } from 'react';
 import { LuPlus } from 'react-icons/lu';
 import styled from 'styled-components';
-import { ConInfo, giftList } from '../giftData';
+import { ConInfo } from '../giftData';
 import CategoryFilter from './components/CategoryFilter';
 import SearchForm from './components/SearchForm';
 
@@ -122,12 +122,6 @@ const Home = () => {
   const handleRegisterClick = () => {
     router.push('/add-con');
   };
-
-  useEffect(() => {
-    /* 추후 목록을 서버에서 가져오는 api로 변경
-    (필터링도 서버에서 가져올 때 selectedCategory를 전달해서 처리) */
-    setConList(giftList);
-  }, []);
 
   return (
     <HomeContainer>
