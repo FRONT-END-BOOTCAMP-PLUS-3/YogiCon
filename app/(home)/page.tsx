@@ -82,6 +82,31 @@ const Home = () => {
     useState<CategoryListItem>('전체');
   const [conList, setConList] = useState<ConInfo[] | null>(null);
 
+  useEffect(() => {
+    const fetchConList = async () => {
+      try {
+        const res = await fetch(
+          `/api/home?selectedCategory=${selectedCategory}`
+        );
+
+        if (!res.ok) {
+          throw new Error('Gifticon not found');
+        }
+
+        const data = await res.json();
+        setConList(data);
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          console.error(err.message);
+        } else {
+          console.error('An unexpected error occurred');
+        }
+      }
+    };
+
+    fetchConList();
+  }, [selectedCategory]);
+
   const handleCategoryButtonClick = (value: CategoryListItem) => () => {
     setSelectedCategory(value);
   };
