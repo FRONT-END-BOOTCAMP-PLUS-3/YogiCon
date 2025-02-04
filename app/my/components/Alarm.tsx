@@ -58,12 +58,12 @@ const AlarmItem = styled.div`
     padding: 0.3rem;
   }
   &:first-of-type {
-    border-top-left-radius: 1rem;
-    border-top-right-radius: 1rem;
+    border-top-left-radius: 0.9375rem;
+    border-top-right-radius: 0.9375rem;
   }
   &:last-of-type {
-    border-bottom-left-radius: 1rem;
-    border-bottom-right-radius: 1rem;
+    border-bottom-left-radius: 0.9375rem;
+    border-bottom-right-radius: 0.9375;
   }
 `;
 
