@@ -7,11 +7,13 @@ import Logout from '@/app/my/components/Logout';
 import DeleteID from '@/app/my/components/DeleteID';
 import styled from 'styled-components';
 
-const Blank = styled.div`
-  height: 1.75rem;
+const MyContainer = styled.div`
   background-color: var(--lightgray);
+  height: calc(100vh - 1.5rem);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 `;
-const MyContainer = styled.div``;
 
 const My = () => {
   return (
@@ -21,7 +23,6 @@ const My = () => {
       <Trash />
       <Logout />
       <DeleteID />
-      <Blank />
     </MyContainer>
   );
 };

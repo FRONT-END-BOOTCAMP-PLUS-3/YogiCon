@@ -5,11 +5,7 @@ import { IoIosLogOut } from 'react-icons/io';
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-`;
-
-const Blank = styled.div`
-  height: 1.75rem;
-  background-color: var(--lightgray);
+  background-color: var(--white);
 `;
 
 const LogoutRouter = styled.div`
@@ -36,7 +32,6 @@ const StyledLogo = styled(IoIosLogOut)`
 const Logout = () => {
   return (
     <Container>
-      <Blank />
       <LogoutRouter>
         <span>로그아웃</span>
         <StyledLogo />

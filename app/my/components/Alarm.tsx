@@ -30,6 +30,7 @@ const Title = styled.div`
   display: flex;
   align-items: center;
   padding: 0 1.25rem;
+  margin-top: -1.5rem;
   p {
     color: var(--deepgray);
     font-size: 1rem;

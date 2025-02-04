@@ -4,11 +4,7 @@ import styled from 'styled-components';
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-`;
-
-const Blank = styled.div`
-  height: 1.75rem;
-  background-color: var(--lightgray);
+  background-color: var(--white);
 `;
 
 const Router = styled.div`
@@ -27,7 +23,6 @@ const Router = styled.div`
 const DeleteID = () => {
   return (
     <Container>
-      <Blank />
       <Router>
         <span>회원탈퇴</span>
       </Router>

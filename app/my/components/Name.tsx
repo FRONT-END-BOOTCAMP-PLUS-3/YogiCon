@@ -7,6 +7,7 @@ const NameContainer = styled.div`
   align-items: center;
   padding: 1.69rem 1.75rem;
   gap: 0.5rem;
+  background-color: var(--white);
 `;
 
 const StyledIcon = styled(LuUserRound)`

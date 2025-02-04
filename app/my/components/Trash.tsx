@@ -6,11 +6,7 @@ import { useRouter } from 'next/navigation';
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-`;
-
-const Blank = styled.div`
-  height: 1.75rem;
-  background-color: var(--lightgray);
+  background-color: var(--white);
 `;
 
 const Router = styled.div`
@@ -38,7 +34,6 @@ const Trash = () => {
   const router = useRouter();
   return (
     <Container>
-      <Blank />
       <Router onClick={() => router.push('/trash')}>
         <span>휴지통</span>
         <StyledTrashCan />
