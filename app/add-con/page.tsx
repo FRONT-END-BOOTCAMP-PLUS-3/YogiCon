@@ -1,7 +1,9 @@
 'use client';
 
 import Button from '@/components/Button';
+import ModalDialog from '@/components/ModalDialog';
 import { CategoryListItem } from '@/types/categories';
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import DropDownComponent from './components/DropDown';
@@ -11,6 +13,26 @@ import InputComponent from './components/Input';
 /* ---------------------------------- style --------------------------------- */
 const AddConContainer = styled.div`
   padding: 1rem 2.5rem 5rem 2.5rem;
+`;
+
+const AddConImage = styled(Image)`
+  width: 6.375rem;
+  aspect-ratio: 1;
+`;
+
+const ModalBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.75rem;
+  margin: 1.75rem 0;
+`;
+
+const ModalText = styled.p`
+  font-size: 1.25rem;
+  white-space: pre;
+  text-align: center;
+  word-break: keep-all;
 `;
 
 const AddConText = styled.h3`
@@ -53,6 +75,7 @@ const AddCon = () => {
   ];
 
   const [isFormFilled, setIsFormFilled] = useState<Boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState<Boolean>(false);
 
   useEffect(() => {
     const allFieldsFilled = Object.values(conInfo).every(
@@ -60,6 +83,10 @@ const AddCon = () => {
     );
     setIsFormFilled(allFieldsFilled);
   }, [conInfo]);
+
+  const handleModal = () => {
+    setIsModalOpen(true);
+  };
 
   const handleChange = (field: keyof ConInfo, value: string) => {
     setConInfo((prev) => ({ ...prev, [field]: value }));
@@ -72,6 +99,34 @@ const AddCon = () => {
 
   return (
     <AddConContainer>
+      <Button isLong={false} color="main" onClick={handleModal}>
+        정보입력확인모달창
+      </Button>
+      {isModalOpen ? (
+        <ModalDialog
+          buttonCount={1}
+          isOpen={true}
+          onClose={() => {
+            setIsModalOpen(false);
+          }}
+        >
+          <ModalBox>
+            <AddConImage
+              src="/add_con_image.png"
+              alt="등록캐릭터"
+              width={102}
+              height={102}
+            />
+            <ModalText>
+              {'AI가 사진을 자동인식하여\n정보를 채워넣었어요.\n'}
+              <strong>틀린 부분</strong>
+              {'이 있을 수 있으니\n꼭 체크해주세요!'}
+            </ModalText>
+          </ModalBox>
+        </ModalDialog>
+      ) : (
+        <></>
+      )}
       <AddConText>사진 등록</AddConText>
       <ImageUpload></ImageUpload>
       <AddConText>기프티콘 정보</AddConText>
