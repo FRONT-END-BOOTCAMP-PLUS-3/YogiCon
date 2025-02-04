@@ -4,6 +4,8 @@ import Button from '@/components/Button';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import InputComponent from './components/Input';
+import { CategoryListItem } from '@/types/categories';
+import DropDownComponent from './components/DropDown';
 
 /* ---------------------------------- style --------------------------------- */
 const AddConContainer = styled.div`
@@ -24,11 +26,12 @@ type ConInfo = {
   productName: string;
   barcode: string;
   dueDate: string;
+  category: CategoryListItem | '';
 };
 
 type InputFields = {
   label: string;
-  field: keyof ConInfo;
+  field: keyof Omit<ConInfo, 'category'>;
 };
 
 /* -------------------------------- component ------------------------------- */
@@ -38,6 +41,7 @@ const AddCon = () => {
     productName: '',
     barcode: '',
     dueDate: '',
+    category: '',
   });
 
   const inputFields: InputFields[] = [
@@ -78,6 +82,10 @@ const AddCon = () => {
             onChange={(e) => handleChange(field, e.target.value)}
           ></InputComponent>
         ))}
+        <DropDownComponent
+          selectedCategory={conInfo.category}
+          onChange={(e) => handleChange('category', e.target.value)}
+        ></DropDownComponent>
         <Button
           type="submit"
           isLong={true}
