@@ -39,7 +39,13 @@ const ConList = styled.ul`
   width: 100%;
 `;
 
-const NoConListText = styled.p`
+const NoConImg = styled(Image)`
+  width: 52%;
+  height: auto;
+  aspect-ratio: 205/268;
+  margin-bottom: 1.5rem;
+`;
+const NoConText = styled.p`
   white-space: pre-line;
   color: var(--disabled);
   text-align: center;
@@ -65,6 +71,7 @@ const RegisterButton = styled.button`
   line-height: 1.375rem;
   font-weight: bold;
   cursor: pointer;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 `;
 
 /* -------------------------------- page ------------------------------- */
@@ -112,15 +119,16 @@ const Home = () => {
           </ConList>
         ) : (
           <>
-            <Image
+            <NoConImg
               src="/no_gift_image.webp"
+              priority={true}
               width={205}
               height={268}
               alt="선물상자 캐릭터"
             />
-            <NoConListText>
+            <NoConText>
               {'등록된 기프티콘이 없어요! \n ⊕ 버튼을 눌러 등록해보세요'}
-            </NoConListText>
+            </NoConText>
           </>
         )}
       </ConListSection>
