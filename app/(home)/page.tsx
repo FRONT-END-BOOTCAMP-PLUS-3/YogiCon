@@ -15,10 +15,10 @@ const HomeContainer = styled.div``;
 
 const FilterSection = styled.section`
   position: sticky;
-  top: 1.5rem;
+  top: 1.95rem;
   z-index: 9998;
   background-color: var(--white);
-  border-bottom: 0.1px solid #e7e7e7;
+  border-bottom: 0.1px solid var(--disabled);
 `;
 
 const ConListSection = styled.section`

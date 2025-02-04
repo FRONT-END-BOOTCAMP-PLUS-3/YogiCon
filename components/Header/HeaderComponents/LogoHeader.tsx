@@ -7,9 +7,8 @@ const StyledHeader = styled.header`
   display: flex;
   align-items: center;
   width: 100%;
-  padding: 0 0.9375rem;
+  padding: 0.5rem 0.9375rem 0 0.9375rem;
   position: fixed;
-  height: 1.5rem;
   background-color: var(--white);
   z-index: 9998;
 `;
@@ -24,7 +23,7 @@ const TitleText = styled.h1<{ $isHome: boolean }>`
 `;
 const SpacerBox = styled.div`
   width: 100%;
-  padding-top: 1.5rem;
+  padding-top: 2rem;
 `;
 
 /* ---------------------------------- type ---------------------------------- */
