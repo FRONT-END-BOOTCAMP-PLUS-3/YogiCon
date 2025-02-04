@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import Button from '@/components/Button';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import InputComponent from './components/Input';
 
@@ -46,15 +47,29 @@ const AddCon = () => {
     { label: '유효기간', field: 'dueDate' },
   ];
 
+  const [isFormFilled, setIsFormFilled] = useState<Boolean>(false);
+
+  useEffect(() => {
+    const allFieldsFilled = Object.values(conInfo).every(
+      (value) => value.trim() !== ''
+    );
+    setIsFormFilled(allFieldsFilled);
+  }, [conInfo]);
+
   const handleChange = (field: keyof ConInfo, value: string) => {
     setConInfo((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log('form Data:', conInfo);
   };
 
   return (
     <AddConContainer>
       <AddConText>사진 등록</AddConText>
       <AddConText>기프티콘 정보</AddConText>
-      <InputForm>
+      <InputForm onSubmit={handleSubmit}>
         {inputFields.map(({ label, field }) => (
           <InputComponent
             key={field}
@@ -63,6 +78,13 @@ const AddCon = () => {
             onChange={(e) => handleChange(field, e.target.value)}
           ></InputComponent>
         ))}
+        <Button
+          type="submit"
+          isLong={true}
+          color={isFormFilled ? 'main' : 'disabled'}
+        >
+          등록하기
+        </Button>
       </InputForm>
     </AddConContainer>
   );
