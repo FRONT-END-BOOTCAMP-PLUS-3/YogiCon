@@ -7,6 +7,7 @@ const StyledHeader = styled.header`
   display: flex;
   align-items: center;
   width: 100%;
+  max-width: 768px;
   padding: 0.5rem 0.9375rem 0 0.9375rem;
   position: fixed;
   background-color: var(--white);

@@ -9,6 +9,7 @@ const StyledHeader = styled.header`
   align-items: center;
   justify-content: center;
   width: 100%;
+  max-width: 768px;
   position: fixed;
   height: 3.375rem;
   background-color: var(--white);
