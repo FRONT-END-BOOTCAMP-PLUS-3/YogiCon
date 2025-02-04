@@ -1,11 +1,12 @@
 'use client';
 
 import Button from '@/components/Button';
+import { CategoryListItem } from '@/types/categories';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import InputComponent from './components/Input';
-import { CategoryListItem } from '@/types/categories';
 import DropDownComponent from './components/DropDown';
+import ImageUpload from './components/ImageUpload';
+import InputComponent from './components/Input';
 
 /* ---------------------------------- style --------------------------------- */
 const AddConContainer = styled.div`
@@ -72,6 +73,7 @@ const AddCon = () => {
   return (
     <AddConContainer>
       <AddConText>사진 등록</AddConText>
+      <ImageUpload></ImageUpload>
       <AddConText>기프티콘 정보</AddConText>
       <InputForm onSubmit={handleSubmit}>
         {inputFields.map(({ label, field }) => (
