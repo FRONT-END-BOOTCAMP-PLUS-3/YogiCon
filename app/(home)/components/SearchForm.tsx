@@ -14,19 +14,19 @@ const SearchInputWrapper = styled.div`
   position: relative;
   display: flex;
   align-items: center;
+  border-radius: 1.875rem;
+  border: 1px solid var(--disabled);
+  padding: 0.6875rem 1.1875rem;
 `;
 
 const SearchInput = styled.input`
-  padding: 0.6875rem 1.1875rem;
   flex-grow: 1;
   font-size: 1rem;
   line-height: 1.3125rem;
   letter-spacing: -0.02rem;
-  border-radius: 1.875rem;
-  border: 1px solid var(--disabled);
 
   &::placeholder {
-    color: #b7b7b7;
+    color: var(--gray);
     font-weight: 700;
   }
 `;
@@ -39,8 +39,6 @@ const SearchButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  position: absolute;
-  right: 1.1875rem;
   background-color: transparent;
   color: var(--disabled);
   font-size: 1.5rem;
