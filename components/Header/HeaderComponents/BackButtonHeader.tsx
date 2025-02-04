@@ -32,13 +32,18 @@ type BackButtonHeaderProps = {
 
 /* -------------------------------- component ------------------------------- */
 const BackButtonHeader = ({ pathname }: BackButtonHeaderProps) => {
-  const headerComponents: { [key: string]: string } = {
+  const headerMatcher: { [key: string]: string } = {
     '/map': '근처 매장 찾기',
     '/trash': '휴지통',
     '/add-con': '기프티콘 등록',
     '/view-con': '기프티콘 상세',
   };
-  const headerText = headerComponents[pathname];
+
+  const matchingKey = Object.keys(headerMatcher).find((key) =>
+    pathname.startsWith(key)
+  );
+
+  const headerText = matchingKey ? headerMatcher[matchingKey] : '제목';
 
   return (
     <>

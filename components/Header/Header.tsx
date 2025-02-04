@@ -8,13 +8,10 @@ const Header = () => {
   const pathname = usePathname();
 
   const backButtonPath = ['/map', '/trash', '/add-con', '/view-con'];
-  const logoButtonPath = ['/', '/my'];
 
   return (
     <>
-      {logoButtonPath.includes(pathname) ? (
-        <LogoHeader pathname={pathname} />
-      ) : backButtonPath.includes(pathname) ? (
+      {backButtonPath.some((path) => pathname.startsWith(path)) ? (
         <BackButtonHeader pathname={pathname} />
       ) : (
         <LogoHeader pathname={pathname} />

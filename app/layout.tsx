@@ -2,14 +2,16 @@
 
 import Header from '@/components/Header/Header';
 import Navbar from '@/components/Navbar';
-import { GlobalStyles } from './globalStyles';
 import { usePathname } from 'next/navigation';
+import { GlobalStyles } from './globalStyles';
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
 
   const hideNavbarPaths = ['/map', '/add-con', '/view-con'];
-  const shouldHideNavbar = hideNavbarPaths.includes(pathname);
+  const shouldHideNavbar = hideNavbarPaths.some((path) =>
+    pathname.startsWith(path)
+  );
 
   return (
     // <!DOCTYPE html>
