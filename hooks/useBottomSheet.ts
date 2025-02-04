@@ -20,6 +20,7 @@ export default function useBottomSheet() {
   const sheet = useRef<HTMLDivElement>(null);
   const content = useRef<HTMLDivElement>(null);
   const [isTouching, setIsTouching] = useState(false); // ✅ 터치 여부를 추적하는 상태 추가
+  const [go, setGo] = useState(true);
 
   const metrics = useRef<BottomSheetMetrics>({
     touchStart: { sheetY: 0, touchY: 0 },
@@ -57,6 +58,7 @@ export default function useBottomSheet() {
         // ✅ 터치 도중에 스크롤이 맨 위(`scrollTop === 0`)에 도달한 경우,
         //    터치가 끝나기 전까지는 바텀시트 이동을 막음
         if (contentScrollTop === 0 && isTouching) {
+          setGo(false);
           return false;
         }
       }
@@ -117,7 +119,7 @@ export default function useBottomSheet() {
       const { touchMove } = metrics.current;
 
       // ✅ content 내부 스크롤이 남아있으면 바텀시트 이동을 막음
-      if (metrics.current.isContentAreaTouched && content.current!.scrollTop > 0) {
+      if ((metrics.current.isContentAreaTouched && content.current!.scrollTop > 0) || !go) {
         return;
       }
 
@@ -128,6 +130,7 @@ export default function useBottomSheet() {
       if (currentSheetY !== MIN_Y) {
         if (touchMove.movingDirection === "down") {
           sheetEl.style.setProperty("transform", "translate(-50%, 0)");
+          setGo(true);
         }
         if (touchMove.movingDirection === "up") {
           sheetEl.style.setProperty("transform", `translate(-50%, ${MIN_Y - maxY}px)`);
