@@ -1,6 +1,6 @@
 'use client';
 
-import { useBottomSheetDimensions } from '@/types/bottomSheetOption';
+import { useBottomSheetDimensions } from '@/hooks/bottomSheetOption';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import useBottomSheet from '@/hooks/useBottomSheet';

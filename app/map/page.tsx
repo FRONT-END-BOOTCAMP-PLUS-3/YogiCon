@@ -22,12 +22,12 @@ const MyLocation = styled.button`
   justify-content: center;
   align-items: center;
   font-size: 1.5rem;
-  color: #777777;
+  color: var(--deepgray);
   width: 2.5rem;
   aspect-ratio: 1/1;
   border: none;
   border-radius: 50%;
-  background-color: white;
+  background-color: var(--white);
   box-shadow: 2px 2px 5px var(--disabled);
   position: absolute;
   left: 15px;

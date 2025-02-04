@@ -42,12 +42,7 @@ export default function BottomSheetContent({
         {giftList.map((gift, index) => (
           <ConListItem
             key={index}
-            image_url={gift.image_url}
-            category={gift.category}
-            brand={gift.brand}
-            name={gift.name}
-            duedate={gift.duedate}
-            isDeleted={gift.isDeleted}
+            {...gift}
             onClick={() => handleItemClick(`${gift.brand}`)}
           />
         ))}
