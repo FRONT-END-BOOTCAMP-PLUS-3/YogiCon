@@ -2,30 +2,52 @@
 
 import ConListItem from '@/components/ConListItem';
 import { CategoryListItem } from '@/types/categories';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { LuPlus } from 'react-icons/lu';
 import styled from 'styled-components';
-import { giftList } from '../giftData';
+import { giftList, ConInfo } from '../giftData';
 import CategoryFilter from './components/CategoryFilter';
 import SearchForm from './components/SearchForm';
 
 /* ---------------------------------- style --------------------------------- */
-const HomeContainer = styled.div``;
+const HomeContainer = styled.div`
+  height: calc(100vh - 2rem);
+  display: flex;
+  flex-direction: column;
+`;
 
 const FilterSection = styled.section`
   position: sticky;
   top: 1.95rem;
   z-index: 9998;
   background-color: var(--white);
-  border-bottom: 0.1px solid var(--disabled);
+  border-bottom: 0.5px solid var(--disabled);
 `;
 
 const ConListSection = styled.section`
-  padding: 0 0.9375rem 5.375rem 1.5rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 5% 5.25rem 5%;
 `;
 
-const ConList = styled.ul``;
+const ConList = styled.ul`
+  width: 100%;
+`;
+
+const NoConListText = styled.p`
+  white-space: pre-line;
+  color: var(--disabled);
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  line-height: 44px; /* 183.333% */
+  letter-spacing: -0.32px;
+`;
 
 const RegisterButton = styled.button`
   position: fixed;
@@ -48,8 +70,10 @@ const RegisterButton = styled.button`
 /* -------------------------------- page ------------------------------- */
 const Home = () => {
   const router = useRouter();
+
   const [selectedCategory, setSelectedCategory] =
     useState<CategoryListItem>('전체');
+  const [conList, setConList] = useState<ConInfo[] | null>(null);
 
   const handleCategoryButtonClick = (value: CategoryListItem) => () => {
     setSelectedCategory(value);
@@ -63,6 +87,12 @@ const Home = () => {
     router.push('/add-con');
   };
 
+  useEffect(() => {
+    /* 추후 목록을 서버에서 가져오는 api로 변경
+    (필터링도 서버에서 가져올 때 selectedCategory를 전달해서 처리) */
+    setConList(giftList);
+  }, []);
+
   return (
     <HomeContainer>
       <FilterSection aria-label="검색 및 필터링">
@@ -74,16 +104,25 @@ const Home = () => {
       </FilterSection>
 
       <ConListSection aria-label="기프티콘 목록">
-        <ConList>
-          {/* 더미 데이터 */}
-          {giftList.map(
-            (item, index) =>
-              (selectedCategory === '전체' ||
-                selectedCategory === item.category) && (
-                <ConListItem key={index} {...item} />
-              )
-          )}
-        </ConList>
+        {conList ? (
+          <ConList>
+            {conList.map((item) => (
+              <ConListItem key={item.id} {...item} />
+            ))}
+          </ConList>
+        ) : (
+          <>
+            <Image
+              src="/no_gift_image.webp"
+              width={205}
+              height={268}
+              alt="선물상자 캐릭터"
+            />
+            <NoConListText>
+              {'등록된 기프티콘이 없어요! \n ⊕ 버튼을 눌러 등록해보세요'}
+            </NoConListText>
+          </>
+        )}
       </ConListSection>
 
       <RegisterButton type="button" onClick={handleRegisterClick}>
