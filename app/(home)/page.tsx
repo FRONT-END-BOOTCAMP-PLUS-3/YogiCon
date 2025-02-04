@@ -90,6 +90,10 @@ const Home = () => {
     e.preventDefault();
   };
 
+  const handleConListItemClick = (id: string) => () => {
+    router.push(`/view-con/${id}`);
+  };
+
   const handleRegisterClick = () => {
     router.push('/add-con');
   };
@@ -114,7 +118,11 @@ const Home = () => {
         {conList ? (
           <ConList>
             {conList.map((item) => (
-              <ConListItem key={item.id} {...item} />
+              <ConListItem
+                key={item.id}
+                onClick={handleConListItemClick(item.id)}
+                {...item}
+              />
             ))}
           </ConList>
         ) : (
