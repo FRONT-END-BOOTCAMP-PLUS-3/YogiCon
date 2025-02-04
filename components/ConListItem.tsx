@@ -145,7 +145,7 @@ type ConListProps = {
   image_url: string;
   category: Categories;
   brand: string;
-  name: string;
+  product_name: string;
   duedate: string;
   isDeleted: boolean;
   onClick?: () => void;
@@ -156,7 +156,7 @@ export default function ConListItem({
   image_url,
   category,
   brand,
-  name,
+  product_name,
   duedate,
   isDeleted,
   onClick,
@@ -195,7 +195,7 @@ export default function ConListItem({
       <ConCenterWrapper $isTrash={isTrash}>
         <ConCategoryText>{category}</ConCategoryText>
         <ConTitleText>
-          [{brand}] {name}
+          [{brand}] {product_name}
         </ConTitleText>
         <ConDueDate>유효기간: ~{dueDateString}</ConDueDate>
       </ConCenterWrapper>
