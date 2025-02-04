@@ -8,15 +8,9 @@ import { MdMyLocation } from 'react-icons/md';
 import BottomSheet from './components/BottomSheet';
 
 /* ---------------------------------- style --------------------------------- */
-const Wrapper = styled.div`
-  width: 100%;
-  height: calc(100vh - 30px);
-  overflow-y: hidden;
-`;
-
 const MapContainer = styled.div`
   width: 100%;
-  height: 100%;
+  height: calc(100vh - 3.375rem);
   background-color: var(--disabled);
   position: relative;
   z-index: 1;
@@ -70,17 +64,18 @@ export default function Map() {
   };
 
   return (
-    <Wrapper>
-      <MapContainer>
-        <ReactKakaoMap onMapLoad={(map) => (mapRef.current = map)} />
-        <MyLocation onClick={findMyLocation}>
-          <MdMyLocation />
-        </MyLocation>
-        <BottomSheet
-          selectedItemKey={selectedItemKey}
-          setSelectedItemKey={setSelectedItemKey}
-        />
-      </MapContainer>
-    </Wrapper>
+    <MapContainer>
+      <ReactKakaoMap
+        onMapLoad={(map) => (mapRef.current = map)}
+        searchKeyword={selectedItemKey}
+      />
+      <MyLocation type="button" onClick={findMyLocation}>
+        <MdMyLocation />
+      </MyLocation>
+      <BottomSheet
+        selectedItemKey={selectedItemKey}
+        setSelectedItemKey={setSelectedItemKey}
+      />
+    </MapContainer>
   );
 }
