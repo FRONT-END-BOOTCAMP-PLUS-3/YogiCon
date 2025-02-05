@@ -3,6 +3,7 @@
 import styled from 'styled-components';
 import { CategoryListItem } from '@/types/categories';
 import { CATEGORY_LIST } from '@/constants';
+import { useId } from 'react';
 
 /* ---------------------------------- style --------------------------------- */
 const CategoryBox = styled.div`
@@ -41,14 +42,12 @@ type DropDownProps = {
 
 /* -------------------------------- component ------------------------------- */
 const CategoryDropDown = ({ selectedCategory, onChange }: DropDownProps) => {
+  const id = useId();
+
   return (
     <CategoryBox>
-      <CategoryLabel htmlFor="category">카테고리</CategoryLabel>
-      <CategorySelect
-        id="category"
-        value={selectedCategory}
-        onChange={onChange}
-      >
+      <CategoryLabel htmlFor={id}>카테고리</CategoryLabel>
+      <CategorySelect id={id} value={selectedCategory} onChange={onChange}>
         <CategoryOption value="">카테고리를 선택하세요</CategoryOption>
         {CATEGORY_LIST.filter((category) => category !== '전체').map(
           (category) => (

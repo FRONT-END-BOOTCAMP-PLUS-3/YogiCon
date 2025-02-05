@@ -2,6 +2,7 @@
 
 import { srOnly } from '@/app/globalStyles';
 import { ImageState } from '@/types/imageState';
+import { useId } from 'react';
 import { FiPlus } from 'react-icons/fi';
 import styled from 'styled-components';
 
@@ -71,6 +72,8 @@ type ImageUploadProps = {
 /* -------------------------------- component ------------------------------- */
 
 const ImageUpload = ({ imageState, setImageState }: ImageUploadProps) => {
+  const id = useId();
+
   const setImagePreview = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
 
@@ -90,7 +93,7 @@ const ImageUpload = ({ imageState, setImageState }: ImageUploadProps) => {
   };
 
   return (
-    <ImageLabel htmlFor="image">
+    <ImageLabel htmlFor={id}>
       {imageState.imageSrc ? (
         <PreviewImageBox>
           <PreviewImage src={imageState.imageSrc} alt="conImage" />
@@ -111,7 +114,7 @@ const ImageUpload = ({ imageState, setImageState }: ImageUploadProps) => {
       <ImageInput
         onChange={setImagePreview}
         type="file"
-        id="image"
+        id={id}
         accept="image/*"
       />
     </ImageLabel>
