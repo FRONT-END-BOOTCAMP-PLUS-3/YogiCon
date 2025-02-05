@@ -5,19 +5,19 @@ import { CategoryListItem } from '@/types/categories';
 import { CATEGORY_LIST } from '@/constants';
 
 /* ---------------------------------- style --------------------------------- */
-const DropDownBox = styled.div`
+const CategoryBox = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
   gap: 1.25rem;
 `;
 
-const DropDownLabel = styled.label`
+const CategoryLabel = styled.label`
   font-size: 1.125rem;
   color: var(--deepgray);
 `;
 
-const DropDownSelectBox = styled.select`
+const CategorySelect = styled.select`
   width: 100%;
   padding: 0.75rem 1rem;
   height: 2.875rem;
@@ -30,7 +30,7 @@ const DropDownSelectBox = styled.select`
   }
 `;
 
-const DropDownOption = styled.option``;
+const CategoryOption = styled.option``;
 
 /* ---------------------------------- type ---------------------------------- */
 type DropDownProps = {
@@ -39,26 +39,26 @@ type DropDownProps = {
 };
 
 /* -------------------------------- component ------------------------------- */
-const CategorySelect = ({ selectedCategory, onChange }: DropDownProps) => {
+const CategoryDropDown = ({ selectedCategory, onChange }: DropDownProps) => {
   return (
-    <DropDownBox>
-      <DropDownLabel htmlFor="category">카테고리</DropDownLabel>
-      <DropDownSelectBox
+    <CategoryBox>
+      <CategoryLabel htmlFor="category">카테고리</CategoryLabel>
+      <CategorySelect
         id="category"
         value={selectedCategory}
         onChange={onChange}
       >
-        <DropDownOption value="">카테고리를 선택하세요</DropDownOption>
+        <CategoryOption value="">카테고리를 선택하세요</CategoryOption>
         {CATEGORY_LIST.filter((category) => category !== '전체').map(
           (category) => (
-            <DropDownOption key={category} value={category}>
+            <CategoryOption key={category} value={category}>
               {category}
-            </DropDownOption>
+            </CategoryOption>
           )
         )}
-      </DropDownSelectBox>
-    </DropDownBox>
+      </CategorySelect>
+    </CategoryBox>
   );
 };
 
-export default CategorySelect;
+export default CategoryDropDown;

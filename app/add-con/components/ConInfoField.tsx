@@ -4,17 +4,17 @@ import { useId } from 'react';
 import styled from 'styled-components';
 
 /* ---------------------------------- style --------------------------------- */
-const InputBox = styled.div`
+const ConInfoInputBox = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
 `;
 
-const InputLabel = styled.label`
+const ConInfoLabel = styled.label`
   color: var(--deepgray);
 `;
 
-const InputValue = styled.input`
+const ConInfoInput = styled.input`
   height: 2.5rem;
   border-bottom: 1px solid var(--black);
   margin-bottom: 2.875rem;
@@ -31,21 +31,21 @@ type InputProps = {
 };
 
 /* -------------------------------- component ------------------------------- */
-const ConInfoInput = ({ label, value, onChange }: InputProps) => {
+const ConInfoField = ({ label, value, onChange }: InputProps) => {
   const id = useId();
 
   return (
-    <InputBox>
-      <InputLabel htmlFor={id}>{label}</InputLabel>
-      <InputValue
+    <ConInfoInputBox>
+      <ConInfoLabel htmlFor={id}>{label}</ConInfoLabel>
+      <ConInfoInput
         id={id}
         type="text"
         value={value}
         onChange={onChange}
         required
-      ></InputValue>
-    </InputBox>
+      />
+    </ConInfoInputBox>
   );
 };
 
-export default ConInfoInput;
+export default ConInfoField;
