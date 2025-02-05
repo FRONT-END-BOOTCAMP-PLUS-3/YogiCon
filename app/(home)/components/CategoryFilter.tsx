@@ -1,7 +1,7 @@
 'use client';
 
 import { CATEGORY_LIST } from '@/constants';
-import { CategoryListItem } from '@/types/categories';
+import { CategoryListItem } from '@/types/Categories';
 import styled from 'styled-components';
 import CategoryButton from './CategoryButton';
 

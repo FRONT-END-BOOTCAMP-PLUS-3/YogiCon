@@ -1,6 +1,6 @@
 'use client';
 
-import { CategoryListItem } from '@/types/categories';
+import { CategoryListItem } from '@/types/Categories';
 import { BiCategoryAlt, BiStoreAlt } from 'react-icons/bi';
 import { BsStars } from 'react-icons/bs';
 import { CiCoffeeCup } from 'react-icons/ci';

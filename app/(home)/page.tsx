@@ -1,7 +1,7 @@
 'use client';
 
 import ConListItem from '@/components/ConListItem';
-import { CategoryListItem } from '@/types/categories';
+import { CategoryListItem } from '@/types/Categories';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
