@@ -41,6 +41,7 @@ const DeleteButton = styled.button`
   border-radius: 50%;
   width: 2rem;
   aspect-ratio: 1;
+  cursor: pointer;
 `;
 
 const NoImageBox = styled.div`
@@ -54,6 +55,7 @@ const NoImageBox = styled.div`
   border-radius: 0.9375rem;
   background-color: var(--lightgray);
   font-size: 2.5rem;
+  cursor: pointer;
   @media (max-width: 480px) {
     width: 35%;
   }
