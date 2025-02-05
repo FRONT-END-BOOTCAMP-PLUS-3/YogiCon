@@ -50,7 +50,7 @@ const ConBadge = styled.div`
   color: var(--white);
   font-size: 1.125rem;
   font-weight: bold;
-  letter-spacing: -0.32px;
+  letter-spacing: -0.02rem;
 `;
 const ExpandButton = styled.button`
   position: absolute;
@@ -96,8 +96,8 @@ const IconButtonText = styled.span`
   align-items: center;
   color: #2b6cb0;
   font-weight: bold;
-  line-height: 22px; /* 137.5% */
-  letter-spacing: -0.32px;
+  line-height: 1.375rem;
+  letter-spacing: -0.02rem;
   font-size: 1rem;
   word-break: keep-all;
 `;
