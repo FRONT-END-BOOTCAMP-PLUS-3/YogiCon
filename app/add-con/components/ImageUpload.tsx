@@ -90,6 +90,8 @@ const ImageUpload = ({ imageState, setImageState }: ImageUploadProps) => {
       imageSrc: imageSrc,
       imageUrl: '',
     });
+
+    e.target.value = '';
   };
 
   return (
@@ -108,16 +110,18 @@ const ImageUpload = ({ imageState, setImageState }: ImageUploadProps) => {
           </DeleteButton>
         </PreviewImageBox>
       ) : (
-        <NoImageBox>
-          <FiPlus style={{ color: 'var(--disabled)' }} />
-        </NoImageBox>
+        <>
+          <NoImageBox>
+            <FiPlus style={{ color: 'var(--disabled)' }} />
+          </NoImageBox>
+          <ImageInput
+            onChange={setImagePreview}
+            type="file"
+            id={id}
+            accept="image/*"
+          />
+        </>
       )}
-      <ImageInput
-        onChange={setImagePreview}
-        type="file"
-        id={id}
-        accept="image/*"
-      />
     </ImageLabel>
   );
 };
