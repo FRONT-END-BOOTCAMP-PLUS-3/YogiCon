@@ -1,6 +1,6 @@
 'use client';
 
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle, css } from 'styled-components';
 
 export const GlobalStyles = createGlobalStyle`
   // meyer-reset
@@ -56,6 +56,10 @@ export const GlobalStyles = createGlobalStyle`
     box-sizing:border-box;
     max-width: 768px;
     margin: 0 auto; 
+
+    @media (max-width: 480px) {
+      font-size: 90%; /* 1rem = 14.4px */
+    }
   }
   *,*::before,*::after{
       box-sizing:inherit
@@ -75,7 +79,21 @@ export const GlobalStyles = createGlobalStyle`
   --disabled: #d9d9d9;
   --white: #ffffff;
   --black: #000000;
+  --gray: #b7b7b7;
   --deepgray: #777777;
   --lightgray: #f0f0f0;
   }
+`;
+
+// 시각적으로는 숨기고, Screen Reader에게 텍스트를 제공하기 위한 스타일
+export const srOnly = css`
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 `;
