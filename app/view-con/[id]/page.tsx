@@ -122,7 +122,6 @@ const ViewCon = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [conInfo, setConInfo] = useState<ConInfo | null>(null);
-  // const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     if (!id) return;
