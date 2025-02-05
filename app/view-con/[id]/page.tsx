@@ -206,7 +206,7 @@ const ViewCon = () => {
         buttonCount={0}
         boxStyle={{
           padding: 0,
-          width: '90%',
+          width: '75%',
           backgroundColor: 'transparent',
         }}
         onClose={() => {
