@@ -1,7 +1,7 @@
 'use client';
 
 import ConListItem from '@/components/ConListItem';
-import { CategoryListItem } from '@/types/categories';
+import { CategoryListItem } from '@/types/Categories';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
@@ -31,7 +31,7 @@ const ConListSection = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   padding: 0 5% 5.25rem 5%;
 `;
 
@@ -51,8 +51,8 @@ const NoConText = styled.p`
   text-align: center;
   font-size: 1.5rem;
   font-weight: bold;
-  line-height: 44px; /* 183.333% */
-  letter-spacing: -0.32px;
+  line-height: 2.75rem; /* 183.333% */
+  letter-spacing: -0.02rem;
 `;
 
 const RegisterButton = styled.button`
@@ -83,7 +83,7 @@ const Home = () => {
   const [searchWord, setSearchWord] = useState('');
   const [searchInputValue, setSearchInputValue] = useState('');
 
-  const [conList, setConList] = useState<ConInfo[] | null>(null);
+  const [conList, setConList] = useState<ConInfo[]>([]);
 
   useEffect(() => {
     const fetchConList = async () => {
@@ -144,7 +144,7 @@ const Home = () => {
       </FilterSection>
 
       <ConListSection aria-label="기프티콘 목록">
-        {conList ? (
+        {conList.length > 0 ? (
           <ConList>
             {conList.map((item) => (
               <ConListItem

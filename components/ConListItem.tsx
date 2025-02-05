@@ -5,7 +5,7 @@ import { IoIosArrowForward } from 'react-icons/io';
 import { TbRestore, TbTrash } from 'react-icons/tb';
 import styled from 'styled-components';
 import ConListBadge from './ConListBadge';
-import { Categories } from '@/types/categories';
+import { Categories } from '@/types/Categories';
 
 /* ---------------------------------- style --------------------------------- */
 const ConContainer = styled.li`

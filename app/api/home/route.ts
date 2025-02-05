@@ -9,12 +9,17 @@ export async function GET(request: Request) {
   // 더미데이터
   const filteredData =
     selectedCategory === '전체'
-      ? giftList.filter((item) => item.productName.includes(searchWord))
+      ? giftList.filter(
+          (item) =>
+            item.productName.includes(searchWord) ||
+            item.brand.includes(searchWord)
+        )
       : giftList.filter(
           (item) =>
             item.category === selectedCategory &&
-            item.productName.includes(searchWord)
+            (item.productName.includes(searchWord) ||
+              item.brand.includes(searchWord))
         );
 
-  return NextResponse.json(filteredData);
+  return NextResponse.json(filteredData ?? []);
 }
