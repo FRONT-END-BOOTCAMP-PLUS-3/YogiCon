@@ -1,7 +1,9 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  compiler: {
+    styledComponents: true, // SWC를 통한 styled-components 지원 활성화
+  },
 };
 
 export default nextConfig;

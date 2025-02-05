@@ -18,7 +18,9 @@ const My = () => {
     <MyContainer>
       <Name />
       <Alarm />
-      <MyButton />
+      <MyButton id="trash" />
+      <MyButton id="logout" />
+      <MyButton id="deleteID" />
     </MyContainer>
   );
 };
