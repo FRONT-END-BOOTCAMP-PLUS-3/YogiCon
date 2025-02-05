@@ -142,10 +142,10 @@ const ConRightTrashButton = styled.button<{ $restore: boolean }>`
 
 /* ---------------------------------- type ---------------------------------- */
 type ConListProps = {
-  image_url: string;
+  imageUrl: string;
   category: Categories;
   brand: string;
-  product_name: string;
+  productName: string;
   duedate: string;
   isDeleted: boolean;
   onClick?: () => void;
@@ -153,10 +153,10 @@ type ConListProps = {
 
 /* -------------------------------- component ------------------------------- */
 export default function ConListItem({
-  image_url,
+  imageUrl,
   category,
   brand,
-  product_name,
+  productName,
   duedate,
   isDeleted,
   onClick,
@@ -183,7 +183,7 @@ export default function ConListItem({
   return (
     <ConContainer onClick={onClick}>
       <ConLeftWrapper>
-        <ConLeftImage src={image_url} alt="gifticon" width={100} height={100} />
+        <ConLeftImage src={imageUrl} alt="gifticon" width={100} height={100} />
         {isDeleted && !isExpired && (
           <ConLeftBadge>
             <ConListBadge duedate={duedate} isLarge={false} />
@@ -195,7 +195,7 @@ export default function ConListItem({
       <ConCenterWrapper $isTrash={isTrash}>
         <ConCategoryText>{category}</ConCategoryText>
         <ConTitleText>
-          [{brand}] {product_name}
+          [{brand}] {productName}
         </ConTitleText>
         <ConDueDate>유효기간: ~{dueDateString}</ConDueDate>
       </ConCenterWrapper>
