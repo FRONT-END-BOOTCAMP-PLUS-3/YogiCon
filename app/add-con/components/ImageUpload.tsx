@@ -1,5 +1,6 @@
 'use client';
 
+import { srOnly } from '@/app/globalStyles';
 import { useState } from 'react';
 import { FiPlus } from 'react-icons/fi';
 import styled from 'styled-components';
@@ -29,7 +30,7 @@ const PreviewImage = styled.img`
 `;
 
 const ImageInput = styled.input`
-  display: none;
+  ${srOnly}
 `;
 
 const DeleteButton = styled.button`
