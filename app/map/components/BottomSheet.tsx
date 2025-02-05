@@ -4,8 +4,8 @@ import { useBottomSheetDimensions } from '@/hooks/bottomSheetOption';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import useBottomSheet from '@/hooks/useBottomSheet';
-import BottomSheetHeader from './Header';
-import BottomSheetContent from './Content';
+import BottomSheetHeader from './BottomSheetHeader';
+import BottomSheetContent from './BottomSheetContent';
 
 /* ---------------------------------- style --------------------------------- */
 const Container = styled(motion.div)<{ height: number }>`
