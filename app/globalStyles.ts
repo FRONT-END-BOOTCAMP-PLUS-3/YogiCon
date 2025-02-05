@@ -52,7 +52,7 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   // mini-reset
-   html{
+  html{
     box-sizing:border-box;
     max-width: 768px;
     margin: 0 auto; 
