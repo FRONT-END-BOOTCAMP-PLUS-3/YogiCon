@@ -1,4 +1,4 @@
-import { CategoryListItem } from './types/categories';
+import { CategoryListItem } from './types/Categories';
 
 export const CATEGORY_LIST: CategoryListItem[] = [
   '전체',

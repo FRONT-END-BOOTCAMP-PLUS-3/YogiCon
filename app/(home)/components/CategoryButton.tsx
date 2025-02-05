@@ -1,6 +1,6 @@
 'use client';
 
-import { CategoryListItem } from '@/types/categories';
+import { CategoryListItem } from '@/types/Categories';
 import { BiCategoryAlt, BiStoreAlt } from 'react-icons/bi';
 import { BsStars } from 'react-icons/bs';
 import { CiCoffeeCup } from 'react-icons/ci';
@@ -23,6 +23,7 @@ const IconButton = styled.button<{ $isSelected: boolean }>`
   font-size: 0.6875rem;
   line-height: 0.6875rem;
   letter-spacing: -0.02rem;
+  color: var(--black);
   cursor: pointer;
 `;
 
@@ -72,9 +73,10 @@ const CategoryButton = ({ category, isSelected, onClick }: CategoryButton) => {
       type="button"
       $isSelected={isSelected}
       onClick={onClick(category)}
+      aria-selected={isSelected}
     >
       <IconBox>{iconOfCategory[category]}</IconBox>
-      {category}
+      <span style={{ width: 'fit-content' }}>{category}</span>
       {isSelected && <HighlightBox />}
     </IconButton>
   );
