@@ -24,8 +24,9 @@ const DropDownSelectBox = styled.select`
   margin-bottom: 2.875rem;
   box-shadow: 0 0.25rem 0.875rem 0 rgba(0, 0, 0, 0.1);
   border-radius: 8px;
+  border: 1px solid var(--disabled);
   &:focus {
-    border-bottom: 1px solid var(--main);
+    border-color: var(--main);
   }
 `;
 
