@@ -1,7 +1,7 @@
 'use client';
 
 import { srOnly } from '@/app/globalStyles';
-import { ImageState } from '@/types/imageState';
+import { ImageState } from '@/types/ImageState';
 import { useId } from 'react';
 import { FiPlus } from 'react-icons/fi';
 import styled from 'styled-components';

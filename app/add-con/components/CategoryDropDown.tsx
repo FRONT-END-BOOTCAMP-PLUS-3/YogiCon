@@ -23,7 +23,7 @@ const CategorySelect = styled.select`
   padding: 0.75rem 1rem;
   height: 2.875rem;
   margin-bottom: 2.875rem;
-  box-shadow: 0 0.25rem 0.875rem 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   border: 1px solid var(--disabled);
   cursor: pointer;

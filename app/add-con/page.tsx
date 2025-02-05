@@ -3,7 +3,7 @@
 import Button from '@/components/Button';
 import ModalDialog from '@/components/ModalDialog';
 import { CategoryListItem } from '@/types/categories';
-import { ImageState } from '@/types/imageState';
+import { ImageState } from '@/types/ImageState';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
