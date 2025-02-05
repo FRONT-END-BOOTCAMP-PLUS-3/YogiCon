@@ -8,9 +8,8 @@ type MyButtonProps = {
 };
 
 /* ---------------------------------- style --------------------------------- */
-const Container = styled.div``;
 
-const ButtonWrapper = styled.div<{ id: string }>`
+const StyledButton = styled.button<{ id: string }>`
   display: flex;
   height: 3.75rem;
   align-items: center;
@@ -60,12 +59,10 @@ const MyButton = ({ id, onClick }: MyButtonProps) => {
   const { title, icon } = ButtonConfig[id];
 
   return (
-    <Container>
-      <ButtonWrapper id={id} onClick={onClick}>
-        <span>{title}</span>
-        {icon}
-      </ButtonWrapper>
-    </Container>
+    <StyledButton type="button" id={id} onClick={onClick}>
+      <span>{title}</span>
+      {icon}
+    </StyledButton>
   );
 };
 

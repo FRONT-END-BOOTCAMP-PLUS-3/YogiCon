@@ -11,7 +11,7 @@ const AlarmContainer = styled.div`
   flex-direction: column;
 `;
 
-const Title = styled.div`
+const Title = styled.h2`
   width: 100%;
   height: 2.32rem;
   background-color: var(--lightgray);
@@ -19,13 +19,11 @@ const Title = styled.div`
   align-items: center;
   padding: 0 1.25rem;
   margin-top: -1.5rem;
-  p {
-    color: var(--deepgray);
-    font-size: 1rem;
-  }
+  color: var(--deepgray);
+  font-size: 1rem;
 `;
 
-const AlarmList = styled.div`
+const AlarmList = styled.ul`
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -34,7 +32,7 @@ const AlarmList = styled.div`
   padding: 1rem;
 `;
 
-const AlarmItem = styled.div`
+const AlarmItem = styled.li`
   width: 90%;
   display: flex;
   justify-content: space-between;
@@ -183,20 +181,22 @@ const Alarm = () => {
 
   return (
     <AlarmContainer>
-      <Title>
-        <p>유효기간 만료알림 설정 (최대 5개)</p>
-      </Title>
+      <Title>유효기간 만료알림 설정 (최대 5개)</Title>
       <AlarmList>
         {alarms.map((alarm, index) => (
           <AlarmItem key={index}>
             <span>
               {alarm.daysBefore}일 전 {alarm.period} {alarm.time}시
             </span>
-            <DeleteButton onClick={() => deleteAlarm(index)}>x</DeleteButton>
+            <DeleteButton type="button" onClick={() => deleteAlarm(index)}>
+              x
+            </DeleteButton>
           </AlarmItem>
         ))}
         {alarms.length < 5 && (
-          <AddAlarmButton onClick={openModal}>+ 알람 추가</AddAlarmButton>
+          <AddAlarmButton type="button" onClick={openModal}>
+            + 알람 추가
+          </AddAlarmButton>
         )}
       </AlarmList>
       <ModalDialog
