@@ -84,6 +84,7 @@ const AddAlarmButton = styled.button`
   justify-content: center;
   border-radius: 0.625rem;
   margin-top: 1rem;
+  cursor: pointer;
 `;
 
 const ModalContent = styled.div`
