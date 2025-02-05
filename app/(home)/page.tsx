@@ -26,12 +26,12 @@ const FilterSection = styled.section`
   border-bottom: 0.5px solid var(--disabled);
 `;
 
-const ConListSection = styled.section`
+const ConListSection = styled.section<{ $isEmpty: boolean }>`
   flex-grow: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: ${({ $isEmpty }) => ($isEmpty ? 'center' : 'flex-start')};
   padding: 0 5% 5.25rem 5%;
 `;
 
@@ -84,6 +84,7 @@ const Home = () => {
   const [searchInputValue, setSearchInputValue] = useState('');
 
   const [conList, setConList] = useState<ConInfo[]>([]);
+  const isEmpty = conList.length === 0;
 
   useEffect(() => {
     const fetchConList = async () => {
@@ -143,8 +144,8 @@ const Home = () => {
         />
       </FilterSection>
 
-      <ConListSection aria-label="기프티콘 목록">
-        {conList.length > 0 ? (
+      <ConListSection aria-label="기프티콘 목록" $isEmpty={isEmpty}>
+        {!isEmpty ? (
           <ConList>
             {conList.map((item) => (
               <ConListItem
