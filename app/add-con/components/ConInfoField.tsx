@@ -24,14 +24,14 @@ const ConInfoInput = styled.input`
 `;
 
 /* ----------------------------------- type ---------------------------------- */
-type InputProps = {
+type ConInfoFieldProps = {
   label: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 /* -------------------------------- component ------------------------------- */
-const ConInfoField = ({ label, value, onChange }: InputProps) => {
+const ConInfoField = ({ label, value, onChange }: ConInfoFieldProps) => {
   const id = useId();
 
   return (

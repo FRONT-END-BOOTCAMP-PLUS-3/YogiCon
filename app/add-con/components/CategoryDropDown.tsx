@@ -35,13 +35,16 @@ const CategorySelect = styled.select`
 const CategoryOption = styled.option``;
 
 /* ---------------------------------- type ---------------------------------- */
-type DropDownProps = {
+type CategoryDropDownProps = {
   selectedCategory: CategoryListItem | '';
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 };
 
 /* -------------------------------- component ------------------------------- */
-const CategoryDropDown = ({ selectedCategory, onChange }: DropDownProps) => {
+const CategoryDropDown = ({
+  selectedCategory,
+  onChange,
+}: CategoryDropDownProps) => {
   const id = useId();
 
   return (
