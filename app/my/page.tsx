@@ -27,18 +27,15 @@ const ModalContent = styled.div`
 const My = () => {
   const router = useRouter();
 
-  const [modalOpen, setModalOpen] = useState(false);
   const [actionType, setActionType] = useState<'logout' | 'deleteID' | null>(
     null
   );
 
   const openModal = (type: 'logout' | 'deleteID') => {
     setActionType(type);
-    setModalOpen(true);
   };
 
   const closeModal = () => {
-    setModalOpen(false);
     setActionType(null);
   };
 
@@ -62,7 +59,7 @@ const My = () => {
       <MyButton id="deleteID" onClick={() => openModal('deleteID')} />
 
       <ModalDialog
-        isOpen={modalOpen}
+        isOpen={actionType !== null}
         buttonCount={2}
         onConfirm={handleConfirm}
         onClose={closeModal}
