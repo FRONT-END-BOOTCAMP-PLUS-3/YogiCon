@@ -98,6 +98,7 @@ const ImageUpload = ({ imageState, setImageState }: ImageUploadProps) => {
         <PreviewImageBox>
           <PreviewImage src={imageState.imageSrc} alt="conImage" />
           <DeleteButton
+            type="button"
             onClick={(e) => {
               e.preventDefault();
               setImageState({ imageFile: null, imageSrc: '', imageUrl: '' });
