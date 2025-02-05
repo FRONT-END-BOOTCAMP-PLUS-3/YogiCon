@@ -6,8 +6,14 @@ import styled from 'styled-components';
 
 /* ---------------------------------- style --------------------------------- */
 const StyledBackButton = styled.button`
+  display: flex;
+  align-items: center;
   position: absolute;
   left: 1.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.2rem;
+  color: var(--deepgray);
   border: 0;
   background-color: transparent;
 `;
