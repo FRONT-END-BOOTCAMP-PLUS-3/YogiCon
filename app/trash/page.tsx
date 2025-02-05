@@ -35,7 +35,7 @@ const NoConText = styled.p`
 `;
 
 const Trash = () => {
-  const [trashList, setTrashList] = useState<ConInfo[] | null>(null);
+  const [trashList, setTrashList] = useState<ConInfo[]>([]);
   console.log(trashList);
 
   useEffect(() => {
@@ -63,7 +63,7 @@ const Trash = () => {
 
   return (
     <TrashContainer>
-      {trashList?.length ? (
+      {trashList.length > 0 ? (
         <ConList>
           {trashList.map((item) => (
             <ConListItem key={item.id} {...item} />

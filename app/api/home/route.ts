@@ -11,5 +11,5 @@ export async function GET(request: Request) {
       ? giftList
       : giftList.filter((item) => item.category === selectedCategory);
 
-  return NextResponse.json(filteredData);
+  return NextResponse.json(filteredData ?? []);
 }
