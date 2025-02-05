@@ -1,12 +1,11 @@
-import { useRouter } from 'next/navigation';
+// MyButton.tsx
 import { CiTrash } from 'react-icons/ci';
 import { IoIosLogOut } from 'react-icons/io';
 import styled from 'styled-components';
-import ModalDialog from '@/components/ModalDialog';
-import { useState } from 'react';
 
 interface MyButtonProps {
   id: 'trash' | 'logout' | 'deleteID';
+  onClick: () => void;
 }
 
 /* ---------------------------------- style --------------------------------- */
@@ -42,52 +41,24 @@ const StyledLogo = styled(IoIosLogOut)`
   margin-right: 1.6rem;
 `;
 
-const ModalContent = styled.div`
-  margin-bottom: 1rem;
-`;
-
 /* ---------------------------------- component --------------------------------- */
-const MyButton = ({ id }: MyButtonProps) => {
-  const router = useRouter();
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
-
-  const handleConfirm = () => {
-    if (id === 'logout') {
-      console.log('로그아웃 실행');
-      router.push('/login');
-    } else if (id === 'deleteID') {
-      console.log('회원탈퇴 실행');
-      router.push('/');
-    }
-    closeModal();
-  };
-
+const MyButton = ({ id, onClick }: MyButtonProps) => {
   const ButtonConfig = {
     trash: {
       title: '휴지통',
       icon: <StyledTrashCan />,
-      onClick: () => router.push('/trash'),
     },
     logout: {
       title: '로그아웃',
       icon: <StyledLogo />,
-      onClick: () => {
-        openModal();
-      },
     },
     deleteID: {
       title: '회원탈퇴',
       icon: null,
-      onClick: () => {
-        openModal();
-      },
     },
   };
 
-  const { title, icon, onClick } = ButtonConfig[id];
+  const { title, icon } = ButtonConfig[id];
 
   return (
     <Container>
@@ -95,20 +66,6 @@ const MyButton = ({ id }: MyButtonProps) => {
         <span>{title}</span>
         {icon}
       </ButtonWrapper>
-      <ModalDialog
-        isOpen={isModalOpen}
-        buttonCount={2}
-        onConfirm={handleConfirm}
-        onClose={closeModal}
-      >
-        <ModalContent>
-          {id === 'logout' ? (
-            <span>정말 로그아웃 하시겠습니까?</span>
-          ) : (
-            <span>정말 탈퇴 하시겠습니까?</span>
-          )}
-        </ModalContent>
-      </ModalDialog>
     </Container>
   );
 };
