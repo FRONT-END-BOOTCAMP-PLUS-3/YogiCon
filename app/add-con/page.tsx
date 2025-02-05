@@ -74,8 +74,8 @@ const AddCon = () => {
     { label: '유효기간', field: 'dueDate' },
   ];
 
-  const [isFormFilled, setIsFormFilled] = useState<Boolean>(false);
-  const [isModalOpen, setIsModalOpen] = useState<Boolean>(false);
+  const [isFormFilled, setIsFormFilled] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const allFieldsFilled = Object.values(conInfo).every(
@@ -102,31 +102,27 @@ const AddCon = () => {
       <Button isLong={false} color="main" onClick={handleModal}>
         정보입력확인모달창
       </Button>
-      {isModalOpen ? (
-        <ModalDialog
-          buttonCount={1}
-          isOpen={true}
-          onClose={() => {
-            setIsModalOpen(false);
-          }}
-        >
-          <ModalBox>
-            <AddConImage
-              src="/add_con_image.png"
-              alt="등록캐릭터"
-              width={102}
-              height={102}
-            />
-            <ModalText>
-              {'AI가 사진을 자동인식하여\n정보를 채워넣었어요.\n'}
-              <strong>틀린 부분</strong>
-              {'이 있을 수 있으니\n꼭 체크해주세요!'}
-            </ModalText>
-          </ModalBox>
-        </ModalDialog>
-      ) : (
-        <></>
-      )}
+      <ModalDialog
+        buttonCount={1}
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);
+        }}
+      >
+        <ModalBox>
+          <AddConImage
+            src="/add_con_image.png"
+            alt="등록캐릭터"
+            width={102}
+            height={102}
+          />
+          <ModalText>
+            {'AI가 사진을 자동인식하여\n정보를 채워넣었어요.\n'}
+            <strong>틀린 부분</strong>
+            {'이 있을 수 있으니\n꼭 체크해주세요!'}
+          </ModalText>
+        </ModalBox>
+      </ModalDialog>
       <AddConText>사진 등록</AddConText>
       <ImageUpload></ImageUpload>
       <AddConText>기프티콘 정보</AddConText>
