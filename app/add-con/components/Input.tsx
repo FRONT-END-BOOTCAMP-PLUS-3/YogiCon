@@ -10,7 +10,6 @@ const InputBox = styled.div`
 `;
 
 const InputLabel = styled.label`
-  font-size: 1rem;
   color: var(--deepgray);
 `;
 
