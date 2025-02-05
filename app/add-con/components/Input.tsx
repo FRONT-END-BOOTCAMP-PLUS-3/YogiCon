@@ -1,5 +1,6 @@
 'use client';
 
+import { useId } from 'react';
 import styled from 'styled-components';
 
 /* ---------------------------------- style --------------------------------- */
@@ -31,11 +32,13 @@ type InputProps = {
 
 /* -------------------------------- component ------------------------------- */
 const Input = ({ label, value, onChange }: InputProps) => {
+  const id = useId();
+
   return (
     <InputBox>
-      <InputLabel htmlFor={label}>{label}</InputLabel>
+      <InputLabel htmlFor={id}>{label}</InputLabel>
       <InputValue
-        id={label}
+        id={id}
         type="text"
         value={value}
         onChange={onChange}
