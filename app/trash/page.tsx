@@ -30,8 +30,8 @@ const NoConText = styled.p`
   text-align: center;
   font-size: 1.5rem;
   font-weight: bold;
-  line-height: 44px; /* 183.333% */
-  letter-spacing: -0.32px;
+  line-height: 2.75rem;
+  letter-spacing: -0.02rem;
 `;
 
 const Trash = () => {
