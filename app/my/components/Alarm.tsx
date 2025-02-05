@@ -139,6 +139,15 @@ const Alarm = () => {
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
+  const checkDuplication = (alarmToCheck: AlarmType): boolean => {
+    return alarms.some(
+      (alarm) =>
+        alarm.daysBefore === alarmToCheck.daysBefore &&
+        alarm.period === alarmToCheck.period &&
+        alarm.time === alarmToCheck.time
+    );
+  };
+
   const handleSelectChange = <T extends number | string>(
     field: keyof AlarmType,
     selectedOption: SingleValue<Option<T>>
@@ -152,6 +161,11 @@ const Alarm = () => {
   };
 
   const handleConfirm = () => {
+    if (checkDuplication(newAlarm)) {
+      alert('이미 같은 알람이 존재합니다. 다른 설정을 선택해주세요.');
+      return;
+    }
+
     if (alarms.length < 5) {
       setAlarms((prev) => [...prev, newAlarm]);
       setIsModalOpen(false);
