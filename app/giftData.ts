@@ -1,4 +1,4 @@
-import { Categories } from '@/types/categories';
+import { Categories } from '@/types/Categories';
 
 export type ConInfo = {
   id: string;

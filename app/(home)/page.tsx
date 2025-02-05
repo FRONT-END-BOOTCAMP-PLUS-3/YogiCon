@@ -1,10 +1,10 @@
 'use client';
 
 import ConListItem from '@/components/ConListItem';
-import { CategoryListItem } from '@/types/categories';
+import { CategoryListItem } from '@/types/Categories';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { FormEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { LuPlus } from 'react-icons/lu';
 import styled from 'styled-components';
 import { ConInfo } from '../giftData';
@@ -31,7 +31,7 @@ const ConListSection = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   padding: 0 5% 5.25rem 5%;
 `;
 
@@ -51,8 +51,8 @@ const NoConText = styled.p`
   text-align: center;
   font-size: 1.5rem;
   font-weight: bold;
-  line-height: 44px; /* 183.333% */
-  letter-spacing: -0.32px;
+  line-height: 2.75rem; /* 183.333% */
+  letter-spacing: -0.02rem;
 `;
 
 const RegisterButton = styled.button`
@@ -80,13 +80,16 @@ const Home = () => {
 
   const [selectedCategory, setSelectedCategory] =
     useState<CategoryListItem>('전체');
-  const [conList, setConList] = useState<ConInfo[] | null>(null);
+  const [searchWord, setSearchWord] = useState('');
+  const [searchInputValue, setSearchInputValue] = useState('');
+
+  const [conList, setConList] = useState<ConInfo[]>([]);
 
   useEffect(() => {
     const fetchConList = async () => {
       try {
         const res = await fetch(
-          `/api/home?selectedCategory=${selectedCategory}`
+          `/api/home?selectedCategory=${selectedCategory}&searchWord=${searchWord}`
         );
 
         if (!res.ok) {
@@ -105,7 +108,7 @@ const Home = () => {
     };
 
     fetchConList();
-  }, [selectedCategory]);
+  }, [searchWord, selectedCategory]);
 
   const handleCategoryButtonClick = (value: CategoryListItem) => () => {
     setSelectedCategory(value);
@@ -113,6 +116,10 @@ const Home = () => {
 
   const handleSearch = (e: FormEvent) => {
     e.preventDefault();
+    setSearchWord(searchInputValue);
+  };
+  const handleSearchInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchInputValue(e.target.value);
   };
 
   const handleConListItemClick = (id: string) => () => {
@@ -126,7 +133,10 @@ const Home = () => {
   return (
     <HomeContainer>
       <FilterSection aria-label="검색 및 필터링">
-        <SearchForm onSubmit={handleSearch} />
+        <SearchForm
+          onSubmit={handleSearch}
+          onInputChange={handleSearchInputChange}
+        />
         <CategoryFilter
           selectedCategory={selectedCategory}
           onSelect={handleCategoryButtonClick}
@@ -134,7 +144,7 @@ const Home = () => {
       </FilterSection>
 
       <ConListSection aria-label="기프티콘 목록">
-        {conList ? (
+        {conList.length > 0 ? (
           <ConList>
             {conList.map((item) => (
               <ConListItem

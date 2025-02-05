@@ -50,13 +50,11 @@ export const GlobalStyles = createGlobalStyle`
     border-collapse: collapse;
     border-spacing: 0;
   }
-
   // mini-reset
-   html{
+  html{
     box-sizing:border-box;
     max-width: 768px;
     margin: 0 auto; 
-
     @media (max-width: 480px) {
       font-size: 90%; /* 1rem = 14.4px */
     }
@@ -69,7 +67,6 @@ export const GlobalStyles = createGlobalStyle`
     border:0;
     outline: none;
   }
-
   // global variables
   :root {
   --main: #ff5e5e;

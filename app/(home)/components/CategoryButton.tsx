@@ -1,6 +1,6 @@
 'use client';
 
-import { CategoryListItem } from '@/types/categories';
+import { CategoryListItem } from '@/types/Categories';
 import { BiCategoryAlt, BiStoreAlt } from 'react-icons/bi';
 import { BsStars } from 'react-icons/bs';
 import { CiCoffeeCup } from 'react-icons/ci';
@@ -76,7 +76,7 @@ const CategoryButton = ({ category, isSelected, onClick }: CategoryButton) => {
       aria-selected={isSelected}
     >
       <IconBox>{iconOfCategory[category]}</IconBox>
-      {category}
+      <span style={{ width: 'fit-content' }}>{category}</span>
       {isSelected && <HighlightBox />}
     </IconButton>
   );
