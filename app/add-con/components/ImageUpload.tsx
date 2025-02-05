@@ -1,6 +1,7 @@
 'use client';
 
 import { srOnly } from '@/app/globalStyles';
+import { ImageState } from '@/types/imageState';
 import { FiPlus } from 'react-icons/fi';
 import styled from 'styled-components';
 
@@ -62,12 +63,6 @@ const NoImageBox = styled.div`
 `;
 
 /* ---------------------------------- type ---------------------------------- */
-type ImageState = {
-  imageFile: File | null;
-  imageSrc: string;
-  imageUrl: string;
-};
-
 type ImageUploadProps = {
   imageState: ImageState;
   setImageState: React.Dispatch<React.SetStateAction<ImageState>>;

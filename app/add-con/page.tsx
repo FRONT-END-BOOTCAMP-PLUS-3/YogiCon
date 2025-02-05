@@ -3,12 +3,13 @@
 import Button from '@/components/Button';
 import ModalDialog from '@/components/ModalDialog';
 import { CategoryListItem } from '@/types/categories';
+import { ImageState } from '@/types/imageState';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import CategoryDropDown from './components/CategoryDropDown';
-import ImageUpload from './components/ImageUpload';
 import ConInfoField from './components/ConInfoField';
+import ImageUpload from './components/ImageUpload';
 
 /* ---------------------------------- style --------------------------------- */
 const AddConContainer = styled.div`
@@ -46,12 +47,6 @@ const AddConText = styled.h2`
 const InputForm = styled.form``;
 
 /* ---------------------------------- type ---------------------------------- */
-type ImageState = {
-  imageFile: File | null;
-  imageSrc: string;
-  imageUrl: string;
-};
-
 type ConInfo = {
   brand: string;
   productName: string;
