@@ -6,10 +6,11 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { ConInfo } from '../giftData';
 
-const TrashContainer = styled.main`
+const TrashContainer = styled.main<{ $isEmpty: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: ${({ $isEmpty }) => ($isEmpty ? 'center' : 'flex-start')};
   height: calc(100vh - 3.375rem);
 `;
 
@@ -36,7 +37,7 @@ const NoConText = styled.p`
 
 const Trash = () => {
   const [trashList, setTrashList] = useState<ConInfo[]>([]);
-  console.log(trashList);
+  const isEmpty = trashList.length === 0;
 
   useEffect(() => {
     const fetchTrashList = async () => {
@@ -62,8 +63,8 @@ const Trash = () => {
   }, []);
 
   return (
-    <TrashContainer>
-      {trashList.length > 0 ? (
+    <TrashContainer $isEmpty={isEmpty}>
+      {!isEmpty ? (
         <ConList>
           {trashList.map((item) => (
             <ConListItem key={item.id} {...item} />
