@@ -20,7 +20,20 @@ const MyContainer = styled.div`
 `;
 
 const ModalContent = styled.div`
-  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.2rem;
+  gap: 1.2rem;
+  align-items: center;
+  h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    letter-spacing: -0.02rem;
+  }
+  span {
+    font-size: 1.1rem;
+    letter-spacing: -0.02rem;
+  }
 `;
 
 /* ---------------------------------- component --------------------------------- */
@@ -66,9 +79,15 @@ const My = () => {
       >
         <ModalContent>
           {actionType === 'logout' ? (
-            <span>정말 로그아웃 하시겠습니까?</span>
+            <>
+              <h3>로그아웃</h3>
+              <span>정말 로그아웃 하시겠습니까?</span>
+            </>
           ) : (
-            <span>정말 탈퇴 하시겠습니까?</span>
+            <>
+              <h3>회원 탈퇴</h3>
+              <span>정말 탈퇴 하시겠습니까?</span>
+            </>
           )}
         </ModalContent>
       </ModalDialog>
