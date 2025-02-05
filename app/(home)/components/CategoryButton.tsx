@@ -76,7 +76,7 @@ const CategoryButton = ({ category, isSelected, onClick }: CategoryButton) => {
       aria-selected={isSelected}
     >
       <IconBox>{iconOfCategory[category]}</IconBox>
-      {category}
+      <span style={{ width: 'fit-content' }}>{category}</span>
       {isSelected && <HighlightBox />}
     </IconButton>
   );
