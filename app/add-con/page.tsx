@@ -6,9 +6,9 @@ import { CategoryListItem } from '@/types/categories';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import DropDownComponent from './components/DropDown';
+import CategorySelect from './components/CategorySelect';
 import ImageUpload from './components/ImageUpload';
-import InputComponent from './components/Input';
+import ConInfoInput from './components/ConInfoInput';
 
 /* ---------------------------------- style --------------------------------- */
 const AddConContainer = styled.div`
@@ -128,17 +128,17 @@ const AddCon = () => {
       <AddConText>기프티콘 정보</AddConText>
       <InputForm onSubmit={handleSubmit}>
         {inputFields.map(({ label, field }) => (
-          <InputComponent
+          <ConInfoInput
             key={field}
             label={label}
             value={conInfo[field]}
             onChange={(e) => handleChange(field, e.target.value)}
-          ></InputComponent>
+          ></ConInfoInput>
         ))}
-        <DropDownComponent
+        <CategorySelect
           selectedCategory={conInfo.category}
           onChange={(e) => handleChange('category', e.target.value)}
-        ></DropDownComponent>
+        ></CategorySelect>
         <Button
           type="submit"
           isLong={true}

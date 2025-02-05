@@ -39,7 +39,7 @@ type DropDownProps = {
 };
 
 /* -------------------------------- component ------------------------------- */
-const DropDown = ({ selectedCategory, onChange }: DropDownProps) => {
+const CategorySelect = ({ selectedCategory, onChange }: DropDownProps) => {
   return (
     <DropDownBox>
       <DropDownLabel htmlFor="category">카테고리</DropDownLabel>
@@ -61,4 +61,4 @@ const DropDown = ({ selectedCategory, onChange }: DropDownProps) => {
   );
 };
 
-export default DropDown;
+export default CategorySelect;

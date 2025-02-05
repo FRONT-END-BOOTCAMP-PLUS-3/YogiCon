@@ -31,7 +31,7 @@ type InputProps = {
 };
 
 /* -------------------------------- component ------------------------------- */
-const Input = ({ label, value, onChange }: InputProps) => {
+const ConInfoInput = ({ label, value, onChange }: InputProps) => {
   const id = useId();
 
   return (
@@ -48,4 +48,4 @@ const Input = ({ label, value, onChange }: InputProps) => {
   );
 };
 
-export default Input;
+export default ConInfoInput;
