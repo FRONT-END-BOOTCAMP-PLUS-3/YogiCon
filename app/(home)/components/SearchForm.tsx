@@ -1,7 +1,7 @@
 'use client';
 
 import { srOnly } from '@/app/globalStyles';
-import { FormEvent, useId } from 'react';
+import { ChangeEvent, FormEvent, useId } from 'react';
 import { HiMiniMagnifyingGlass } from 'react-icons/hi2';
 import styled from 'styled-components';
 
@@ -48,10 +48,11 @@ const SearchButton = styled.button`
 /* ---------------------------------- type ---------------------------------- */
 type SearchFormProps = {
   onSubmit: (e: FormEvent) => void;
+  onInputChange: (e: ChangeEvent<HTMLInputElement>) => void;
 };
 
 /* -------------------------------- component ------------------------------- */
-const SearchForm = ({ onSubmit }: SearchFormProps) => {
+const SearchForm = ({ onSubmit, onInputChange }: SearchFormProps) => {
   const searchInputId = useId();
 
   return (
@@ -61,7 +62,9 @@ const SearchForm = ({ onSubmit }: SearchFormProps) => {
         <SearchInput
           id={searchInputId}
           type="text"
+          name={'search-word'}
           placeholder="검색어를 입력하세요"
+          onChange={onInputChange}
         />
 
         <SearchButton type="submit">

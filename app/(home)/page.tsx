@@ -4,7 +4,7 @@ import ConListItem from '@/components/ConListItem';
 import { CategoryListItem } from '@/types/categories';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { FormEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { LuPlus } from 'react-icons/lu';
 import styled from 'styled-components';
 import { ConInfo } from '../giftData';
@@ -80,13 +80,16 @@ const Home = () => {
 
   const [selectedCategory, setSelectedCategory] =
     useState<CategoryListItem>('전체');
+  const [searchWord, setSearchWord] = useState('');
+  const [searchInputValue, setSearchInputValue] = useState('');
+
   const [conList, setConList] = useState<ConInfo[] | null>(null);
 
   useEffect(() => {
     const fetchConList = async () => {
       try {
         const res = await fetch(
-          `/api/home?selectedCategory=${selectedCategory}`
+          `/api/home?selectedCategory=${selectedCategory}&searchWord=${searchWord}`
         );
 
         if (!res.ok) {
@@ -105,7 +108,7 @@ const Home = () => {
     };
 
     fetchConList();
-  }, [selectedCategory]);
+  }, [searchWord, selectedCategory]);
 
   const handleCategoryButtonClick = (value: CategoryListItem) => () => {
     setSelectedCategory(value);
@@ -113,6 +116,10 @@ const Home = () => {
 
   const handleSearch = (e: FormEvent) => {
     e.preventDefault();
+    setSearchWord(searchInputValue);
+  };
+  const handleSearchInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchInputValue(e.target.value);
   };
 
   const handleConListItemClick = (id: string) => () => {
@@ -126,7 +133,10 @@ const Home = () => {
   return (
     <HomeContainer>
       <FilterSection aria-label="검색 및 필터링">
-        <SearchForm onSubmit={handleSearch} />
+        <SearchForm
+          onSubmit={handleSearch}
+          onInputChange={handleSearchInputChange}
+        />
         <CategoryFilter
           selectedCategory={selectedCategory}
           onSelect={handleCategoryButtonClick}
