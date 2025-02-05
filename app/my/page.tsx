@@ -1,4 +1,3 @@
-// My.tsx (페이지 컴포넌트)
 'use client';
 
 import { useRouter } from 'next/navigation';

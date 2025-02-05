@@ -1,12 +1,11 @@
-// MyButton.tsx
 import { CiTrash } from 'react-icons/ci';
 import { IoIosLogOut } from 'react-icons/io';
 import styled from 'styled-components';
 
-interface MyButtonProps {
+type MyButtonProps = {
   id: 'trash' | 'logout' | 'deleteID';
   onClick: () => void;
-}
+};
 
 /* ---------------------------------- style --------------------------------- */
 const Container = styled.div``;

@@ -5,18 +5,6 @@ import { useState } from 'react';
 import Select, { SingleValue, StylesConfig } from 'react-select';
 import styled from 'styled-components';
 
-// 알람 객체 타입 정의
-interface AlarmType {
-  daysBefore: number;
-  period: '오전' | '오후';
-  time: number;
-}
-
-// react-select에서 사용할 옵션 타입 정의
-interface Option<T> {
-  value: T;
-  label: string;
-}
 /* ---------------------------------- style --------------------------------- */
 const AlarmContainer = styled.div`
   display: flex;
@@ -108,11 +96,26 @@ const customSelectStyles: StylesConfig<any, false> = {
     overflowY: 'auto',
   }),
 };
+
+/* ---------------------------------- type --------------------------------- */
+// 알람 객체 타입 정의
+type AlarmProps = {
+  daysBefore: number;
+  period: '오전' | '오후';
+  time: number;
+};
+
+// react-select에서 사용할 옵션 타입 정의
+type Option<T> = {
+  value: T;
+  label: string;
+};
+
 /* ---------------------------------- component --------------------------------- */
 const Alarm = () => {
-  const [alarms, setAlarms] = useState<AlarmType[]>([]);
+  const [alarms, setAlarms] = useState<AlarmProps[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [newAlarm, setNewAlarm] = useState<AlarmType>({
+  const [newAlarm, setNewAlarm] = useState<AlarmProps>({
     daysBefore: 1,
     period: '오전',
     time: 9,
@@ -140,7 +143,7 @@ const Alarm = () => {
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
-  const checkDuplication = (alarmToCheck: AlarmType): boolean => {
+  const checkDuplication = (alarmToCheck: AlarmProps): boolean => {
     return alarms.some(
       (alarm) =>
         alarm.daysBefore === alarmToCheck.daysBefore &&
@@ -150,7 +153,7 @@ const Alarm = () => {
   };
 
   const handleSelectChange = <T extends number | string>(
-    field: keyof AlarmType,
+    field: keyof AlarmProps,
     selectedOption: SingleValue<Option<T>>
   ) => {
     if (selectedOption) {
