@@ -1,5 +1,5 @@
-import styled from 'styled-components';
 import { IoIosLogOut } from 'react-icons/io';
+import styled from 'styled-components';
 /* ---------------------------------- style --------------------------------- */
 
 const Container = styled.div`

@@ -1,10 +1,8 @@
 'use client';
 
-import Name from '@/app/my/components/Name';
 import Alarm from '@/app/my/components/Alarm';
-import Trash from '@/app/my/components/Trash';
-import Logout from '@/app/my/components/Logout';
-import DeleteID from '@/app/my/components/DeleteID';
+import MyButton from '@/app/my/components/MyButton';
+import Name from '@/app/my/components/Name';
 import styled from 'styled-components';
 
 const MyContainer = styled.div`
@@ -20,9 +18,7 @@ const My = () => {
     <MyContainer>
       <Name />
       <Alarm />
-      <Trash />
-      <Logout />
-      <DeleteID />
+      <MyButton />
     </MyContainer>
   );
 };

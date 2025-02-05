@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
-import styled from 'styled-components';
 import ModalDialog from '@/components/ModalDialog';
-import Select, { StylesConfig, SingleValue } from 'react-select';
+import { useState } from 'react';
+import Select, { SingleValue, StylesConfig } from 'react-select';
+import styled from 'styled-components';
 
 // 알람 객체 타입 정의
 interface AlarmType {
@@ -63,7 +63,7 @@ const AlarmItem = styled.div`
   }
   &:last-of-type {
     border-bottom-left-radius: 0.9375rem;
-    border-bottom-right-radius: 0.9375;
+    border-bottom-right-radius: 0.9375rem;
   }
 `;
 
@@ -166,7 +166,7 @@ const Alarm = () => {
   return (
     <AlarmContainer>
       <Title>
-        <p>유효기간 만료알림 설정</p>
+        <p>유효기간 만료알림 설정 (최대 5개)</p>
       </Title>
       <AlarmList>
         {alarms.map((alarm, index) => (
@@ -178,7 +178,7 @@ const Alarm = () => {
           </AlarmItem>
         ))}
         {alarms.length < 5 && (
-          <AddAlarmButton onClick={openModal}>+알람 추가</AddAlarmButton>
+          <AddAlarmButton onClick={openModal}>+ 알람 추가</AddAlarmButton>
         )}
       </AlarmList>
       <ModalDialog
