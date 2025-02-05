@@ -18,6 +18,7 @@ const AddConContainer = styled.div`
 const AddConImage = styled(Image)`
   width: 6.375rem;
   aspect-ratio: 1;
+  height: auto;
 `;
 
 const ModalBox = styled.div`
@@ -33,9 +34,10 @@ const ModalText = styled.p`
   white-space: pre;
   text-align: center;
   word-break: keep-all;
+  line-height: 1.5;
 `;
 
-const AddConText = styled.h3`
+const AddConText = styled.h2`
   margin: 1.75rem 0;
   font-size: 1.1875rem;
   font-weight: bold;
@@ -124,7 +126,7 @@ const AddCon = () => {
         </ModalBox>
       </ModalDialog>
       <AddConText>사진 등록</AddConText>
-      <ImageUpload></ImageUpload>
+      <ImageUpload />
       <AddConText>기프티콘 정보</AddConText>
       <InputForm onSubmit={handleSubmit}>
         {inputFields.map(({ label, field }) => (
@@ -133,12 +135,12 @@ const AddCon = () => {
             label={label}
             value={conInfo[field]}
             onChange={(e) => handleChange(field, e.target.value)}
-          ></ConInfoInput>
+          />
         ))}
         <CategorySelect
           selectedCategory={conInfo.category}
           onChange={(e) => handleChange('category', e.target.value)}
-        ></CategorySelect>
+        />
         <Button
           type="submit"
           isLong={true}
