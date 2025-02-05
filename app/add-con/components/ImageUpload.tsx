@@ -1,7 +1,6 @@
 'use client';
 
 import { srOnly } from '@/app/globalStyles';
-import { useState } from 'react';
 import { FiPlus } from 'react-icons/fi';
 import styled from 'styled-components';
 
@@ -67,15 +66,14 @@ type ImageState = {
   imageUrl: string;
 };
 
+type ImageUploadProps = {
+  imageState: ImageState;
+  setImageState: React.Dispatch<React.SetStateAction<ImageState>>;
+};
+
 /* -------------------------------- component ------------------------------- */
 
-const ImageUpload = () => {
-  const [imageState, setImageState] = useState<ImageState>({
-    imageFile: null,
-    imageSrc: '',
-    imageUrl: '',
-  });
-
+const ImageUpload = ({ imageState, setImageState }: ImageUploadProps) => {
   const setImagePreview = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
 
@@ -86,12 +84,12 @@ const ImageUpload = () => {
     }
 
     const imageSrc = URL.createObjectURL(imageFile);
-    console.log('imageSrc: ', imageSrc);
-    setImageState((prevState) => ({
-      ...prevState,
+
+    setImageState({
       imageFile: imageFile,
       imageSrc: imageSrc,
-    }));
+      imageUrl: '',
+    });
   };
 
   return (

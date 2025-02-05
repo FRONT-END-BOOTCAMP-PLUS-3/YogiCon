@@ -46,12 +46,19 @@ const AddConText = styled.h2`
 const InputForm = styled.form``;
 
 /* ---------------------------------- type ---------------------------------- */
+type ImageState = {
+  imageFile: File | null;
+  imageSrc: string;
+  imageUrl: string;
+};
+
 type ConInfo = {
   brand: string;
   productName: string;
   barcode: string;
   dueDate: string;
   category: CategoryListItem | '';
+  imageSrc: string;
 };
 
 type InputFields = {
@@ -61,12 +68,19 @@ type InputFields = {
 
 /* -------------------------------- component ------------------------------- */
 const AddCon = () => {
+  const [imageState, setImageState] = useState<ImageState>({
+    imageFile: null,
+    imageSrc: '',
+    imageUrl: '',
+  });
+
   const [conInfo, setConInfo] = useState<ConInfo>({
     brand: '',
     productName: '',
     barcode: '',
     dueDate: '',
     category: '',
+    imageSrc: '',
   });
 
   const inputFields: InputFields[] = [
@@ -78,6 +92,13 @@ const AddCon = () => {
 
   const [isFormFilled, setIsFormFilled] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+    setConInfo((prev) => ({
+      ...prev,
+      imageSrc: imageState.imageSrc,
+    }));
+  }, [imageState.imageSrc]);
 
   useEffect(() => {
     const allFieldsFilled = Object.values(conInfo).every(
@@ -126,7 +147,7 @@ const AddCon = () => {
         </ModalBox>
       </ModalDialog>
       <AddConText>사진 등록</AddConText>
-      <ImageUpload />
+      <ImageUpload imageState={imageState} setImageState={setImageState} />
       <AddConText>기프티콘 정보</AddConText>
       <InputForm onSubmit={handleSubmit}>
         {inputFields.map(({ label, field }) => (
