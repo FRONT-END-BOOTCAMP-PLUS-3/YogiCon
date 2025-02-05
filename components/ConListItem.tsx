@@ -5,7 +5,7 @@ import { IoIosArrowForward } from 'react-icons/io';
 import { TbRestore, TbTrash } from 'react-icons/tb';
 import styled from 'styled-components';
 import ConListBadge from './ConListBadge';
-import { Categories } from '@/types/categories';
+import { Categories } from '@/types/Categories';
 
 /* ---------------------------------- style --------------------------------- */
 const ConContainer = styled.li`
@@ -142,10 +142,10 @@ const ConRightTrashButton = styled.button<{ $restore: boolean }>`
 
 /* ---------------------------------- type ---------------------------------- */
 type ConListProps = {
-  image_url: string;
+  imageUrl: string;
   category: Categories;
   brand: string;
-  name: string;
+  productName: string;
   duedate: string;
   isDeleted: boolean;
   onClick?: () => void;
@@ -153,10 +153,10 @@ type ConListProps = {
 
 /* -------------------------------- component ------------------------------- */
 export default function ConListItem({
-  image_url,
+  imageUrl,
   category,
   brand,
-  name,
+  productName,
   duedate,
   isDeleted,
   onClick,
@@ -183,7 +183,7 @@ export default function ConListItem({
   return (
     <ConContainer onClick={onClick}>
       <ConLeftWrapper>
-        <ConLeftImage src={image_url} alt="gifticon" width={100} height={100} />
+        <ConLeftImage src={imageUrl} alt="gifticon" width={100} height={100} />
         {isDeleted && !isExpired && (
           <ConLeftBadge>
             <ConListBadge duedate={duedate} isLarge={false} />
@@ -195,7 +195,7 @@ export default function ConListItem({
       <ConCenterWrapper $isTrash={isTrash}>
         <ConCategoryText>{category}</ConCategoryText>
         <ConTitleText>
-          [{brand}] {name}
+          [{brand}] {productName}
         </ConTitleText>
         <ConDueDate>유효기간: ~{dueDateString}</ConDueDate>
       </ConCenterWrapper>
