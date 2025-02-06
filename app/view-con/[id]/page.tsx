@@ -213,7 +213,11 @@ const ViewCon = () => {
           setIsModalOpen(false);
         }}
       >
-        <figure>
+        <figure
+          onClick={() => {
+            setIsModalOpen(false);
+          }}
+        >
           <ConImgText>
             브랜드: {brand}, 상품명: {productName}, 카테고리: {category},
             유효기간: {duedate}
