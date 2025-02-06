@@ -8,7 +8,7 @@ import { GlobalStyles } from './globalStyles';
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
 
-  const hideNavbarPaths = ['/map', '/add-con', '/view-con'];
+  const hideNavbarPaths = ['/map', '/add-con', '/view-con', '/trash'];
   const shouldHideNavbar = hideNavbarPaths.some((path) =>
     pathname.startsWith(path)
   );
