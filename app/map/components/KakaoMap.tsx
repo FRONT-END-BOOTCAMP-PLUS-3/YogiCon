@@ -4,7 +4,7 @@
 import { useEffect, useState } from 'react';
 import useGeolocation from '@/hooks/useGeolocation';
 import { searchPlaces } from '@/hooks/useSearchPlaces';
-import eventBus from '@/types/EventBus';
+import EventBus from '@/types/EventBus';
 
 declare global {
   interface Window {
@@ -82,10 +82,10 @@ const KakaoMap = ({ onMapLoad }: ReactKakoMapProps) => {
       setClicked(true);
     };
 
-    eventBus.on('itemClicked', handleItemClicked);
+    EventBus.on('itemClicked', handleItemClicked);
 
     return () => {
-      eventBus.off('itemClicked', handleItemClicked);
+      EventBus.off('itemClicked', handleItemClicked);
     };
   }, []);
 

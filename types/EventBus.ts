@@ -4,6 +4,6 @@ type Events = {
   itemClicked: string;
 };
 
-const eventBus = mitt<Events>();
+const EventBus = mitt<Events>();
 
-export default eventBus;
+export default EventBus;
