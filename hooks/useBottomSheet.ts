@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useEffect, useState } from 'react';
-import { MIN_Y, useBottomSheetDimensions } from '@/hooks/bottomSheetOption';
+import { MIN_Y, useBottomSheetDimensions } from '@/hooks/useBottomSheetOption';
 
 interface BottomSheetMetrics {
   touchStart: {
