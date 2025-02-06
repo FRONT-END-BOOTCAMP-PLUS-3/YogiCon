@@ -206,7 +206,7 @@ const ViewCon = () => {
         buttonCount={0}
         boxStyle={{
           padding: 0,
-          width: '75%',
+          width: '80%',
           backgroundColor: 'transparent',
         }}
         onClose={() => {
@@ -214,6 +214,7 @@ const ViewCon = () => {
         }}
       >
         <figure
+          style={{ maxHeight: '80vh', overflow: 'scroll' }}
           onClick={() => {
             setIsModalOpen(false);
           }}
