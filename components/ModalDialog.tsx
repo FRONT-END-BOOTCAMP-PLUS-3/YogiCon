@@ -36,6 +36,7 @@ type ModalDialogProps = {
   isOpen: boolean;
   onConfirm?: () => void;
   onClose?: () => void;
+  boxStyle?: React.CSSProperties;
 };
 
 /* -------------------------------- component ------------------------------- */
@@ -45,6 +46,7 @@ const ModalDialog = ({
   isOpen,
   onConfirm,
   onClose,
+  boxStyle,
 }: ModalDialogProps) => {
   useBodyScrollLock(isOpen);
 
@@ -80,7 +82,12 @@ const ModalDialog = ({
     <>
       {isOpen && (
         <OverLayBox onClick={handleOverLayClick}>
-          <DialogBox role="dialog" aria-modal="true" tabIndex={-1}>
+          <DialogBox
+            style={boxStyle}
+            role="dialog"
+            aria-modal="true"
+            tabIndex={-1}
+          >
             {children}
             {renderButtons()}
           </DialogBox>
