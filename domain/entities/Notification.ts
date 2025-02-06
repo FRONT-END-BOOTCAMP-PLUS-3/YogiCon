@@ -1,4 +1,4 @@
-export interface NotificationSetting {
+export interface Notification {
   id: string; // UUID
   day: number;
   hour: number;

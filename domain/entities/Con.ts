@@ -1,6 +1,6 @@
 import { Categories } from '@/types/Categories';
 
-export interface Gifticon {
+export interface Con {
   id: string; // UUID
   category: Categories;
   productName: string;
