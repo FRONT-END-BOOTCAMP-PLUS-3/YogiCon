@@ -9,7 +9,7 @@ import { Categories } from '@/types/Categories';
 
 /* ---------------------------------- style --------------------------------- */
 const ConContainer = styled.li`
-  cursor: pointer;
+  /* cursor: pointer; */
   width: 100%;
   height: fit-content;
   padding: 1.25rem 0;
@@ -141,7 +141,7 @@ const ConRightTrashButton = styled.button<{ $restore: boolean }>`
 `;
 
 /* ---------------------------------- type ---------------------------------- */
-type ConListProps = {
+type ConListItemProps = {
   imageUrl: string;
   category: Categories;
   brand: string;
@@ -149,6 +149,8 @@ type ConListProps = {
   duedate: string;
   isDeleted: boolean;
   onClick?: () => void;
+  handleTrashClick?: () => void;
+  handleRestoreClick?: () => void;
 };
 
 /* -------------------------------- component ------------------------------- */
@@ -160,7 +162,9 @@ export default function ConListItem({
   duedate,
   isDeleted,
   onClick,
-}: ConListProps) {
+  handleTrashClick,
+  handleRestoreClick,
+}: ConListItemProps) {
   const dateObject: Date = new Date(duedate);
   const dueDateString: string = dateObject.toISOString().split('T')[0];
   const dateTodayObject: Date = new Date();
@@ -202,11 +206,25 @@ export default function ConListItem({
 
       {isTrash ? (
         <ConRightTrashWrapper>
-          <ConRightTrashButton type="button" $restore={false}>
+          <ConRightTrashButton
+            type="button"
+            $restore={false}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleTrashClick?.();
+            }}
+          >
             <TbTrash />
             &nbsp;영구삭제
           </ConRightTrashButton>
-          <ConRightTrashButton type="button" $restore={true}>
+          <ConRightTrashButton
+            type="button"
+            $restore={true}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleRestoreClick?.();
+            }}
+          >
             <TbRestore />
             &nbsp;복원
           </ConRightTrashButton>
