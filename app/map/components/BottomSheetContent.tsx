@@ -1,5 +1,6 @@
 'use client';
 
+import eventBus from '@/types/EventBus';
 import styled from 'styled-components';
 import ConListItem from '@/components/ConListItem';
 import { giftList } from '@/app/giftData';
@@ -33,6 +34,7 @@ export default function BottomSheetContent({
 }: BottomSheetContentProps) {
   const handleItemClick = (key: string) => {
     setSelectedItemKey(key);
+    eventBus.emit('itemClicked', key);
     moveSheetToBottom();
   };
 

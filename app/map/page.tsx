@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import { useState, useRef } from 'react';
-import styled from 'styled-components';
-import ReactKakaoMap from '@/app/map/components/KakaoMap';
+import KakaoMap from '@/app/map/components/KakaoMap';
+import useGeolocation from '@/hooks/useGeolocation';
+import { useRef, useState } from 'react';
 import { MdMyLocation } from 'react-icons/md';
+import styled from 'styled-components';
 import BottomSheet from './components/BottomSheet';
 
 /* ---------------------------------- style --------------------------------- */
@@ -21,9 +22,8 @@ const MyLocation = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 1.5rem;
-  color: var(--deepgray);
   width: 2.5rem;
+  height: auto;
   aspect-ratio: 1/1;
   border: none;
   border-radius: 50%;
@@ -33,39 +33,43 @@ const MyLocation = styled.button`
   left: 15px;
   bottom: 160px;
   z-index: 1;
+
+  svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
 `;
 
 /* ---------------------------------- component --------------------------------- */
 export default function Map() {
   const [selectedItemKey, setSelectedItemKey] = useState<string | null>(null);
   const mapRef = useRef<any>(null);
+  const { location, error } = useGeolocation();
 
   const findMyLocation = () => {
-    if (!navigator.geolocation) {
-      alert('브라우저가 사용자 위치 파악 api를 지원하지 않습니다.');
+    if (error) {
+      alert(error); // Geolocation에서 발생한 에러 메시지 표시
       return;
     }
+    if (location) {
+      console.log('현재 위치:', location.longitude, location.latitude);
+      const newCenter = new window.kakao.maps.LatLng(
+        location.latitude,
+        location.longitude
+      );
+      mapRef.current.setCenter(newCenter);
+    }
+  };
 
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-        console.log('현재 위치:', longitude, latitude);
-
-        if (mapRef.current) {
-          const newCenter = new window.kakao.maps.LatLng(latitude, longitude);
-          mapRef.current.setCenter(newCenter);
-        }
-      },
-      (error) => {
-        console.error('Error fetching location:', error);
-        alert('위치를 가져오는 데 실패했습니다.');
-      }
-    );
+  const handleItemClick = (key: string) => {
+    if (key !== selectedItemKey) {
+      setSelectedItemKey(key);
+    }
   };
 
   return (
     <MapContainer>
-      <ReactKakaoMap
+      <KakaoMap
         onMapLoad={(map) => (mapRef.current = map)}
         searchKeyword={selectedItemKey}
       />
@@ -74,7 +78,7 @@ export default function Map() {
       </MyLocation>
       <BottomSheet
         selectedItemKey={selectedItemKey}
-        setSelectedItemKey={setSelectedItemKey}
+        setSelectedItemKey={handleItemClick}
       />
     </MapContainer>
   );
