@@ -1,7 +1,7 @@
 'use client';
 
 import styled from 'styled-components';
-import { CategoryListItem } from '@/types/categories';
+import { CategoryListItem } from '@/types/Categories';
 import { CATEGORY_LIST } from '@/constants';
 import { useId } from 'react';
 

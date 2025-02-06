@@ -2,7 +2,7 @@
 
 import Button from '@/components/Button';
 import ModalDialog from '@/components/ModalDialog';
-import { CategoryListItem } from '@/types/categories';
+import { CategoryListItem } from '@/types/Categories';
 import { ImageState } from '@/types/ImageState';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
