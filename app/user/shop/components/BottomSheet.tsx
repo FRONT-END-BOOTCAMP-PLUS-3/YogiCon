@@ -45,15 +45,11 @@ const BSContentBox = styled.div`
 
 /* ---------------------------------- type --------------------------------- */
 type BottomSheetProps = {
-  selectedItemKey: string | null;
   setSelectedItemKey: (key: string) => void;
 };
 
 /* ---------------------------------- component --------------------------------- */
-function BottomSheet({
-  selectedItemKey,
-  setSelectedItemKey,
-}: BottomSheetProps) {
+function BottomSheet({ setSelectedItemKey }: BottomSheetProps) {
   const { sheet, content, moveSheetToBottom } = useBottomSheet();
   const { bottomSheetHeight } = useBottomSheetDimensions();
 
@@ -63,7 +59,6 @@ function BottomSheet({
       <BottomSheetHeader />
       <BSContentBox ref={content}>
         <BottomSheetContent
-          selectedItemKey={selectedItemKey}
           setSelectedItemKey={setSelectedItemKey}
           moveSheetToBottom={moveSheetToBottom}
         />

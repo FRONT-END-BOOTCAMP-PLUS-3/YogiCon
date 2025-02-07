@@ -6,7 +6,6 @@ import { MdMyLocation } from 'react-icons/md';
 import styled from 'styled-components';
 import BottomSheet from './components/BottomSheet';
 import KakaoMap from './components/KakaoMap';
-import useGeolocation from '@/hooks/useGeolocation';
 
 /* ---------------------------------- style --------------------------------- */
 const MapContainer = styled.div`
@@ -27,6 +26,7 @@ const MyLocation = styled.button`
   aspect-ratio: 1/1;
   border: none;
   border-radius: 50%;
+  color: var(--deepgray);
   background-color: var(--white);
   box-shadow: 2px 2px 5px var(--disabled);
   position: absolute;
@@ -44,27 +44,32 @@ const MyLocation = styled.button`
 export default function Map() {
   const [selectedItemKey, setSelectedItemKey] = useState<string | null>(null);
   const mapRef = useRef<any>(null);
-  const { location, error } = useGeolocation();
+  const [savedLocation, setSavedLocation] = useState<{
+    lat: number;
+    lng: number;
+  } | null>(null);
 
   const findMyLocation = () => {
-    if (error) {
-      alert(error); // Geolocation에서 발생한 에러 메시지 표시
-      return;
-    }
-    if (location) {
-      console.log('현재 위치:', location.longitude, location.latitude);
+    if (mapRef.current && savedLocation) {
       const newCenter = new window.kakao.maps.LatLng(
-        location.latitude,
-        location.longitude
+        savedLocation.lat,
+        savedLocation.lng
       );
       mapRef.current.setCenter(newCenter);
     }
   };
 
+  // const handleMapLoad = (
+  //   map: any,
+  //   initialLocation: { lat: number; lng: number }
+  // ) => {
+  //   setMapInstance(map);
+  //   setSavedLocation(initialLocation);
+  //   console.log(initialLocation);
+  // };
+
   const handleItemClick = (key: string) => {
-    if (key !== selectedItemKey) {
-      setSelectedItemKey(key);
-    }
+    setSelectedItemKey(key);
   };
 
   return (
@@ -76,10 +81,7 @@ export default function Map() {
       <MyLocation type="button" onClick={findMyLocation}>
         <MdMyLocation />
       </MyLocation>
-      <BottomSheet
-        selectedItemKey={selectedItemKey}
-        setSelectedItemKey={handleItemClick}
-      />
+      <BottomSheet setSelectedItemKey={handleItemClick} />
     </MapContainer>
   );
 }

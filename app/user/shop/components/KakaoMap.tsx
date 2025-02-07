@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import { useEffect, useState } from 'react';
 import useGeolocation from '@/hooks/useGeolocation';
 import { searchPlaces } from '@/hooks/useSearchPlaces';
 import EventBus from '@/types/EventBus';
+import { useEffect, useState } from 'react';
 
 declare global {
   interface Window {
@@ -17,11 +17,10 @@ type ReactKakoMapProps = {
   searchKeyword: string | null;
 };
 
-const KakaoMap = ({ onMapLoad }: ReactKakoMapProps) => {
+const KakaoMap = ({ onMapLoad, searchKeyword }: ReactKakoMapProps) => {
   const apiKey: string | undefined = process.env.NEXT_PUBLIC_KAKAO_KEY;
   const { location } = useGeolocation();
   const [loadedMap, setLoadedMap] = useState<any>(null);
-  const [searchKeyword, setSearchKeyword] = useState<string | null>(null); // itemClicked 값 저장
   const [clicked, setClicked] = useState<boolean>(false);
 
   useEffect(() => {
@@ -72,22 +71,22 @@ const KakaoMap = ({ onMapLoad }: ReactKakoMapProps) => {
     return () => {
       document.head.removeChild(script);
     };
-  }, [apiKey, location]);
+  }, [apiKey, location, onMapLoad]);
 
   // `itemClicked` 이벤트 감지하여 `searchKeyword` 업데이트
-  useEffect(() => {
-    const handleItemClicked = (key: string) => {
-      console.log('카카오맵에서 감지된 키워드:', key);
-      setSearchKeyword(key);
-      setClicked(true);
-    };
+  // useEffect(() => {
+  //   const handleItemClicked = (key: string) => {
+  //     console.log('카카오맵에서 감지된 키워드:', key);
+  //     setSearchKeyword(key);
+  //     setClicked(true);
+  //   };
 
-    EventBus.on('itemClicked', handleItemClicked);
+  //   EventBus.on('itemClicked', handleItemClicked);
 
-    return () => {
-      EventBus.off('itemClicked', handleItemClicked);
-    };
-  }, []);
+  //   return () => {
+  //     EventBus.off('itemClicked', handleItemClicked);
+  //   };
+  // }, []);
 
   // `searchKeyword`가 변경될 때마다 `searchPlaces` 실행
   useEffect(() => {

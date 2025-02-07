@@ -22,7 +22,6 @@ const BSContentList = styled.ul`
 
 /* ---------------------------------- type --------------------------------- */
 type BottomSheetContentProps = {
-  selectedItemKey: string | null;
   setSelectedItemKey: (key: string) => void;
   moveSheetToBottom: () => void;
 };
@@ -33,7 +32,8 @@ export default function BottomSheetContent({
   moveSheetToBottom,
 }: BottomSheetContentProps) {
   const handleItemClick = (key: string) => {
-    setSelectedItemKey(key);
+    const newKey = new String(key).toString();
+    setSelectedItemKey(newKey);
     EventBus.emit('itemClicked', key);
     moveSheetToBottom();
   };
