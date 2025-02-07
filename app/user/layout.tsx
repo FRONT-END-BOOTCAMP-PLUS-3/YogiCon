@@ -7,7 +7,7 @@ import { usePathname } from 'next/navigation';
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
 
-  const hideNavbarPaths = ['/user/gifts/'];
+  const hideNavbarPaths = ['/user/gifts/', '/user/shop'];
   const shouldHideNavbar = hideNavbarPaths.some((path) =>
     pathname.startsWith(path)
   );
