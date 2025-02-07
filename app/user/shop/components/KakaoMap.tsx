@@ -5,7 +5,7 @@ import useGeolocation from '@/hooks/useGeolocation';
 import { searchPlaces } from '@/hooks/useSearchPlaces';
 import EventBus from '@/types/EventBus';
 import { useEffect, useState } from 'react';
-import { Location } from '@/types/map';
+import { Location } from '@/types/Location';
 
 declare global {
   interface Window {

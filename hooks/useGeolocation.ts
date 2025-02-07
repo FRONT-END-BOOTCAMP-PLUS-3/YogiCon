@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from 'react';
-import { Location } from '@/types/map';
+import { Location } from '@/types/Location';
 
 const useGeolocation = () => {
   const [location, setLocation] = useState<Location | null>(null)

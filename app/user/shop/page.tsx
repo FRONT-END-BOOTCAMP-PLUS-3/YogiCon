@@ -6,7 +6,7 @@ import { MdMyLocation } from 'react-icons/md';
 import styled from 'styled-components';
 import BottomSheet from './components/BottomSheet';
 import KakaoMap from './components/KakaoMap';
-import { Location } from '@/types/map';
+import { Location } from '@/types/Location';
 
 /* ---------------------------------- style --------------------------------- */
 const MapContainer = styled.div`
