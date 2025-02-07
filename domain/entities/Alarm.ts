@@ -1,4 +1,4 @@
-export interface Notification {
+export interface Alarm {
   id: string; // UUID
   day: number;
   hour: number;
