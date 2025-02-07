@@ -5,6 +5,7 @@ import useGeolocation from '@/hooks/useGeolocation';
 import { searchPlaces } from '@/hooks/useSearchPlaces';
 import EventBus from '@/types/EventBus';
 import { useEffect, useState } from 'react';
+import { Location } from '@/types/map';
 
 declare global {
   interface Window {
@@ -13,7 +14,7 @@ declare global {
 }
 
 type ReactKakoMapProps = {
-  onMapLoad: (map: any) => void;
+  onMapLoad: (map: any, initalLocation: Location) => void;
   searchKeyword: string | null;
 };
 
@@ -59,7 +60,10 @@ const KakaoMap = ({ onMapLoad, searchKeyword }: ReactKakoMapProps) => {
           const options = { center: coords, level: 3 };
           const map = new window.kakao.maps.Map(container, options);
 
-          onMapLoad(map);
+          onMapLoad(map, {
+            longitude: location.longitude,
+            latitude: location.latitude,
+          });
           setLoadedMap(map);
 
           const message = '<div style="padding:5px;">현재위치</div>';

@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import { useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { MdMyLocation } from 'react-icons/md';
 import styled from 'styled-components';
 import BottomSheet from './components/BottomSheet';
 import KakaoMap from './components/KakaoMap';
+import { Location } from '@/types/map';
 
 /* ---------------------------------- style --------------------------------- */
 const MapContainer = styled.div`
@@ -44,29 +45,23 @@ const MyLocation = styled.button`
 export default function Map() {
   const [selectedItemKey, setSelectedItemKey] = useState<string | null>(null);
   const mapRef = useRef<any>(null);
-  const [savedLocation, setSavedLocation] = useState<{
-    lat: number;
-    lng: number;
-  } | null>(null);
+  const [savedLocation, setSavedLocation] = useState<Location | null>(null);
 
   const findMyLocation = () => {
     if (mapRef.current && savedLocation) {
       const newCenter = new window.kakao.maps.LatLng(
-        savedLocation.lat,
-        savedLocation.lng
+        savedLocation.latitude,
+        savedLocation.longitude
       );
       mapRef.current.setCenter(newCenter);
     }
   };
 
-  // const handleMapLoad = (
-  //   map: any,
-  //   initialLocation: { lat: number; lng: number }
-  // ) => {
-  //   setMapInstance(map);
-  //   setSavedLocation(initialLocation);
-  //   console.log(initialLocation);
-  // };
+  const handleMapLoad = useCallback((map: any, initialLocation: Location) => {
+    mapRef.current = map;
+    setSavedLocation(initialLocation);
+    console.log(initialLocation);
+  }, []);
 
   const handleItemClick = (key: string) => {
     setSelectedItemKey(key);
@@ -74,10 +69,7 @@ export default function Map() {
 
   return (
     <MapContainer>
-      <KakaoMap
-        onMapLoad={(map) => (mapRef.current = map)}
-        searchKeyword={selectedItemKey}
-      />
+      <KakaoMap onMapLoad={handleMapLoad} searchKeyword={selectedItemKey} />
       <MyLocation type="button" onClick={findMyLocation}>
         <MdMyLocation />
       </MyLocation>
