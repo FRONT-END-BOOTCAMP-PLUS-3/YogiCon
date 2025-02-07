@@ -34,10 +34,10 @@ type BackButtonHeaderProps = {
 /* -------------------------------- component ------------------------------- */
 const BackButtonHeader = ({ pathname }: BackButtonHeaderProps) => {
   const headerMatcher: { [key: string]: string } = {
-    '/map': '근처 매장 찾기',
-    '/trash': '휴지통',
-    '/add-con': '기프티콘 등록',
-    '/view-con': '기프티콘 상세',
+    '/user/shop': '근처 매장 찾기',
+    '/user/gifts/disabled': '휴지통',
+    '/user/gifts/create': '기프티콘 등록',
+    '/user/gifts/': '기프티콘 상세',
   };
 
   const matchingKey = Object.keys(headerMatcher).find((key) =>

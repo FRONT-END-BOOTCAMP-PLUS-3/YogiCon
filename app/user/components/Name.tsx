@@ -1,5 +1,5 @@
-import styled from 'styled-components';
 import { LuUserRound } from 'react-icons/lu';
+import styled from 'styled-components';
 
 /* ---------------------------------- style --------------------------------- */
 const NameContainer = styled.div`

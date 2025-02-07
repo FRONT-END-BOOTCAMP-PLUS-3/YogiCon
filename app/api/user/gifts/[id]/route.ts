@@ -6,7 +6,7 @@ export async function GET(request: Request) {
   const id = url.pathname.split('/').pop();
 
   // 더미 데이터
-  const conInfo = giftList.find((item) => item.id === id);
+  const giftInfo = giftList.find((item) => item.id === id);
 
-  return NextResponse.json(conInfo);
+  return NextResponse.json(giftInfo);
 }

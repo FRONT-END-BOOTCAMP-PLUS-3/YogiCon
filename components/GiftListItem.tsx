@@ -4,11 +4,11 @@ import Image from 'next/image';
 import { IoIosArrowForward } from 'react-icons/io';
 import { TbRestore, TbTrash } from 'react-icons/tb';
 import styled from 'styled-components';
-import ConListBadge from './ConListBadge';
+import GiftListBadge from './GiftListBadge';
 import { Categories } from '@/types/Categories';
 
 /* ---------------------------------- style --------------------------------- */
-const ConContainer = styled.li`
+const GiftContainer = styled.li`
   /* cursor: pointer; */
   width: 100%;
   height: fit-content;
@@ -24,7 +24,7 @@ const ConContainer = styled.li`
 `;
 
 // 왼쪽
-const ConLeftWrapper = styled.div`
+const GiftLeftWrapper = styled.div`
   width: 20%;
   aspect-ratio: 1/1;
   border-radius: 15px;
@@ -34,19 +34,19 @@ const ConLeftWrapper = styled.div`
   transition: 0.3s ease all;
 `;
 
-const ConLeftImage = styled(Image)`
+const GiftLeftImage = styled(Image)`
   width: 100%;
   height: 100%;
   object-fit: contain;
 `;
 
-const ConLeftBadge = styled.div`
+const GiftLeftBadge = styled.div`
   position: absolute;
   right: -0.9375rem;
   top: -0.9375rem;
 `;
 
-const ConLeftExpiredText = styled.span`
+const GiftLeftExpiredText = styled.span`
   width: 100%;
   height: 100%;
   display: flex;
@@ -63,7 +63,7 @@ const ConLeftExpiredText = styled.span`
 `;
 
 // 중앙
-const ConCenterWrapper = styled.div<{ $isTrash: boolean }>`
+const GiftCenterWrapper = styled.div<{ $isTrash: boolean }>`
   width: 50%;
   display: flex;
   flex-direction: column;
@@ -71,7 +71,7 @@ const ConCenterWrapper = styled.div<{ $isTrash: boolean }>`
   align-items: flex-start;
 `;
 
-const ConCategoryText = styled.span`
+const GiftCategoryText = styled.span`
   font-size: 0.7rem;
   padding: 3px 1.5rem;
   border: 1px solid var(--sub);
@@ -79,7 +79,7 @@ const ConCategoryText = styled.span`
   background-color: var(--white);
 `;
 
-const ConTitleText = styled.h3`
+const GiftTitleText = styled.h3`
   width: 100%;
   font-size: 1rem;
   margin-bottom: 0.3125rem;
@@ -88,12 +88,12 @@ const ConTitleText = styled.h3`
   text-overflow: ellipsis;
 `;
 
-const ConDueDate = styled.span`
+const GiftDueDate = styled.span`
   font-size: 0.7rem;
 `;
 
 // 오른쪽
-const ConRightWrapper = styled.div`
+const GiftRightWrapper = styled.div`
   width: 20%;
   width: fit-content;
   display: flex;
@@ -102,7 +102,7 @@ const ConRightWrapper = styled.div`
   align-items: center;
 `;
 
-const ConRightTrashWrapper = styled.div`
+const GiftRightTrashWrapper = styled.div`
   width: 30%;
   display: flex;
   flex-direction: column;
@@ -111,7 +111,7 @@ const ConRightTrashWrapper = styled.div`
   gap: 0.625rem;
 `;
 
-const ConRightTrashButton = styled.button<{ $restore: boolean }>`
+const GiftRightTrashButton = styled.button<{ $restore: boolean }>`
   cursor: pointer;
   display: flex;
   flex-direction: row;
@@ -141,7 +141,7 @@ const ConRightTrashButton = styled.button<{ $restore: boolean }>`
 `;
 
 /* ---------------------------------- type ---------------------------------- */
-type ConListItemProps = {
+type GiftListItemProps = {
   imageUrl: string;
   category: Categories;
   brand: string;
@@ -154,7 +154,7 @@ type ConListItemProps = {
 };
 
 /* -------------------------------- component ------------------------------- */
-export default function ConListItem({
+export default function GiftListItem({
   imageUrl,
   category,
   brand,
@@ -164,7 +164,7 @@ export default function ConListItem({
   onClick,
   handleTrashClick,
   handleRestoreClick,
-}: ConListItemProps) {
+}: GiftListItemProps) {
   const dateObject: Date = new Date(duedate);
   const dueDateString: string = dateObject.toISOString().split('T')[0];
   const dateTodayObject: Date = new Date();
@@ -185,28 +185,28 @@ export default function ConListItem({
   const isTrash: boolean = isDeleted || isExpired;
 
   return (
-    <ConContainer onClick={onClick}>
-      <ConLeftWrapper>
-        <ConLeftImage src={imageUrl} alt="gifticon" width={100} height={100} />
+    <GiftContainer onClick={onClick}>
+      <GiftLeftWrapper>
+        <GiftLeftImage src={imageUrl} alt="gifticon" width={100} height={100} />
         {isDeleted && !isExpired && (
-          <ConLeftBadge>
-            <ConListBadge duedate={duedate} isLarge={false} />
-          </ConLeftBadge>
+          <GiftLeftBadge>
+            <GiftListBadge duedate={duedate} isLarge={false} />
+          </GiftLeftBadge>
         )}
-        {isExpired && <ConLeftExpiredText>기한만료</ConLeftExpiredText>}
-      </ConLeftWrapper>
+        {isExpired && <GiftLeftExpiredText>기한만료</GiftLeftExpiredText>}
+      </GiftLeftWrapper>
 
-      <ConCenterWrapper $isTrash={isTrash}>
-        <ConCategoryText>{category}</ConCategoryText>
-        <ConTitleText>
+      <GiftCenterWrapper $isTrash={isTrash}>
+        <GiftCategoryText>{category}</GiftCategoryText>
+        <GiftTitleText>
           [{brand}] {productName}
-        </ConTitleText>
-        <ConDueDate>유효기간: ~{dueDateString}</ConDueDate>
-      </ConCenterWrapper>
+        </GiftTitleText>
+        <GiftDueDate>유효기간: ~{dueDateString}</GiftDueDate>
+      </GiftCenterWrapper>
 
       {isTrash ? (
-        <ConRightTrashWrapper>
-          <ConRightTrashButton
+        <GiftRightTrashWrapper>
+          <GiftRightTrashButton
             type="button"
             $restore={false}
             onClick={(e) => {
@@ -216,8 +216,8 @@ export default function ConListItem({
           >
             <TbTrash />
             &nbsp;영구삭제
-          </ConRightTrashButton>
-          <ConRightTrashButton
+          </GiftRightTrashButton>
+          <GiftRightTrashButton
             type="button"
             $restore={true}
             onClick={(e) => {
@@ -227,14 +227,14 @@ export default function ConListItem({
           >
             <TbRestore />
             &nbsp;복원
-          </ConRightTrashButton>
-        </ConRightTrashWrapper>
+          </GiftRightTrashButton>
+        </GiftRightTrashWrapper>
       ) : (
-        <ConRightWrapper>
-          <ConListBadge duedate={duedate} isLarge={true} />
+        <GiftRightWrapper>
+          <GiftListBadge duedate={duedate} isLarge={true} />
           <IoIosArrowForward size={30} style={{ color: 'var(--disabled)' }} />
-        </ConRightWrapper>
+        </GiftRightWrapper>
       )}
-    </ConContainer>
+    </GiftContainer>
   );
 }

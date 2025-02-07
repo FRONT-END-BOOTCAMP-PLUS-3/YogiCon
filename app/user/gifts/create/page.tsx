@@ -8,15 +8,15 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import CategoryDropDown from './components/CategoryDropDown';
-import ConInfoField from './components/ConInfoField';
+import GiftInfoField from './components/GiftInfoField';
 import ImageUpload from './components/ImageUpload';
 
 /* ---------------------------------- style --------------------------------- */
-const AddConContainer = styled.div`
+const CreateGiftContainer = styled.div`
   padding: 1rem 2.5rem 5rem 2.5rem;
 `;
 
-const AddConImage = styled(Image)`
+const CreateGiftImage = styled(Image)`
   width: 6.375rem;
   aspect-ratio: 1;
   height: auto;
@@ -38,7 +38,7 @@ const ModalText = styled.p`
   line-height: 1.5;
 `;
 
-const AddConText = styled.h2`
+const CreateGiftText = styled.h2`
   margin: 1.75rem 0;
   font-size: 1.1875rem;
   font-weight: bold;
@@ -47,7 +47,7 @@ const AddConText = styled.h2`
 const InputForm = styled.form``;
 
 /* ---------------------------------- type ---------------------------------- */
-type ConInfo = {
+type GiftInfo = {
   brand: string;
   productName: string;
   barcode: string;
@@ -58,18 +58,18 @@ type ConInfo = {
 
 type InputFields = {
   label: string;
-  field: keyof Omit<ConInfo, 'category'>;
+  field: keyof Omit<GiftInfo, 'category'>;
 };
 
 /* -------------------------------- component ------------------------------- */
-const AddCon = () => {
+const CreateGift = () => {
   const [imageState, setImageState] = useState<ImageState>({
     imageFile: null,
     imageSrc: '',
     imageUrl: '',
   });
 
-  const [conInfo, setConInfo] = useState<ConInfo>({
+  const [giftInfo, setGiftInfo] = useState<GiftInfo>({
     brand: '',
     productName: '',
     barcode: '',
@@ -89,34 +89,34 @@ const AddCon = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
-    setConInfo((prev) => ({
+    setGiftInfo((prev) => ({
       ...prev,
       imageSrc: imageState.imageSrc,
     }));
   }, [imageState.imageSrc]);
 
   useEffect(() => {
-    const allFieldsFilled = Object.values(conInfo).every(
+    const allFieldsFilled = Object.values(giftInfo).every(
       (value) => value.trim() !== ''
     );
     setIsFormFilled(allFieldsFilled);
-  }, [conInfo]);
+  }, [giftInfo]);
 
   const handleModal = () => {
     setIsModalOpen(true);
   };
 
-  const handleChange = (field: keyof ConInfo, value: string) => {
-    setConInfo((prev) => ({ ...prev, [field]: value }));
+  const handleChange = (field: keyof GiftInfo, value: string) => {
+    setGiftInfo((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('form Data:', conInfo);
+    console.log('form Data:', giftInfo);
   };
 
   return (
-    <AddConContainer>
+    <CreateGiftContainer>
       <Button isLong={false} color="main" onClick={handleModal}>
         정보입력확인모달창
       </Button>
@@ -128,8 +128,8 @@ const AddCon = () => {
         }}
       >
         <ModalBox>
-          <AddConImage
-            src="/add_con_image.png"
+          <CreateGiftImage
+            src="/create_gift_image.png"
             alt="등록캐릭터"
             width={102}
             height={102}
@@ -141,20 +141,20 @@ const AddCon = () => {
           </ModalText>
         </ModalBox>
       </ModalDialog>
-      <AddConText>사진 등록</AddConText>
+      <CreateGiftText>사진 등록</CreateGiftText>
       <ImageUpload imageState={imageState} setImageState={setImageState} />
-      <AddConText>기프티콘 정보</AddConText>
+      <CreateGiftText>기프티콘 정보</CreateGiftText>
       <InputForm onSubmit={handleSubmit}>
         {inputFields.map(({ label, field }) => (
-          <ConInfoField
+          <GiftInfoField
             key={field}
             label={label}
-            value={conInfo[field]}
+            value={giftInfo[field]}
             onChange={(e) => handleChange(field, e.target.value)}
           />
         ))}
         <CategoryDropDown
-          selectedCategory={conInfo.category}
+          selectedCategory={giftInfo.category}
           onChange={(e) => handleChange('category', e.target.value)}
         />
         <Button
@@ -165,8 +165,8 @@ const AddCon = () => {
           등록하기
         </Button>
       </InputForm>
-    </AddConContainer>
+    </CreateGiftContainer>
   );
 };
 
-export default AddCon;
+export default CreateGift;

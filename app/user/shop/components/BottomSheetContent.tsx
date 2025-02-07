@@ -1,8 +1,8 @@
 'use client';
 
-import styled from 'styled-components';
-import ConListItem from '@/components/ConListItem';
 import { giftList } from '@/app/giftData';
+import GiftListItem from '@/components/GiftListItem';
+import styled from 'styled-components';
 
 /* ---------------------------------- style --------------------------------- */
 const BSContentContainer = styled.div`
@@ -40,7 +40,7 @@ export default function BottomSheetContent({
     <BSContentContainer>
       <BSContentList>
         {giftList.map((gift, index) => (
-          <ConListItem
+          <GiftListItem
             key={index}
             {...gift}
             onClick={() => handleItemClick(`${gift.brand}`)}

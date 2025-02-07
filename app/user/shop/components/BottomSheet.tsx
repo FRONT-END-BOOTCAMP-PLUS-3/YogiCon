@@ -1,11 +1,11 @@
 'use client';
 
 import { useBottomSheetDimensions } from '@/hooks/bottomSheetOption';
-import styled from 'styled-components';
-import { motion } from 'framer-motion';
 import useBottomSheet from '@/hooks/useBottomSheet';
-import BottomSheetHeader from './BottomSheetHeader';
+import { motion } from 'framer-motion';
+import styled from 'styled-components';
 import BottomSheetContent from './BottomSheetContent';
+import BottomSheetHeader from './BottomSheetHeader';
 
 /* ---------------------------------- style --------------------------------- */
 const Container = styled(motion.div)<{ height: number }>`

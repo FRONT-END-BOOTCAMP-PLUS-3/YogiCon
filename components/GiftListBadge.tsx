@@ -29,16 +29,16 @@ const BadgeDayText = styled.p<{ $isLarge: boolean }>`
 `;
 
 /* ---------------------------------- type --------------------------------- */
-type ConListBadgeProps = {
+type GiftListBadgeProps = {
   duedate: string;
   isLarge: boolean;
 };
 
 /* ---------------------------------- component --------------------------------- */
-export default function ConListBadge({
+export default function GiftListBadge({
   duedate,
   isLarge = true,
-}: ConListBadgeProps) {
+}: GiftListBadgeProps) {
   const dateObject: Date = new Date(duedate);
   const dateTodayObject: Date = new Date();
 

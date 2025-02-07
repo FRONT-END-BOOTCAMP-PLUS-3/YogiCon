@@ -1,13 +1,13 @@
 'use client';
 
-import ConListItem from '@/components/ConListItem';
+import { GiftInfo } from '@/app/giftData';
+import GiftListItem from '@/components/GiftListItem';
 import { CategoryListItem } from '@/types/Categories';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { LuPlus } from 'react-icons/lu';
 import styled from 'styled-components';
-import { ConInfo } from '../../giftData';
 import CategoryFilter from './components/CategoryFilter';
 import SearchForm from './components/SearchForm';
 
@@ -26,7 +26,7 @@ const FilterSection = styled.section`
   border-bottom: 0.5px solid var(--disabled);
 `;
 
-const ConListSection = styled.section<{ $isEmpty: boolean }>`
+const GiftListSection = styled.section<{ $isEmpty: boolean }>`
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -35,17 +35,17 @@ const ConListSection = styled.section<{ $isEmpty: boolean }>`
   padding: 0 5% 5.25rem 5%;
 `;
 
-const ConList = styled.ul`
+const GiftList = styled.ul`
   width: 100%;
 `;
 
-const NoConImg = styled(Image)`
+const NoGiftImg = styled(Image)`
   width: 52%;
   height: auto;
   aspect-ratio: 205/268;
   margin-bottom: 1.5rem;
 `;
-const NoConText = styled.p`
+const NoGiftText = styled.p`
   white-space: pre-line;
   color: var(--disabled);
   text-align: center;
@@ -83,14 +83,14 @@ const Home = () => {
   const [searchWord, setSearchWord] = useState('');
   const [searchInputValue, setSearchInputValue] = useState('');
 
-  const [conList, setConList] = useState<ConInfo[]>([]);
-  const isEmpty = conList.length === 0;
+  const [giftList, setGiftList] = useState<GiftInfo[]>([]);
+  const isEmpty = giftList.length === 0;
 
   useEffect(() => {
-    const fetchConList = async () => {
+    const fetchGiftList = async () => {
       try {
         const res = await fetch(
-          `/api/home?selectedCategory=${selectedCategory}&searchWord=${searchWord}`
+          `/api/user/gifts?selectedCategory=${selectedCategory}&searchWord=${searchWord}`
         );
 
         if (!res.ok) {
@@ -98,7 +98,7 @@ const Home = () => {
         }
 
         const data = await res.json();
-        setConList(data);
+        setGiftList(data);
       } catch (err: unknown) {
         if (err instanceof Error) {
           console.error(err.message);
@@ -108,7 +108,7 @@ const Home = () => {
       }
     };
 
-    fetchConList();
+    fetchGiftList();
   }, [searchWord, selectedCategory]);
 
   const handleCategoryButtonClick = (value: CategoryListItem) => () => {
@@ -123,12 +123,12 @@ const Home = () => {
     setSearchInputValue(e.target.value);
   };
 
-  const handleConListItemClick = (id: string) => () => {
-    router.push(`/view-con/${id}`);
+  const handleGiftListItemClick = (id: string) => () => {
+    router.push(`/user/gifts/${id}`);
   };
 
   const handleRegisterClick = () => {
-    router.push('/add-con');
+    router.push('/user/gifts/create');
   };
 
   return (
@@ -144,32 +144,32 @@ const Home = () => {
         />
       </FilterSection>
 
-      <ConListSection aria-label="기프티콘 목록" $isEmpty={isEmpty}>
+      <GiftListSection aria-label="기프티콘 목록" $isEmpty={isEmpty}>
         {!isEmpty ? (
-          <ConList>
-            {conList.map((item) => (
-              <ConListItem
+          <GiftList>
+            {giftList.map((item) => (
+              <GiftListItem
                 key={item.id}
-                onClick={handleConListItemClick(item.id)}
+                onClick={handleGiftListItemClick(item.id)}
                 {...item}
               />
             ))}
-          </ConList>
+          </GiftList>
         ) : (
           <>
-            <NoConImg
+            <NoGiftImg
               src="/no_gift_image.webp"
               priority={true}
               width={205}
               height={268}
               alt="선물상자 캐릭터"
             />
-            <NoConText>
+            <NoGiftText>
               {'등록된 기프티콘이 없어요! \n ⊕ 버튼을 눌러 등록해보세요'}
-            </NoConText>
+            </NoGiftText>
           </>
         )}
-      </ConListSection>
+      </GiftListSection>
 
       <RegisterButton type="button" onClick={handleRegisterClick}>
         <LuPlus

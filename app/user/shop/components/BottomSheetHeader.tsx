@@ -1,7 +1,7 @@
 'use client';
 
-import styled from 'styled-components';
 import { MdOutlineStorefront } from 'react-icons/md';
+import styled from 'styled-components';
 
 /* ---------------------------------- style --------------------------------- */
 const Wrapper = styled.div`

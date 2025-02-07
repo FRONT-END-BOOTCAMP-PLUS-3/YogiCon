@@ -4,10 +4,10 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import styled from 'styled-components';
 
-import Alarm from '@/app/my/components/Alarm';
-import MyButton from '@/app/my/components/MyButton';
-import Name from '@/app/my/components/Name';
 import ModalDialog from '@/components/ModalDialog';
+import Alarm from './components/Alarm';
+import MyButton from './components/MyButton';
+import Name from './components/Name';
 
 /* ---------------------------------- style --------------------------------- */
 const MyContainer = styled.div`
@@ -54,7 +54,7 @@ const My = () => {
   const handleConfirm = () => {
     if (actionType === 'logout') {
       console.log('로그아웃 실행');
-      router.push('/login');
+      router.push('/');
     } else if (actionType === 'deleteID') {
       console.log('회원탈퇴 실행');
       router.push('/');
@@ -66,7 +66,10 @@ const My = () => {
     <MyContainer>
       <Name />
       <Alarm />
-      <MyButton id="trash" onClick={() => router.push('/trash')} />
+      <MyButton
+        id="trash"
+        onClick={() => router.push('/user/gifts/disabled')}
+      />
       <MyButton id="logout" onClick={() => openModal('logout')} />
       <MyButton id="deleteID" onClick={() => openModal('deleteID')} />
 

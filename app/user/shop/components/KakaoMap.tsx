@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import { useEffect } from 'react';
 import useGeolocation from '@/hooks/useGeolocation';
+import { useEffect } from 'react';
 
 declare global {
   interface Window {

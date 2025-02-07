@@ -1,10 +1,10 @@
 'use client';
 
-import ConListItem from '@/components/ConListItem';
+import { GiftInfo } from '@/app/giftData';
+import GiftListItem from '@/components/GiftListItem';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { ConInfo } from '../giftData';
 
 const TrashContainer = styled.main<{ $isEmpty: boolean }>`
   display: flex;
@@ -14,18 +14,18 @@ const TrashContainer = styled.main<{ $isEmpty: boolean }>`
   height: calc(100vh - 3.375rem);
 `;
 
-const ConList = styled.ul`
+const GiftList = styled.ul`
   width: 100%;
   padding: 0 5% 5.25rem 5%;
 `;
 
-const NoConImg = styled(Image)`
+const NoGiftImg = styled(Image)`
   width: 52%;
   height: auto;
   aspect-ratio: 205/268;
   margin-bottom: 1.5rem;
 `;
-const NoConText = styled.p`
+const NoGiftText = styled.p`
   white-space: pre-line;
   color: var(--disabled);
   text-align: center;
@@ -36,13 +36,13 @@ const NoConText = styled.p`
 `;
 
 const Trash = () => {
-  const [trashList, setTrashList] = useState<ConInfo[]>([]);
+  const [trashList, setTrashList] = useState<GiftInfo[]>([]);
   const isEmpty = trashList.length === 0;
 
   useEffect(() => {
     const fetchTrashList = async () => {
       try {
-        const res = await fetch(`/api/trash`);
+        const res = await fetch(`/api/user/gifts/disabled`);
 
         if (!res.ok) {
           throw new Error('Response Error');
@@ -65,21 +65,21 @@ const Trash = () => {
   return (
     <TrashContainer $isEmpty={isEmpty}>
       {!isEmpty ? (
-        <ConList>
+        <GiftList>
           {trashList.map((item) => (
-            <ConListItem key={item.id} {...item} />
+            <GiftListItem key={item.id} {...item} />
           ))}
-        </ConList>
+        </GiftList>
       ) : (
         <>
-          <NoConImg
+          <NoGiftImg
             src="/no_gift_image.webp"
             priority={true}
             width={205}
             height={268}
             alt="선물상자 캐릭터"
           />
-          <NoConText>{'삭제된 기프티콘이 없어요!'}</NoConText>
+          <NoGiftText>{'삭제된 기프티콘이 없어요!'}</NoGiftText>
         </>
       )}
     </TrashContainer>

@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import { useState, useRef } from 'react';
-import styled from 'styled-components';
-import ReactKakaoMap from '@/app/map/components/KakaoMap';
+import { useRef, useState } from 'react';
 import { MdMyLocation } from 'react-icons/md';
+import styled from 'styled-components';
 import BottomSheet from './components/BottomSheet';
+import ReactKakaoMap from './components/KakaoMap';
 
 /* ---------------------------------- style --------------------------------- */
 const MapContainer = styled.div`

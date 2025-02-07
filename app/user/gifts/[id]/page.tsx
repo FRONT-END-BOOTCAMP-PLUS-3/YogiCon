@@ -11,10 +11,10 @@ import { FaRegTrashAlt } from 'react-icons/fa';
 import { LuMail } from 'react-icons/lu';
 import { TbBuildingStore } from 'react-icons/tb';
 import styled from 'styled-components';
-import { ConInfo } from '../../giftData';
+import { GiftInfo } from '@/app/giftData';
 
 /* ---------------------------------- style --------------------------------- */
-const ViewConContainer = styled.main`
+const ViewGiftContainer = styled.main`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -22,10 +22,10 @@ const ViewConContainer = styled.main`
   padding-bottom: 3rem;
 `;
 
-const ConImgText = styled.figcaption`
+const GiftImgText = styled.figcaption`
   ${srOnly}
 `;
-const ConImgWrapper = styled.figure`
+const GiftImgWrapper = styled.figure`
   width: 70%;
   aspect-ratio: 3/4;
   position: relative;
@@ -33,10 +33,10 @@ const ConImgWrapper = styled.figure`
   border: 1px solid var(--gray);
   border-radius: 0.625rem;
 `;
-const ConImg = styled(Image)`
+const GiftImg = styled(Image)`
   object-fit: contain;
 `;
-const ConBadge = styled.div`
+const GiftBadge = styled.div`
   position: absolute;
   top: -1.5rem;
   right: -1.5rem;
@@ -109,7 +109,7 @@ const LongButtonWrapper = styled.div`
   width: 80%;
 `;
 
-const ExpandedConImg = styled.img`
+const ExpandedGiftImg = styled.img`
   width: 100%;
   border-radius: 1rem;
 `;
@@ -117,25 +117,25 @@ const ExpandedConImg = styled.img`
 /* ---------------------------------- type ---------------------------------- */
 
 /* -------------------------------- component ------------------------------- */
-const ViewCon = () => {
+const ViewGift = () => {
   const { id } = useParams();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [conInfo, setConInfo] = useState<ConInfo | null>(null);
+  const [giftInfo, setGiftInfo] = useState<GiftInfo | null>(null);
 
   useEffect(() => {
     if (!id) return;
 
-    const fetchConInfo = async () => {
+    const fetchGiftInfo = async () => {
       try {
-        const res = await fetch(`/api/view-con/${id}`);
+        const res = await fetch(`/api/user/gifts/${id}`);
 
         if (!res.ok) {
           throw new Error('Response Error');
         }
 
         const data = await res.json();
-        setConInfo(data);
+        setGiftInfo(data);
       } catch (err: unknown) {
         if (err instanceof Error) {
           console.error(err.message);
@@ -145,25 +145,25 @@ const ViewCon = () => {
       }
     };
 
-    fetchConInfo();
+    fetchGiftInfo();
   }, [id]);
 
-  if (!conInfo) return <div>Loading...</div>;
+  if (!giftInfo) return <div>Loading...</div>;
 
-  const { imageUrl, brand, category, duedate, productName } = conInfo;
+  const { imageUrl, brand, category, duedate, productName } = giftInfo;
 
   return (
-    <ViewConContainer>
+    <ViewGiftContainer>
       {/* 이미지 */}
-      <ConImgWrapper>
-        <ConImgText>
+      <GiftImgWrapper>
+        <GiftImgText>
           브랜드: {brand}, 상품명: {productName}, 카테고리: {category},
           유효기간: {duedate}
-        </ConImgText>
-        <ConImg src={imageUrl} alt={productName} priority={true} fill />
-        <ConBadge>
+        </GiftImgText>
+        <GiftImg src={imageUrl} alt={productName} priority={true} fill />
+        <GiftBadge>
           <div aria-live="polite">D-1</div>
-        </ConBadge>
+        </GiftBadge>
         <ExpandButton
           type="button"
           onClick={() => {
@@ -172,7 +172,7 @@ const ViewCon = () => {
         >
           <CgArrowsExpandRight size={'90%'} />
         </ExpandButton>
-      </ConImgWrapper>
+      </GiftImgWrapper>
 
       {/* 아이콘 버튼 3개 */}
       <IconButtonWrapper>
@@ -219,11 +219,11 @@ const ViewCon = () => {
             setIsModalOpen(false);
           }}
         >
-          <ConImgText>
+          <GiftImgText>
             브랜드: {brand}, 상품명: {productName}, 카테고리: {category},
             유효기간: {duedate}
-          </ConImgText>
-          <ExpandedConImg
+          </GiftImgText>
+          <ExpandedGiftImg
             src={imageUrl}
             alt={productName}
             loading="lazy"
@@ -231,8 +231,8 @@ const ViewCon = () => {
           />
         </figure>
       </ModalDialog>
-    </ViewConContainer>
+    </ViewGiftContainer>
   );
 };
 
-export default ViewCon;
+export default ViewGift;

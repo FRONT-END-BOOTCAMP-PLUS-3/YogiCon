@@ -1,9 +1,9 @@
 'use client';
 
-import styled from 'styled-components';
-import { CategoryListItem } from '@/types/Categories';
 import { CATEGORY_LIST } from '@/constants';
+import { CategoryListItem } from '@/types/Categories';
 import { useId } from 'react';
+import styled from 'styled-components';
 
 /* ---------------------------------- style --------------------------------- */
 const CategoryBox = styled.div`
