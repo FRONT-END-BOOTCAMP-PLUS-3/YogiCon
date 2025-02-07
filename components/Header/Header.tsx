@@ -7,7 +7,7 @@ import LogoHeader from './HeaderComponents/LogoHeader';
 const Header = () => {
   const pathname = usePathname();
 
-  const backButtonPath = ['/map', '/trash', '/add-con', '/view-con'];
+  const backButtonPath = ['/user/gifts/', '/user/shop'];
 
   return (
     <>

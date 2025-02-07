@@ -1,6 +1,6 @@
 import { Categories } from '@/types/Categories';
 
-export type ConInfo = {
+export type GiftInfo = {
   id: string;
   imageUrl: string;
   category: Categories;
@@ -11,7 +11,7 @@ export type ConInfo = {
   ownerUserId: string;
 };
 
-export const giftList: ConInfo[] = [
+export const giftList: GiftInfo[] = [
   {
     id: '1',
     imageUrl: '/gifticon.jpg',
