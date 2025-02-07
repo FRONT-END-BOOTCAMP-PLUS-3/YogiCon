@@ -1,7 +1,7 @@
 import mitt from "mitt";
 
 type Events = {
-  itemClicked: string;
+  itemClicked: boolean;
 };
 
 const EventBus = mitt<Events>();

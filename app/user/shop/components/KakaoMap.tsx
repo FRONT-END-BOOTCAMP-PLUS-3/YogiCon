@@ -4,8 +4,8 @@
 import useGeolocation from '@/hooks/useGeolocation';
 import { searchPlaces } from '@/hooks/useSearchPlaces';
 import EventBus from '@/types/EventBus';
-import { useEffect, useState } from 'react';
 import { Location } from '@/types/Location';
+import { useEffect, useState } from 'react';
 
 declare global {
   interface Window {
@@ -77,20 +77,15 @@ const KakaoMap = ({ onMapLoad, searchKeyword }: ReactKakoMapProps) => {
     };
   }, [apiKey, location, onMapLoad]);
 
-  // `itemClicked` 이벤트 감지하여 `searchKeyword` 업데이트
-  // useEffect(() => {
-  //   const handleItemClicked = (key: string) => {
-  //     console.log('카카오맵에서 감지된 키워드:', key);
-  //     setSearchKeyword(key);
-  //     setClicked(true);
-  //   };
+  useEffect(() => {
+    const handleItemClicked = () => setClicked(true);
 
-  //   EventBus.on('itemClicked', handleItemClicked);
+    EventBus.on('itemClicked', handleItemClicked);
 
-  //   return () => {
-  //     EventBus.off('itemClicked', handleItemClicked);
-  //   };
-  // }, []);
+    return () => {
+      EventBus.off('itemClicked', handleItemClicked);
+    };
+  }, []);
 
   // `searchKeyword`가 변경될 때마다 `searchPlaces` 실행
   useEffect(() => {

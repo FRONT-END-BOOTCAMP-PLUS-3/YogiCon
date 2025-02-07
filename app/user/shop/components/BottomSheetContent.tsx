@@ -34,7 +34,7 @@ export default function BottomSheetContent({
   const handleItemClick = (key: string) => {
     const newKey = new String(key).toString();
     setSelectedItemKey(newKey);
-    EventBus.emit('itemClicked', key);
+    EventBus.emit('itemClicked', true);
     moveSheetToBottom();
   };
 
