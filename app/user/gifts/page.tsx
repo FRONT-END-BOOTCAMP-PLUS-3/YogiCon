@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { LuPlus } from 'react-icons/lu';
 import styled from 'styled-components';
-import { ConInfo } from '../giftData';
+import { ConInfo } from '../../giftData';
 import CategoryFilter from './components/CategoryFilter';
 import SearchForm from './components/SearchForm';
 
