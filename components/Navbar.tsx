@@ -49,19 +49,16 @@ type NavItems = {
 const Navbar = () => {
   const pathname = usePathname();
   const navItems: NavItems[] = [
-    { name: 'Home', icon: <BiHome />, path: '/' },
-    { name: 'Map', icon: <BiMapAlt />, path: '/map' },
-    { name: 'MyInfo', icon: <BiUser />, path: '/my' },
+    { name: 'Home', icon: <BiHome />, path: '/user/gifts' },
+    { name: 'Map', icon: <BiMapAlt />, path: '/user/shop' },
+    { name: 'MyInfo', icon: <BiUser />, path: '/user' },
   ];
 
   return (
     <NavbarBox>
       <NavbarList>
         {navItems.map((item) => {
-          const isActive: boolean =
-            item.path === '/'
-              ? pathname === '/'
-              : pathname.startsWith(item.path);
+          const isActive: boolean = pathname === item.path;
 
           return (
             <NavbarItem key={item.name}>

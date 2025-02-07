@@ -1,18 +1,8 @@
 'use client';
 
-import Header from '@/components/Header/Header';
-import Navbar from '@/components/Navbar';
-import { usePathname } from 'next/navigation';
 import { GlobalStyles } from './globalStyles';
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
-  const pathname = usePathname();
-
-  const hideNavbarPaths = ['/map', '/add-con', '/view-con', '/trash'];
-  const shouldHideNavbar = hideNavbarPaths.some((path) =>
-    pathname.startsWith(path)
-  );
-
   return (
     // <!DOCTYPE html>
     <html lang="en">
@@ -37,9 +27,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
       </head>
       <body>
         <GlobalStyles />
-        <Header />
         <div>{children}</div>
-        {!shouldHideNavbar && <Navbar />}
       </body>
     </html>
   );

@@ -36,8 +36,8 @@ type LogoHeaderProps = {
 const LogoHeader = ({ pathname }: LogoHeaderProps) => {
   // 페이지 경로에 따른 제목
   const headerComponents: { [key: string]: string } = {
-    '/': 'YOGICON',
-    '/my': '마이페이지',
+    '/user/gifts': 'YOGICON',
+    '/user': '마이페이지',
   };
 
   const headerText = headerComponents[pathname] || 'YOGICON'; // 기본값 설정
