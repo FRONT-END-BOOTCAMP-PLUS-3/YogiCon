@@ -1,17 +1,18 @@
 'use client';
 
+import { CreateGiftDto } from '@/application/usecases/gift/dto/CreateGiftDto';
 import Button from '@/components/Button';
 import ModalDialog from '@/components/ModalDialog';
 import { Categories } from '@/types/Categories';
 import { ImageState } from '@/types/ImageState';
+import { uploadImageToStorage } from '@/utils/supabase/storage';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import CategoryDropDown from './components/CategoryDropDown';
 import GiftInfoField from './components/GiftInfoField';
 import ImageUpload from './components/ImageUpload';
-import { CreateGiftDto } from '@/application/usecases/gift/dto/CreateGiftDto';
-import { useRouter } from 'next/navigation';
 
 /* ---------------------------------- style --------------------------------- */
 const CreateGiftContainer = styled.div`
@@ -90,21 +91,12 @@ const CreateGift = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
-    setGiftInfo((prev) => ({
-      ...prev,
-      // imageSrc: imageState.imageSrc,
-      imageUrl: imageState.imageUrl,
-    }));
-  }, [imageState.imageUrl]);
-
-  useEffect(() => {
     const requiredFields: (keyof CreateGiftDto)[] = [
       'brand',
       'productName',
       'barcode',
       'dueDate',
       'category',
-      'imageUrl',
     ];
 
     const allFieldsFilled = requiredFields.every((field) => {
@@ -129,20 +121,26 @@ const CreateGift = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(giftInfo);
-
-    const response = await fetch('/api/user/gifts/create', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(giftInfo),
-    });
-
-    if (response.ok) {
-      alert('기프티콘 등록이 완료되었습니다.');
-      router.push('/user/gifts');
+    if (!imageState.imageFile) {
+      alert('기프티콘 이미지를 입력하세요.');
+      return;
     } else {
-      alert('기프티콘 등록에 실패했습니다.');
+      const imageUrl = await uploadImageToStorage(imageState.imageFile);
+      const updateGiftInfo = { ...giftInfo, imageUrl };
+      const response = await fetch('/api/user/gifts/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updateGiftInfo),
+      });
+
+      if (response.ok) {
+        alert('기프티콘 등록이 완료되었습니다.');
+        router.push('/user/gifts');
+      } else {
+        alert('기프티콘 등록에 실패했습니다.');
+      }
     }
   };
 
