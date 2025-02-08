@@ -2,7 +2,7 @@
 
 import Button from '@/components/Button';
 import ModalDialog from '@/components/ModalDialog';
-import { CategoryListItem } from '@/types/Categories';
+import { Categories } from '@/types/Categories';
 import { ImageState } from '@/types/ImageState';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
@@ -10,6 +10,8 @@ import styled from 'styled-components';
 import CategoryDropDown from './components/CategoryDropDown';
 import GiftInfoField from './components/GiftInfoField';
 import ImageUpload from './components/ImageUpload';
+import { CreateGiftDto } from '@/application/usecases/gift/dto/CreateGiftDto';
+import { useRouter } from 'next/navigation';
 
 /* ---------------------------------- style --------------------------------- */
 const CreateGiftContainer = styled.div`
@@ -47,35 +49,34 @@ const CreateGiftText = styled.h2`
 const InputForm = styled.form``;
 
 /* ---------------------------------- type ---------------------------------- */
-type GiftInfo = {
-  brand: string;
-  productName: string;
-  barcode: string;
-  dueDate: string;
-  category: CategoryListItem | '';
-  imageSrc: string;
-};
-
 type InputFields = {
   label: string;
-  field: keyof Omit<GiftInfo, 'category'>;
+  field: keyof Omit<CreateGiftDto, 'isDeleted' | 'ownerUserId'>;
 };
 
 /* -------------------------------- component ------------------------------- */
 const CreateGift = () => {
+  const router = useRouter();
+
   const [imageState, setImageState] = useState<ImageState>({
     imageFile: null,
     imageSrc: '',
     imageUrl: '',
   });
 
-  const [giftInfo, setGiftInfo] = useState<GiftInfo>({
+  const [giftInfo, setGiftInfo] = useState<
+    Omit<CreateGiftDto, 'category' | 'dueDate'> & {
+      category: Categories | '';
+    } & { dueDate: string }
+  >({
     brand: '',
     productName: '',
     barcode: '',
     dueDate: '',
     category: '',
-    imageSrc: '',
+    imageUrl: '',
+    isDeleted: false,
+    ownerUserId: '',
   });
 
   const inputFields: InputFields[] = [
@@ -91,14 +92,29 @@ const CreateGift = () => {
   useEffect(() => {
     setGiftInfo((prev) => ({
       ...prev,
-      imageSrc: imageState.imageSrc,
+      // imageSrc: imageState.imageSrc,
+      imageUrl: imageState.imageUrl,
     }));
-  }, [imageState.imageSrc]);
+  }, [imageState.imageUrl]);
 
   useEffect(() => {
-    const allFieldsFilled = Object.values(giftInfo).every(
-      (value) => value.trim() !== ''
-    );
+    const requiredFields: (keyof CreateGiftDto)[] = [
+      'brand',
+      'productName',
+      'barcode',
+      'dueDate',
+      'category',
+      'imageUrl',
+    ];
+
+    const allFieldsFilled = requiredFields.every((field) => {
+      const value = giftInfo[field];
+
+      if (typeof value === 'string') {
+        return value.trim() !== '';
+      }
+      return !!value;
+    });
     setIsFormFilled(allFieldsFilled);
   }, [giftInfo]);
 
@@ -106,13 +122,28 @@ const CreateGift = () => {
     setIsModalOpen(true);
   };
 
-  const handleChange = (field: keyof GiftInfo, value: string) => {
+  const handleChange = (field: keyof CreateGiftDto, value: string) => {
     setGiftInfo((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('form Data:', giftInfo);
+    console.log(giftInfo);
+
+    const response = await fetch('/api/user/gifts/create', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(giftInfo),
+    });
+
+    if (response.ok) {
+      alert('기프티콘 등록이 완료되었습니다.');
+      router.push('/user/gifts');
+    } else {
+      alert('기프티콘 등록에 실패했습니다.');
+    }
   };
 
   return (

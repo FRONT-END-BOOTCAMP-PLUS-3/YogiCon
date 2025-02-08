@@ -1,7 +1,7 @@
 'use client';
 
 import { CATEGORY_LIST } from '@/constants';
-import { CategoryListItem } from '@/types/Categories';
+import { Categories } from '@/types/Categories';
 import { useId } from 'react';
 import styled from 'styled-components';
 
@@ -36,7 +36,7 @@ const CategoryOption = styled.option``;
 
 /* ---------------------------------- type ---------------------------------- */
 type CategoryDropDownProps = {
-  selectedCategory: CategoryListItem | '';
+  selectedCategory: Categories | '';
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 };
 

@@ -79,16 +79,19 @@ const ImageUpload = ({ imageState, setImageState }: ImageUploadProps) => {
 
     const imageFile = e.target.files[0];
 
-    if (imageState.imageSrc) {
-      URL.revokeObjectURL(imageState.imageSrc);
+    if (imageState.imageUrl) {
+      URL.revokeObjectURL(imageState.imageUrl);
     }
 
     const imageSrc = URL.createObjectURL(imageFile);
 
     setImageState({
+      // imageFile: imageFile,
+      // imageSrc: imageSrc,
+      // imageUrl: '',
       imageFile: imageFile,
-      imageSrc: imageSrc,
-      imageUrl: '',
+      imageSrc: '',
+      imageUrl: imageSrc,
     });
 
     e.target.value = '';
@@ -96,9 +99,9 @@ const ImageUpload = ({ imageState, setImageState }: ImageUploadProps) => {
 
   return (
     <ImageLabel htmlFor={id}>
-      {imageState.imageSrc ? (
+      {imageState.imageUrl ? (
         <PreviewImageBox>
-          <PreviewImage src={imageState.imageSrc} alt="conImage" />
+          <PreviewImage src={imageState.imageUrl} alt="giftImage" />
           <DeleteButton
             type="button"
             onClick={(e) => {
