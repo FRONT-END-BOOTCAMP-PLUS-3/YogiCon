@@ -11,7 +11,7 @@ export const getAlarmsUseCase = async (
   return alarms.map((alarm) => ({
     id: alarm.id,
     daysBefore: alarm.daysBefore,
-    period: alarm.hour > 12 ? '오전' : '오후',
+    period: alarm.hour < 12 ? '오전' : '오후',
     time: alarm.hour % 12,
   }));
 };
