@@ -1,7 +1,9 @@
 'use client';
 
+import { AlarmDto } from '@/application/usecases/alarm/dto/AlarmDto';
+import { CreateAlarmDto } from '@/application/usecases/alarm/dto/CreateAlarmDto';
 import ModalDialog from '@/components/ModalDialog';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Select, { SingleValue, StylesConfig } from 'react-select';
 import styled from 'styled-components';
 
@@ -96,13 +98,6 @@ const customSelectStyles: StylesConfig<any, false> = {
 };
 
 /* ---------------------------------- type --------------------------------- */
-// 알람 객체 타입 정의
-type AlarmProps = {
-  daysBefore: number;
-  period: '오전' | '오후';
-  time: number;
-};
-
 // react-select에서 사용할 옵션 타입 정의
 type Option<T> = {
   value: T;
@@ -111,9 +106,10 @@ type Option<T> = {
 
 /* ---------------------------------- component --------------------------------- */
 const Alarm = () => {
-  const [alarms, setAlarms] = useState<AlarmProps[]>([]);
+  const [alarms, setAlarms] = useState<AlarmDto[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [newAlarm, setNewAlarm] = useState<AlarmProps>({
+  const [newAlarm, setNewAlarm] = useState<CreateAlarmDto>({
+    id: crypto.randomUUID(),
     daysBefore: 1,
     period: '오전',
     time: 9,
@@ -141,7 +137,7 @@ const Alarm = () => {
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
-  const checkDuplication = (alarmToCheck: AlarmProps): boolean => {
+  const checkDuplication = (alarmToCheck: AlarmDto): boolean => {
     return alarms.some(
       (alarm) =>
         alarm.daysBefore === alarmToCheck.daysBefore &&
@@ -151,7 +147,7 @@ const Alarm = () => {
   };
 
   const handleSelectChange = <T extends number | string>(
-    field: keyof AlarmProps,
+    field: keyof AlarmDto,
     selectedOption: SingleValue<Option<T>>
   ) => {
     if (selectedOption) {
@@ -162,33 +158,73 @@ const Alarm = () => {
     }
   };
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     if (checkDuplication(newAlarm)) {
       alert('이미 같은 알람이 존재합니다. 다른 설정을 선택해주세요.');
       return;
     }
 
     if (alarms.length < 5) {
+      await fetch('/api/user/alarms', {
+        method: 'POST',
+        body: JSON.stringify(newAlarm),
+      });
+
       setAlarms((prev) => [...prev, newAlarm]);
       setIsModalOpen(false);
-      setNewAlarm({ daysBefore: 1, period: '오전', time: 9 });
+      setNewAlarm({
+        id: crypto.randomUUID(),
+        daysBefore: 1,
+        period: '오전',
+        time: 9,
+      });
     }
   };
 
-  const deleteAlarm = (index: number) => {
-    setAlarms((prev) => prev.filter((_, i) => i !== index));
+  const handleDeleteButtonClick = (alarmId: string) => async () => {
+    await fetch('/api/user/alarms', {
+      method: 'DELETE',
+      body: JSON.stringify({ id: alarmId }),
+    });
+    setAlarms((prev) => prev.filter((alarm) => alarm.id !== alarmId));
   };
+
+  useEffect(() => {
+    const fetchAlarms = async () => {
+      try {
+        const res = await fetch(`/api/user/alarms`);
+
+        if (!res.ok) {
+          throw new Error('Response Error');
+        }
+
+        const data = await res.json();
+        setAlarms(data);
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          console.error(err.message);
+        } else {
+          console.error('An unexpected error occurred');
+        }
+      }
+    };
+
+    fetchAlarms();
+  }, []);
 
   return (
     <AlarmContainer>
       <Title>유효기간 만료알림 설정 (최대 5개)</Title>
       <AlarmList>
-        {alarms.map((alarm, index) => (
-          <AlarmItem key={index}>
+        {alarms.map((alarm) => (
+          <AlarmItem key={alarm.id}>
             <span>
               {alarm.daysBefore}일 전 {alarm.period} {alarm.time}시
             </span>
-            <DeleteButton type="button" onClick={() => deleteAlarm(index)}>
+            <DeleteButton
+              type="button"
+              onClick={handleDeleteButtonClick(alarm.id)}
+            >
               x
             </DeleteButton>
           </AlarmItem>
