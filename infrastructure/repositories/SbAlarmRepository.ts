@@ -26,23 +26,32 @@ export class SbAlarmRepository implements AlarmRepository {
     return alarms || [];
   }
 
-  async createOne(alarmInfo: Alarm): Promise<void> {
+  async createOne(alarmInfo: Alarm): Promise<Alarm> {
     const supabase = await createClient();
 
     const newAlarm = {
-      id: alarmInfo.id,
       days_before: alarmInfo.daysBefore,
       hour: alarmInfo.hour,
       user_id: alarmInfo.userId,
     };
 
-    const { error } = await supabase.from('alarm').insert(newAlarm);
+    const { data, error } = await supabase
+      .from('alarm')
+      .insert(newAlarm)
+      .select();
 
     if (error) {
       throw new Error(error.message);
-    } else {
-      console.log('알람 생성 완료');
     }
+
+    const alarm = {
+      id: data[0].id,
+      daysBefore: data[0].days_before,
+      hour: data[0].hour,
+      userId: data[0].user_id,
+    };
+
+    return alarm;
   }
 
   async deleteOne(alarmId: string): Promise<void> {

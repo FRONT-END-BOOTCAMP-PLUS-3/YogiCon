@@ -11,7 +11,7 @@ export async function GET() {
 
   const AlarmsDto: AlarmDto[] = await getAlarmsUseCase(alarmRepository);
 
-  return NextResponse.json(AlarmsDto);
+  return NextResponse.json(AlarmsDto, { status: 200 });
 }
 
 export async function POST(req: Request) {
@@ -26,9 +26,12 @@ export async function POST(req: Request) {
 
   const alarmRepository: AlarmRepository = new SbAlarmRepository();
 
-  await createAlarmUseCase(newAlarm, alarmRepository);
+  const createdAlarm: AlarmDto = await createAlarmUseCase(
+    newAlarm,
+    alarmRepository
+  );
 
-  return NextResponse.json({ message: `알람 생성 완료` }, { status: 200 });
+  return NextResponse.json(createdAlarm, { status: 200 });
 }
 
 export async function DELETE(req: Request) {

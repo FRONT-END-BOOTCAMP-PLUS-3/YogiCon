@@ -109,7 +109,6 @@ const Alarm = () => {
   const [alarms, setAlarms] = useState<AlarmDto[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [newAlarm, setNewAlarm] = useState<CreateAlarmDto>({
-    id: crypto.randomUUID(),
     daysBefore: 1,
     period: '오전',
     time: 9,
@@ -137,7 +136,7 @@ const Alarm = () => {
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
-  const checkDuplication = (alarmToCheck: AlarmDto): boolean => {
+  const checkDuplication = (alarmToCheck: CreateAlarmDto): boolean => {
     return alarms.some(
       (alarm) =>
         alarm.daysBefore === alarmToCheck.daysBefore &&
@@ -147,7 +146,7 @@ const Alarm = () => {
   };
 
   const handleSelectChange = <T extends number | string>(
-    field: keyof AlarmDto,
+    field: keyof CreateAlarmDto,
     selectedOption: SingleValue<Option<T>>
   ) => {
     if (selectedOption) {
@@ -165,15 +164,16 @@ const Alarm = () => {
     }
 
     if (alarms.length < 5) {
-      await fetch('/api/user/alarms', {
+      const response = await fetch('/api/user/alarms', {
         method: 'POST',
         body: JSON.stringify(newAlarm),
       });
 
-      setAlarms((prev) => [...prev, newAlarm]);
+      const createdAlarm = await response.json();
+
+      setAlarms((prev) => [...prev, createdAlarm]);
       setIsModalOpen(false);
       setNewAlarm({
-        id: crypto.randomUUID(),
         daysBefore: 1,
         period: '오전',
         time: 9,
