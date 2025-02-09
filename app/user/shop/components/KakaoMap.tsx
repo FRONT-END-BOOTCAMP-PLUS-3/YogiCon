@@ -2,7 +2,7 @@
 'use client';
 
 import useGeolocation from '@/hooks/useGeolocation';
-import { searchPlaces } from '@/hooks/useSearchPlaces';
+import { searchShops } from '@/application/usecases/shop/searchShopsUseCase';
 import EventBus from '@/types/EventBus';
 import { Location } from '@/types/Location';
 import { useEffect, useState } from 'react';
@@ -87,11 +87,11 @@ const KakaoMap = ({ onMapLoad, searchKeyword }: KakoMapProps) => {
     };
   }, []);
 
-  // `searchKeyword`가 변경될 때마다 `searchPlaces` 실행
+  // `searchKeyword`가 변경될 때마다 `searchShops` 실행
   useEffect(() => {
     if ((loadedMap && searchKeyword) || clicked) {
       console.log('장소 찾을게', searchKeyword);
-      searchPlaces(loadedMap, searchKeyword);
+      searchShops(loadedMap, searchKeyword);
       setClicked(false);
     }
   }, [loadedMap, searchKeyword, clicked]);
