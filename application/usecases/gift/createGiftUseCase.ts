@@ -6,7 +6,7 @@ export const createGiftUseCase = async (
   giftRepository: GiftRepository,
   giftInfo: CreateGiftDto
 ): Promise<void> => {
-  const userId = 'fc0e7623-88a7-4312-969f-7d57b8df2501';
+  const userId = '3891273930';
 
   // string으로 받은 dueDate를 Date로 변환
   const parseDueDate = new Date(giftInfo.dueDate);

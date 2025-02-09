@@ -1,6 +1,6 @@
 'use client';
 
-import { GiftInfo } from '@/app/giftData';
+import { GetGiftListDto } from '@/application/usecases/gift/dto/GetGiftListDto';
 import GiftListItem from '@/components/GiftListItem';
 import { CategoryListItem } from '@/types/Categories';
 import Image from 'next/image';
@@ -83,28 +83,25 @@ const Home = () => {
   const [searchWord, setSearchWord] = useState('');
   const [searchInputValue, setSearchInputValue] = useState('');
 
-  const [giftList, setGiftList] = useState<GiftInfo[]>([]);
+  const [giftList, setGiftList] = useState<GetGiftListDto[]>([]);
   const isEmpty = giftList.length === 0;
 
   useEffect(() => {
     const fetchGiftList = async () => {
       try {
-        const res = await fetch(
+        const response = await fetch(
           `/api/user/gifts?selectedCategory=${selectedCategory}&searchWord=${searchWord}`
         );
 
-        if (!res.ok) {
-          throw new Error('Gifticon not found');
+        if (!response.ok) {
+          alert('기프티콘 리스트를 불러오는데 실패했습니다.');
         }
 
-        const data = await res.json();
-        setGiftList(data);
-      } catch (err: unknown) {
-        if (err instanceof Error) {
-          console.error(err.message);
-        } else {
-          console.error('An unexpected error occurred');
-        }
+        const giftList = await response.json();
+        console.log('조회된 기프티콘 리스트: ', giftList.data);
+        setGiftList(giftList.data);
+      } catch (error) {
+        console.error('기프티콘 리스트 조회 오류: ', error);
       }
     };
 
