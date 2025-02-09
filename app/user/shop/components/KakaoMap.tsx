@@ -13,12 +13,12 @@ declare global {
   }
 }
 
-type ReactKakoMapProps = {
+type KakoMapProps = {
   onMapLoad: (map: any, initalLocation: Location) => void;
   searchKeyword: string | null;
 };
 
-const KakaoMap = ({ onMapLoad, searchKeyword }: ReactKakoMapProps) => {
+const KakaoMap = ({ onMapLoad, searchKeyword }: KakoMapProps) => {
   const apiKey: string | undefined = process.env.NEXT_PUBLIC_KAKAO_KEY;
   const { location } = useGeolocation();
   const [loadedMap, setLoadedMap] = useState<any>(null);
