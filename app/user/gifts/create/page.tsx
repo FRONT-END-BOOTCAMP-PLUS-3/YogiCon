@@ -127,7 +127,7 @@ const CreateGift = () => {
     } else {
       const imageUrl = await uploadImageToStorage(imageState.imageFile);
       const updateGiftInfo = { ...giftInfo, imageUrl };
-      const response = await fetch('/api/user/gifts/create', {
+      const response = await fetch('/api/user/gifts', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
