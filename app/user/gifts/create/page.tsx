@@ -52,7 +52,7 @@ const InputForm = styled.form``;
 /* ---------------------------------- type ---------------------------------- */
 type InputFields = {
   label: string;
-  field: keyof Omit<CreateGiftDto, 'isDeleted' | 'ownerUserId'>;
+  field: keyof Omit<CreateGiftDto, 'imageUrl' | 'isDeleted' | 'ownerUserId'>;
 };
 
 /* -------------------------------- component ------------------------------- */
@@ -66,9 +66,9 @@ const CreateGift = () => {
   });
 
   const [giftInfo, setGiftInfo] = useState<
-    Omit<CreateGiftDto, 'category' | 'dueDate'> & {
+    Omit<CreateGiftDto, 'category'> & {
       category: Categories | '';
-    } & { dueDate: string }
+    }
   >({
     brand: '',
     productName: '',
