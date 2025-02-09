@@ -26,3 +26,27 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: '서버 오류 발생' }, { status: 500 });
   }
 }
+
+export async function DELETE(request: NextRequest) {
+  try {
+    const url = new URL(request.url);
+    const giftId = url.pathname.split('/').pop();
+
+    if (!giftId) {
+      return NextResponse.json(
+        { error: 'giftId가 필요합니다.' },
+        { status: 400 }
+      );
+    }
+    const giftRepository: GiftRepository = new SbGiftRepository();
+    await giftRepository.deleteGift(giftId);
+
+    return NextResponse.json(
+      { message: '기프티콘 삭제 성공' },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error('기프티콘 삭제 오류', error);
+    return NextResponse.json({ error: '서버 오류 발생' }, { status: 500 });
+  }
+}

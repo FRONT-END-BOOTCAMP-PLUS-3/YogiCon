@@ -75,4 +75,13 @@ export class SbGiftRepository implements GiftRepository {
       ownerUserId: data.owner_user_id,
     };
   }
+
+  async deleteGift(giftId: string): Promise<void> {
+    const supabase = await createClient();
+
+    const { error } = await supabase.from('gift').delete().eq('id', giftId);
+    if (error) {
+      throw new Error(error.message);
+    }
+  }
 }

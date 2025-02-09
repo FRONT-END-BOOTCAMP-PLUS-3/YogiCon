@@ -12,6 +12,7 @@ import { LuMail } from 'react-icons/lu';
 import { TbBuildingStore } from 'react-icons/tb';
 import styled from 'styled-components';
 import { GiftInfo } from '@/app/giftData';
+import { useRouter } from 'next/navigation';
 
 /* ---------------------------------- style --------------------------------- */
 const ViewGiftContainer = styled.main`
@@ -119,6 +120,7 @@ const ExpandedGiftImg = styled.img`
 /* -------------------------------- component ------------------------------- */
 const ViewGift = () => {
   const { id } = useParams();
+  const router = useRouter();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [giftInfo, setGiftInfo] = useState<GiftInfo | null>(null);
@@ -155,6 +157,23 @@ const ViewGift = () => {
 
   const { imageUrl, brand, category, dueDate, productName } = giftInfo;
 
+  const handleDeleteGift = async () => {
+    try {
+      const res = await fetch(`/api/user/gifts/${id}`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      if (!res.ok) {
+        throw new Error('Response Error');
+      }
+      alert('해당 기프티콘이 삭제되었습니다.');
+      router.push('/user/gifts');
+    } catch (error) {
+      alert('기프티콘 삭제에 실패했습니다.');
+    }
+  };
+
   return (
     <ViewGiftContainer>
       {/* 이미지 */}
@@ -187,7 +206,7 @@ const ViewGift = () => {
           <TbBuildingStore size={'45%'} />
           <IconButtonText>근처 매장 찾기</IconButtonText>
         </IconButton>
-        <IconButton type="button">
+        <IconButton type="button" onClick={handleDeleteGift}>
           <FaRegTrashAlt size={'45%'} />
           <IconButtonText>삭제하기</IconButtonText>
         </IconButton>
