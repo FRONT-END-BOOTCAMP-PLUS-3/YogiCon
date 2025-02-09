@@ -1,7 +1,8 @@
+import { GetGiftListDto } from '@/application/usecases/gift/dto/GetGiftListDto';
+import { GiftDto } from '@/application/usecases/gift/dto/GiftDto';
 import { Gift } from '@/domain/entities/Gift';
 import { GiftRepository } from '@/domain/repositories/GiftRepository';
 import { createClient } from '@/utils/supabase/server';
-import { GetGiftListDto } from '@/application/usecases/gift/dto/GetGiftListDto';
 
 export class SbGiftRepository implements GiftRepository {
   async createGift(giftInfo: Gift): Promise<void> {
@@ -50,5 +51,28 @@ export class SbGiftRepository implements GiftRepository {
     }));
 
     return giftList || [];
+  }
+
+  async getGiftById(giftId: string): Promise<GiftDto> {
+    const supabase = await createClient();
+
+    const { data, error } = await supabase
+      .from('gift')
+      .select('id, brand, due_date, image_url, is_deleted, owner_user_id')
+      .eq('id', giftId)
+      .single();
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    return {
+      id: data.id,
+      brand: data.brand,
+      dueDate: data.due_date,
+      imageUrl: data.image_url,
+      isDeleted: data.is_deleted,
+      ownerUserId: data.owner_user_id,
+    };
   }
 }

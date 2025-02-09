@@ -128,14 +128,17 @@ const ViewGift = () => {
 
     const fetchGiftInfo = async () => {
       try {
-        const res = await fetch(`/api/user/gifts/${id}`);
+        const res = await fetch(`/api/user/gifts/${id}`, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+        });
 
         if (!res.ok) {
           throw new Error('Response Error');
         }
 
         const data = await res.json();
-        setGiftInfo(data);
+        setGiftInfo(data.gift);
       } catch (err: unknown) {
         if (err instanceof Error) {
           console.error(err.message);
@@ -160,7 +163,7 @@ const ViewGift = () => {
           브랜드: {brand}, 상품명: {productName}, 카테고리: {category},
           유효기간: {dueDate}
         </GiftImgText>
-        <GiftImg src={imageUrl} alt={productName} priority={true} fill />
+        <GiftImg src={imageUrl} alt="기프티콘이미지" priority={true} fill />
         <GiftBadge>
           <div aria-live="polite">D-1</div>
         </GiftBadge>
