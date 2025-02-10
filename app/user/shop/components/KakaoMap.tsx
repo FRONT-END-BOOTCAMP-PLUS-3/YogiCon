@@ -2,7 +2,7 @@
 'use client';
 
 import useGeolocation from '@/hooks/useGeolocation';
-import { searchShops } from '@/application/usecases/shop/searchShopsUseCase';
+import { searchShops } from '@/app/user/shop/components/searchShops';
 import EventBus from '@/types/EventBus';
 import { Location } from '@/types/Location';
 import { useEffect, useRef, useState } from 'react';

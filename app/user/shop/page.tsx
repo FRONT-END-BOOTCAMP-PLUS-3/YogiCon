@@ -13,7 +13,7 @@ import EventBus from '@/types/EventBus';
 import { RiResetLeftLine } from 'react-icons/ri';
 
 /* ---------------------------------- style --------------------------------- */
-const MapContainer = styled.div`
+const ShopContainer = styled.div`
   width: 100%;
   height: calc(100vh - 3.375rem);
   background-color: var(--disabled);
@@ -164,7 +164,7 @@ export default function Shop() {
   };
 
   return (
-    <MapContainer>
+    <ShopContainer>
       <KakaoMap
         onMapLoad={handleMapLoad}
         searchKeyword={selectedItemKey?.key ?? ''}
@@ -185,6 +185,6 @@ export default function Shop() {
         loading={loading}
         headerGift={headerGift}
       />
-    </MapContainer>
+    </ShopContainer>
   );
 }
