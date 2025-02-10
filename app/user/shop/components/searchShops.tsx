@@ -3,6 +3,7 @@ import ReactDOMServer from 'react-dom/server';
 import MarkerInfo from './MarkerInfo';
 
 const markers: any[] = [];
+const customOverlays: any[] = [];
 
 /**
  * 키워드로 장소를 검색하고, 지도에 마커와 인포윈도우를 표시합니다.
@@ -37,6 +38,8 @@ export const searchShops = (
         const bounds = new window.kakao.maps.LatLngBounds();
         markers.forEach((marker) => marker.setMap(null));
         markers.length = 0;
+        customOverlays.forEach((overlay) => overlay.setMap(null));
+        customOverlays.length = 0;
 
         for (let i = 0; i < data.length; i++) {
           // 각 장소에 대해 마커 표시 (커스텀 오버레이 적용)
@@ -87,14 +90,20 @@ const displayPlaces = (map: any, place: any): void => {
     yAnchor: 2.5, // 높이 지정 (선택)
   });
 
-  let isOverlayVisible = false;
+  customOverlays.push(customOverlay); // 배열에 추가
 
   window.kakao.maps.event.addListener(marker, 'click', function () {
-    if (!isOverlayVisible) {
-      customOverlay.setMap(map);
-    } else {
-      customOverlay.setMap(null);
+    const index = customOverlays.indexOf(customOverlay);
+    if (index !== -1) {
+      if (customOverlay.getMap()) {
+        // 오버레이가 지도에 표시되어 있으면 제거
+        customOverlay.setMap(null);
+        customOverlays.splice(index, 1); // 배열에서 제거
+      } else {
+        // 오버레이가 숨겨져 있으면 다시 표시
+        customOverlay.setMap(map);
+        customOverlays.push(customOverlay); // 다시 추가
+      }
     }
-    isOverlayVisible = !isOverlayVisible;
   });
 };
