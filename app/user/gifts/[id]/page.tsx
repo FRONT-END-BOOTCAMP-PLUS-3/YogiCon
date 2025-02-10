@@ -150,7 +150,7 @@ const ViewGift = () => {
 
   if (!giftInfo) return <div>Loading...</div>;
 
-  const { imageUrl, brand, category, duedate, productName } = giftInfo;
+  const { imageUrl, brand, category, dueDate, productName } = giftInfo;
 
   return (
     <ViewGiftContainer>
@@ -158,7 +158,7 @@ const ViewGift = () => {
       <GiftImgWrapper>
         <GiftImgText>
           브랜드: {brand}, 상품명: {productName}, 카테고리: {category},
-          유효기간: {duedate}
+          유효기간: {dueDate}
         </GiftImgText>
         <GiftImg src={imageUrl} alt={productName} priority={true} fill />
         <GiftBadge>
@@ -221,7 +221,7 @@ const ViewGift = () => {
         >
           <GiftImgText>
             브랜드: {brand}, 상품명: {productName}, 카테고리: {category},
-            유효기간: {duedate}
+            유효기간: {dueDate}
           </GiftImgText>
           <ExpandedGiftImg
             src={imageUrl}
