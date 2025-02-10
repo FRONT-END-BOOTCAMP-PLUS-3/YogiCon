@@ -91,7 +91,7 @@ const Home = () => {
   const [searchInputValue, setSearchInputValue] = useState('');
   const [totalPage, setTotalPage] = useState(1);
   const [hasPreviousPage, setHasPreviousPage] = useState(false);
-  const [hasNextPage, setHasNextPage] = useState(false);
+  const [hasNextPage, setHasNextPage] = useState(true);
   const [page, setPage] = useState(1);
 
   const [giftList, setGiftList] = useState<GiftDto[]>([]);
@@ -106,7 +106,7 @@ const Home = () => {
 
       observer.current = new IntersectionObserver((entries) => {
         if (entries[0].isIntersecting) {
-          console.log('마지막 요소 감지됨, 다음 페이지 로드');
+          console.log('마지막 요소 감지됨');
           setPage((prevPage) => prevPage + 1);
         }
       });
@@ -140,7 +140,7 @@ const Home = () => {
       }
     };
 
-    fetchGiftList();
+    if (hasNextPage) fetchGiftList();
   }, [searchWord, selectedCategory, page]);
 
   const handleCategoryButtonClick = (value: CategoryListItem) => () => {
