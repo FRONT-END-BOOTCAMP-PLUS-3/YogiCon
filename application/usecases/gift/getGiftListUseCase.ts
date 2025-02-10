@@ -4,17 +4,18 @@ import { GiftDto } from './dto/GiftDto';
 
 export const getGiftListUseCase = async (
   giftRepository: GiftRepository,
-  page: number = 1
+  page: number = 1,
+  size: number = 5
 ): Promise<GiftListDto> => {
-  const from = (page - 1) * 5;
-  const to = page * 5 - 1;
+  const from = (page - 1) * size;
+  const to = page * size - 1;
 
   const giftList = await giftRepository.getGiftList(from, to);
 
   console.log('giftList: ', giftList);
 
   const totalCount = await giftRepository.getTotalGiftCount();
-  const totalPage = Math.ceil(totalCount / 5);
+  const totalPage = Math.ceil(totalCount / size);
 
   const newGiftList: GiftDto[] = giftList.map((gift) => ({
     id: gift.id,
