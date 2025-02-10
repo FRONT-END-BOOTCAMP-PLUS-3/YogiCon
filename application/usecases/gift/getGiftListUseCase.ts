@@ -32,7 +32,6 @@ export const getGiftListUseCase = async (
     giftList: newGiftList,
     totalCount,
     totalPage,
-    hasPreviousPage: page > 1,
     hasNextPage: page < totalPage,
   };
 };

@@ -90,7 +90,6 @@ const Home = () => {
   const [searchWord, setSearchWord] = useState('');
   const [searchInputValue, setSearchInputValue] = useState('');
   const [totalPage, setTotalPage] = useState(1);
-  const [hasPreviousPage, setHasPreviousPage] = useState(false);
   const [hasNextPage, setHasNextPage] = useState(true);
   const [page, setPage] = useState(1);
 
@@ -133,7 +132,6 @@ const Home = () => {
 
         setGiftList((prev) => [...prev, ...giftListDto.data.giftList]);
         setTotalPage(giftListDto.data.totalPage);
-        setHasPreviousPage(giftListDto.data.hasPreviousPage);
         setHasNextPage(giftListDto.data.hasNextPage);
       } catch (error) {
         console.error('기프티콘 리스트 조회 오류: ', error);
