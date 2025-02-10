@@ -9,6 +9,8 @@ import KakaoMap from './components/KakaoMap';
 import { Location } from '@/types/Location';
 import { GiftDto } from '@/application/usecases/gift/dto/GiftDto';
 import { SelectedItem } from '@/types/SelectedItem';
+import EventBus from '@/types/EventBus';
+import { RiResetLeftLine } from 'react-icons/ri';
 
 /* ---------------------------------- style --------------------------------- */
 const MapContainer = styled.div`
@@ -40,6 +42,36 @@ const MyLocation = styled.button`
   svg {
     width: 1.5rem;
     height: 1.5rem;
+  }
+`;
+
+const ResearchButton = styled.button`
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: fit-content;
+  text-align: center;
+  word-break: keep-all;
+  padding: 5px 1rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 1rem;
+  color: var(--deepgray);
+  background-color: var(--white);
+  box-shadow: 2px 2px 5px var(--disabled);
+  position: absolute;
+  top: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+
+  & span {
+    width: fit-content;
+    position: relative;
+    bottom: 0.125rem;
   }
 `;
 
@@ -127,6 +159,10 @@ export default function Shop() {
     setSelectedItemKey(selectedItem);
   };
 
+  const handleResearchClick = () => {
+    EventBus.emit('itemClicked', true);
+  };
+
   return (
     <MapContainer>
       <KakaoMap
@@ -136,6 +172,13 @@ export default function Shop() {
       <MyLocation type="button" onClick={findMyLocation}>
         <MdMyLocation />
       </MyLocation>
+      {selectedItemKey?.key && (
+        <ResearchButton type="button" onClick={handleResearchClick}>
+          <RiResetLeftLine />
+          <span>현재 지도에서 재검색</span>
+        </ResearchButton>
+      )}
+
       <BottomSheet
         setSelectedItemKey={handleItemClick}
         giftList={giftList}
