@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import useGeolocation from '@/hooks/useGeolocation';
 import { searchShops } from '@/app/user/shop/components/searchShops';
+import useGeolocation from '@/hooks/useGeolocation';
 import EventBus from '@/types/EventBus';
 import { Location } from '@/types/Location';
 import { useEffect, useRef, useState } from 'react';
-import MarkerInfo from './MarkerInfo';
 import ReactDOMServer from 'react-dom/server';
+import MarkerInfo from './MarkerInfo';
 
 declare global {
   interface Window {

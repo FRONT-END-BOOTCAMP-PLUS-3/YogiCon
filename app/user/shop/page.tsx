@@ -1,16 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
+import { GiftDto } from '@/application/usecases/gift/dto/GiftDto';
+import EventBus from '@/types/EventBus';
+import { Location } from '@/types/Location';
+import { SelectedItem } from '@/types/SelectedItem';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { MdMyLocation } from 'react-icons/md';
+import { RiResetLeftLine } from 'react-icons/ri';
 import styled from 'styled-components';
 import BottomSheet from './components/BottomSheet';
 import KakaoMap from './components/KakaoMap';
-import { Location } from '@/types/Location';
-import { GiftDto } from '@/application/usecases/gift/dto/GiftDto';
-import { SelectedItem } from '@/types/SelectedItem';
-import EventBus from '@/types/EventBus';
-import { RiResetLeftLine } from 'react-icons/ri';
 
 /* ---------------------------------- style --------------------------------- */
 const ShopContainer = styled.div`

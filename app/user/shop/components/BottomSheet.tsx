@@ -3,11 +3,11 @@
 import { GiftDto } from '@/application/usecases/gift/dto/GiftDto';
 import useBottomSheet from '@/hooks/useBottomSheet';
 import { useBottomSheetDimensions } from '@/hooks/useBottomSheetOption';
+import { SelectedItem } from '@/types/SelectedItem';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import BottomSheetContent from './BottomSheetContent';
 import BottomSheetHeader from './BottomSheetHeader';
-import { SelectedItem } from '@/types/SelectedItem';
 
 /* ---------------------------------- style --------------------------------- */
 const Container = styled(motion.div)<{ height: number }>`
