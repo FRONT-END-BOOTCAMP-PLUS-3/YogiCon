@@ -86,6 +86,13 @@ export default function Shop() {
   const [giftList, setGiftList] = useState<GiftDto[] | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [headerGift, setHeaderGift] = useState<GiftDto | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (errorMessage) {
+      alert(errorMessage);
+    }
+  }, [errorMessage]);
 
   useEffect(() => {
     const getGifts = async (): Promise<any> => {
@@ -168,10 +175,13 @@ export default function Shop() {
       <KakaoMap
         onMapLoad={handleMapLoad}
         searchKeyword={selectedItemKey?.key ?? ''}
+        setErrorMessage={setErrorMessage}
       />
+
       <MyLocation type="button" onClick={findMyLocation}>
         <MdMyLocation />
       </MyLocation>
+
       {selectedItemKey?.key && (
         <ResearchButton type="button" onClick={handleResearchClick}>
           <RiResetLeftLine />

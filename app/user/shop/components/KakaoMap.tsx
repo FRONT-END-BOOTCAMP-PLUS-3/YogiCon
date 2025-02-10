@@ -16,9 +16,14 @@ declare global {
 type KakaoMapProps = {
   onMapLoad: (map: any, initalLocation: Location) => void;
   searchKeyword: string | null;
+  setErrorMessage: (message: string) => void;
 };
 
-const KakaoMap = ({ onMapLoad, searchKeyword }: KakaoMapProps) => {
+const KakaoMap = ({
+  onMapLoad,
+  searchKeyword,
+  setErrorMessage,
+}: KakaoMapProps) => {
   const apiKey: string | undefined = process.env.NEXT_PUBLIC_KAKAO_KEY;
   const { location } = useGeolocation();
   const [loadedMap, setLoadedMap] = useState<any>(null);
@@ -93,7 +98,7 @@ const KakaoMap = ({ onMapLoad, searchKeyword }: KakaoMapProps) => {
 
     if (searchKeyword !== prevKeywordRef.current || clicked) {
       console.log('장소 찾을게:', searchKeyword);
-      searchShops(loadedMap, searchKeyword);
+      searchShops(loadedMap, searchKeyword, setErrorMessage);
       prevKeywordRef.current = searchKeyword; // 최신 키워드 저장
       setClicked(false); // clicked 리셋
     }

@@ -9,10 +9,11 @@ const markers: any[] = [];
  *
  * @param map - 카카오 지도 인스턴스
  * @param keyword - 검색할 장소 키워드 (예: '이태원 맛집')
+ * @param onError - 검색 실패 시 실행할 콜백 함수 (예: ZERO_RESULT 상태)
  */
-export const searchShops = (map: any, keyword: string | null): void => {
+export const searchShops = (map: any, keyword: string | null, onError: (message: string) => void): void => {
   if (!window.kakao) {
-    console.error('Kakao Maps API가 로드되지 않았습니다.');
+    onError('Kakao 지도 API 로드 실패')
     return;
   }
 
@@ -46,8 +47,12 @@ export const searchShops = (map: any, keyword: string | null): void => {
         // 검색된 장소들을 모두 포함하는 영역으로 지도 범위 재설정
         map.setBounds(bounds);
         console.log("중심:", center);
+      } else if (status === window.kakao.maps.services.Status.ZERO_RESULT) {
+        console.warn('검색 결과가 없습니다.');
+        onError(`"${keyword}"에 대한 검색 결과가 없습니다.`)
       } else {
         console.error('장소 검색 실패', status);
+        onError('장소 검색 중 오류가 발생했습니다.');
       }
     },
     { location: center, radius: 1200 } // 옵션 객체에 지도 중심 좌표 전달 (검색 기준 좌표)
