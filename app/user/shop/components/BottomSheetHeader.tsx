@@ -1,5 +1,7 @@
 'use client';
 
+import { GiftDto } from '@/application/usecases/gift/dto/GiftDto';
+import GiftListItem from '@/components/GiftListItem';
 import { MdOutlineStorefront } from 'react-icons/md';
 import styled from 'styled-components';
 
@@ -25,6 +27,7 @@ const Handle = styled.div`
 
 const DcContainer = styled.div`
   flex: 1;
+  margin: 5px 0;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -42,6 +45,18 @@ const DcText = styled.span`
   font-size: 1rem;
   font-weight: bold;
   text-align: center;
+  word-break: keep-all;
+`;
+
+const GiftContainer = styled.div`
+  flex: 1;
+  background-color: rgba(255, 192, 192, 0.5);
+  width: 90%;
+  margin: 5px 0;
+  padding: 0 10px;
+  display: flex;
+  justify-content: center;
+  border-radius: 15px;
 `;
 
 const Line = styled.hr`
@@ -52,17 +67,23 @@ const Line = styled.hr`
 `;
 
 /* ---------------------------------- component --------------------------------- */
-const BottomSheetHeader = () => {
+const BottomSheetHeader = ({ headerGift }: { headerGift: GiftDto | null }) => {
   return (
     <Wrapper>
       <Handle />
-      <DcContainer>
-        <DcSvg />
-        <DcText>
-          <p>기프티콘을 사용할 수 있는</p>
-          <p>근처 매장을 찾아드릴게요!</p>
-        </DcText>
-      </DcContainer>
+      {headerGift === null ? (
+        <DcContainer>
+          <DcSvg />
+          <DcText>
+            <p>기프티콘을 사용할 수 있는</p>
+            <p>근처 매장을 찾아드릴게요!</p>
+          </DcText>
+        </DcContainer>
+      ) : (
+        <GiftContainer>
+          <GiftListItem {...headerGift} />
+        </GiftContainer>
+      )}
       <Line />
     </Wrapper>
   );

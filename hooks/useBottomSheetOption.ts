@@ -10,7 +10,7 @@ export function useBottomSheetDimensions() {
   const [bottomSheetHeight, setBottomSheetHeight] = useState<number | null>(null);
 
   useEffect(() => {
-    setMaxY(window.innerHeight - 150);
+    setMaxY(window.innerHeight - 165);
     setBottomSheetHeight(window.innerHeight - MIN_Y);
   }, []);
 

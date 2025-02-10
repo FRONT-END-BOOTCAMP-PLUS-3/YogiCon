@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import BottomSheetContent from './BottomSheetContent';
 import BottomSheetHeader from './BottomSheetHeader';
+import { SelectedItem } from '@/types/SelectedItem';
 
 /* ---------------------------------- style --------------------------------- */
 const Container = styled(motion.div)<{ height: number }>`
@@ -15,7 +16,7 @@ const Container = styled(motion.div)<{ height: number }>`
 
   position: fixed;
   z-index: 1;
-  top: calc(100vh - 120px); /*시트가 얼마나 높이 위치할지*/
+  top: calc(100vh - 135px); /*시트가 얼마나 높이 위치할지*/
 
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
@@ -46,9 +47,10 @@ const BSContentBox = styled.div`
 
 /* ---------------------------------- type --------------------------------- */
 type BottomSheetProps = {
-  setSelectedItemKey: (key: string) => void;
+  setSelectedItemKey: (selectedItem: SelectedItem) => void;
   giftList: GiftDto[] | null;
   loading: boolean;
+  headerGift: GiftDto | null;
 };
 
 /* ---------------------------------- component --------------------------------- */
@@ -56,6 +58,7 @@ function BottomSheet({
   setSelectedItemKey,
   giftList,
   loading,
+  headerGift,
 }: BottomSheetProps) {
   const { sheet, content, moveSheetToBottom } = useBottomSheet();
   const { bottomSheetHeight } = useBottomSheetDimensions();
@@ -63,7 +66,7 @@ function BottomSheet({
   if (bottomSheetHeight === null) return null;
   return (
     <Container ref={sheet} height={bottomSheetHeight}>
-      <BottomSheetHeader />
+      <BottomSheetHeader headerGift={headerGift} />
       <BSContentBox ref={content}>
         <BottomSheetContent
           setSelectedItemKey={setSelectedItemKey}

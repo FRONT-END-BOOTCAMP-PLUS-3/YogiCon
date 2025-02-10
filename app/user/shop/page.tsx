@@ -8,6 +8,7 @@ import BottomSheet from './components/BottomSheet';
 import KakaoMap from './components/KakaoMap';
 import { Location } from '@/types/Location';
 import { GiftDto } from '@/application/usecases/gift/dto/GiftDto';
+import { SelectedItem } from '@/types/SelectedItem';
 
 /* ---------------------------------- style --------------------------------- */
 const MapContainer = styled.div`
@@ -44,12 +45,15 @@ const MyLocation = styled.button`
 
 /* ---------------------------------- component --------------------------------- */
 export default function Shop() {
-  const [selectedItemKey, setSelectedItemKey] = useState<string | null>(null);
+  const [selectedItemKey, setSelectedItemKey] = useState<SelectedItem | null>(
+    null
+  );
   const mapRef = useRef<any>(null);
   const [savedLocation, setSavedLocation] = useState<Location | null>(null);
 
   const [giftList, setGiftList] = useState<GiftDto[] | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [headerGift, setHeaderGift] = useState<GiftDto | null>(null);
 
   useEffect(() => {
     const getGifts = async (): Promise<any> => {
@@ -77,6 +81,32 @@ export default function Shop() {
     getGifts();
   }, []);
 
+  useEffect(() => {
+    const getGiftById = async (): Promise<any> => {
+      try {
+        const res = await fetch(`/api/user/gifts/${selectedItemKey!.giftId}`, {
+          method: 'GET',
+        });
+
+        if (!res.ok) {
+          throw new Error('Response Error');
+        }
+        const data = await res.json();
+        setHeaderGift(data.gift);
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          console.error(err.message);
+        } else {
+          console.error('An unexpected error occurred');
+        }
+      }
+    };
+
+    if (!selectedItemKey || !selectedItemKey.giftId) return;
+
+    getGiftById();
+  }, [selectedItemKey]);
+
   const findMyLocation = () => {
     if (mapRef.current && savedLocation) {
       const newCenter = new window.kakao.maps.LatLng(
@@ -93,13 +123,16 @@ export default function Shop() {
     console.log(initialLocation);
   }, []);
 
-  const handleItemClick = (key: string) => {
-    setSelectedItemKey(key);
+  const handleItemClick = (selectedItem: SelectedItem) => {
+    setSelectedItemKey(selectedItem);
   };
 
   return (
     <MapContainer>
-      <KakaoMap onMapLoad={handleMapLoad} searchKeyword={selectedItemKey} />
+      <KakaoMap
+        onMapLoad={handleMapLoad}
+        searchKeyword={selectedItemKey?.key ?? ''}
+      />
       <MyLocation type="button" onClick={findMyLocation}>
         <MdMyLocation />
       </MyLocation>
@@ -107,6 +140,7 @@ export default function Shop() {
         setSelectedItemKey={handleItemClick}
         giftList={giftList}
         loading={loading}
+        headerGift={headerGift}
       />
     </MapContainer>
   );

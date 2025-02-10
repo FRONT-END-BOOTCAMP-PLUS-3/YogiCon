@@ -3,6 +3,7 @@
 import { GiftDto } from '@/application/usecases/gift/dto/GiftDto';
 import GiftListItem from '@/components/GiftListItem';
 import EventBus from '@/types/EventBus';
+import { SelectedItem } from '@/types/SelectedItem';
 import styled from 'styled-components';
 
 /* ---------------------------------- style --------------------------------- */
@@ -22,7 +23,7 @@ const BSContentList = styled.ul`
 
 /* ---------------------------------- type --------------------------------- */
 type BottomSheetContentProps = {
-  setSelectedItemKey: (key: string) => void;
+  setSelectedItemKey: (selectedItem: SelectedItem) => void;
   moveSheetToBottom: () => void;
   giftList: GiftDto[] | null;
   loading: boolean;
@@ -35,8 +36,8 @@ export default function BottomSheetContent({
   giftList,
   loading,
 }: BottomSheetContentProps) {
-  const handleItemClick = (key: string) => {
-    setSelectedItemKey(key);
+  const handleItemClick = (giftId: string, key: string) => {
+    setSelectedItemKey({ giftId, key });
     EventBus.emit('itemClicked', true);
     moveSheetToBottom();
   };
@@ -49,7 +50,7 @@ export default function BottomSheetContent({
             <GiftListItem
               key={index}
               {...gift}
-              onClick={() => handleItemClick(`${gift.brand}`)}
+              onClick={() => handleItemClick(`${gift.id}`, `${gift.brand}`)}
             />
           ))}
         </BSContentList>

@@ -89,7 +89,7 @@ const KakaoMap = ({ onMapLoad, searchKeyword }: KakaoMapProps) => {
   }, []);
 
   useEffect(() => {
-    if (!loadedMap) return;
+    if (!loadedMap || !searchKeyword) return;
 
     if (searchKeyword !== prevKeywordRef.current || clicked) {
       console.log('장소 찾을게:', searchKeyword);
