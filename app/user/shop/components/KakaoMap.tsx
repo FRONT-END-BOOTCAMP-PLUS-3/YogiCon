@@ -6,6 +6,8 @@ import { searchShops } from '@/app/user/shop/components/searchShops';
 import EventBus from '@/types/EventBus';
 import { Location } from '@/types/Location';
 import { useEffect, useRef, useState } from 'react';
+import MarkerInfo from './MarkerInfo';
+import ReactDOMServer from 'react-dom/server';
 
 declare global {
   interface Window {
@@ -41,23 +43,6 @@ const KakaoMap = ({
     script.addEventListener('load', () => {
       if (window.kakao && window.kakao.maps) {
         window.kakao.maps.load(() => {
-          // 현재 위치 마커를 표시하는 함수
-          function displayMarker(locPosition: any, message: string) {
-            const marker = new window.kakao.maps.Marker({
-              map: map,
-              position: locPosition,
-            });
-
-            const iwContent = message,
-              iwRemoveable = true;
-
-            const infowindow = new window.kakao.maps.InfoWindow({
-              content: iwContent,
-              removable: iwRemoveable,
-            });
-
-            infowindow.open(map, marker);
-          }
           const container = document.getElementById('map');
           const coords = new window.kakao.maps.LatLng(
             location?.latitude as number,
@@ -72,8 +57,23 @@ const KakaoMap = ({
           });
           setLoadedMap(map);
 
-          const message = '<div style="padding:5px;">현재위치</div>';
-          displayMarker(coords, message);
+          const marker = new window.kakao.maps.Marker({
+            map: map,
+            position: coords,
+          });
+
+          const overlayContent = <MarkerInfo place_name="현재 위치" />;
+
+          const overlayString = ReactDOMServer.renderToString(overlayContent);
+
+          const customOverlay = new window.kakao.maps.CustomOverlay({
+            position: coords,
+            content: overlayString,
+            yAnchor: 2.8, // 높이 지정 (선택)
+          });
+
+          marker.setMap(map);
+          customOverlay.setMap(map);
         });
       }
     });
