@@ -3,6 +3,7 @@
 import { srOnly } from '@/app/globalStyles';
 import { GiftDto } from '@/application/usecases/gift/dto/GiftDto';
 import Button from '@/components/Button';
+import GiftListBadge from '@/components/GiftListBadge';
 import ModalDialog from '@/components/ModalDialog';
 import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
@@ -40,17 +41,6 @@ const GiftBadge = styled.div`
   position: absolute;
   top: -1.5rem;
   right: -1.5rem;
-  width: 3rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background-color: var(--warning);
-  color: var(--white);
-  font-size: 1.125rem;
-  font-weight: bold;
-  letter-spacing: -0.02rem;
 `;
 const ExpandButton = styled.button`
   position: absolute;
@@ -182,8 +172,8 @@ const ViewGift = () => {
           유효기간: {dueDate}
         </GiftImgText>
         <GiftImg src={imageUrl} alt={productName} priority={true} fill />
-        <GiftBadge>
-          <div aria-live="polite">D-1</div>
+        <GiftBadge aria-live="polite">
+          <GiftListBadge dueDate={dueDate} />
         </GiftBadge>
         <ExpandButton
           type="button"
