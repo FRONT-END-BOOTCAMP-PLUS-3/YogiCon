@@ -5,7 +5,7 @@ import useGeolocation from '@/hooks/useGeolocation';
 import { searchShops } from '@/application/usecases/shop/searchShopsUseCase';
 import EventBus from '@/types/EventBus';
 import { Location } from '@/types/Location';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 declare global {
   interface Window {
@@ -23,6 +23,7 @@ const KakaoMap = ({ onMapLoad, searchKeyword }: KakaoMapProps) => {
   const { location } = useGeolocation();
   const [loadedMap, setLoadedMap] = useState<any>(null);
   const [clicked, setClicked] = useState<boolean>(false);
+  const prevKeywordRef = useRef<string | null>(null);
 
   useEffect(() => {
     if (!apiKey || !location) return;
@@ -87,12 +88,14 @@ const KakaoMap = ({ onMapLoad, searchKeyword }: KakaoMapProps) => {
     };
   }, []);
 
-  // `searchKeyword`가 변경될 때마다 `searchShops` 실행
   useEffect(() => {
-    if ((loadedMap && searchKeyword) || clicked) {
-      console.log('장소 찾을게', searchKeyword);
+    if (!loadedMap) return;
+
+    if (searchKeyword !== prevKeywordRef.current || clicked) {
+      console.log('장소 찾을게:', searchKeyword);
       searchShops(loadedMap, searchKeyword);
-      setClicked(false);
+      prevKeywordRef.current = searchKeyword; // 최신 키워드 저장
+      setClicked(false); // clicked 리셋
     }
   }, [loadedMap, searchKeyword, clicked]);
 
