@@ -1,7 +1,8 @@
 'use client';
 
-import { useBottomSheetDimensions } from '@/hooks/useBottomSheetOption';
+import { GiftDto } from '@/application/usecases/gift/dto/GiftDto';
 import useBottomSheet from '@/hooks/useBottomSheet';
+import { useBottomSheetDimensions } from '@/hooks/useBottomSheetOption';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import BottomSheetContent from './BottomSheetContent';
@@ -46,10 +47,16 @@ const BSContentBox = styled.div`
 /* ---------------------------------- type --------------------------------- */
 type BottomSheetProps = {
   setSelectedItemKey: (key: string) => void;
+  giftList: GiftDto[] | null;
+  loading: boolean;
 };
 
 /* ---------------------------------- component --------------------------------- */
-function BottomSheet({ setSelectedItemKey }: BottomSheetProps) {
+function BottomSheet({
+  setSelectedItemKey,
+  giftList,
+  loading,
+}: BottomSheetProps) {
   const { sheet, content, moveSheetToBottom } = useBottomSheet();
   const { bottomSheetHeight } = useBottomSheetDimensions();
 
@@ -61,6 +68,8 @@ function BottomSheet({ setSelectedItemKey }: BottomSheetProps) {
         <BottomSheetContent
           setSelectedItemKey={setSelectedItemKey}
           moveSheetToBottom={moveSheetToBottom}
+          giftList={giftList}
+          loading={loading}
         />
       </BSContentBox>
     </Container>

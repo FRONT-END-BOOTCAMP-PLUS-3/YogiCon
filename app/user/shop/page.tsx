@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { MdMyLocation } from 'react-icons/md';
 import styled from 'styled-components';
 import BottomSheet from './components/BottomSheet';
 import KakaoMap from './components/KakaoMap';
 import { Location } from '@/types/Location';
+import { GiftDto } from '@/application/usecases/gift/dto/GiftDto';
 
 /* ---------------------------------- style --------------------------------- */
 const MapContainer = styled.div`
@@ -42,10 +43,39 @@ const MyLocation = styled.button`
 `;
 
 /* ---------------------------------- component --------------------------------- */
-export default function Map() {
+export default function Shop() {
   const [selectedItemKey, setSelectedItemKey] = useState<string | null>(null);
   const mapRef = useRef<any>(null);
   const [savedLocation, setSavedLocation] = useState<Location | null>(null);
+
+  const [giftList, setGiftList] = useState<GiftDto[] | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const getGifts = async (): Promise<any> => {
+      try {
+        setLoading(true);
+        // disabled 되지 않은 gift list 가져오는 api 사용
+        const res = await fetch('/api/user/shop', { method: 'GET' });
+        const result = await res.json();
+
+        if (!result.success) {
+          console.error('API 오류:', result.message);
+          setGiftList([]);
+          return [];
+        }
+        console.log('가져옴', result.data);
+        setGiftList(result.data);
+      } catch (error) {
+        console.error('데이터 로드 실패:', error);
+        return [];
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getGifts();
+  }, []);
 
   const findMyLocation = () => {
     if (mapRef.current && savedLocation) {
@@ -73,7 +103,11 @@ export default function Map() {
       <MyLocation type="button" onClick={findMyLocation}>
         <MdMyLocation />
       </MyLocation>
-      <BottomSheet setSelectedItemKey={handleItemClick} />
+      <BottomSheet
+        setSelectedItemKey={handleItemClick}
+        giftList={giftList}
+        loading={loading}
+      />
     </MapContainer>
   );
 }
