@@ -5,7 +5,7 @@ export interface Gift {
   category: Categories;
   productName: string;
   brand: string;
-  dueDate: string;
+  dueDate: Date;
   barcode: string;
   imageUrl: string;
   isDeleted: boolean;

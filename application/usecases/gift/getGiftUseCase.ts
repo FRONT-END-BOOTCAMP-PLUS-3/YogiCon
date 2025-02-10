@@ -5,11 +5,20 @@ export const getGiftUseCase = async (
   giftRepository: GiftRepository,
   giftId: string
 ): Promise<GiftDto> => {
-  const userId = '3891279432';
-
   const gift = await giftRepository.getGiftById(giftId);
-  if (gift.ownerUserId !== userId) {
-    throw new Error('해당 기프티콘에 접근할 권한이 없습니다.');
+  if (!gift) {
+    throw new Error('기프티콘을 찾을 수 없습니다.');
   }
-  return gift;
+
+  const newGift = {
+    id: gift.id,
+    category: gift.category,
+    productName: gift.productName,
+    brand: gift.brand,
+    dueDate: new Date(gift.dueDate).toISOString().split('T')[0],
+    imageUrl: gift.imageUrl,
+    isDeleted: gift.isDeleted,
+    ownerUserId: gift.ownerUserId,
+  };
+  return newGift;
 };

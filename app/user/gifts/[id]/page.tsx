@@ -155,7 +155,7 @@ const ViewGift = () => {
   if (!giftInfo) return <div>Loading...</div>;
 
   const { imageUrl, brand, category, dueDate, productName } = giftInfo;
-
+  console.log('giftInfo: ', giftInfo);
   const handleDeleteGift = async () => {
     try {
       const res = await fetch(`/api/user/gifts/${id}`, {
