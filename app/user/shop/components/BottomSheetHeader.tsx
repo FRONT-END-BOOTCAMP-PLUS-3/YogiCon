@@ -19,7 +19,7 @@ const Wrapper = styled.div`
 
 const Handle = styled.div`
   width: 100px;
-  height: 4px;
+  min-height: 4px;
   border-radius: 2px;
   background-color: var(--deepgray);
   margin: auto;
