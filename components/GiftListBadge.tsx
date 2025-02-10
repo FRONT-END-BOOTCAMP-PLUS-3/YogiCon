@@ -30,16 +30,16 @@ const BadgeDayText = styled.p<{ $isLarge: boolean }>`
 
 /* ---------------------------------- type --------------------------------- */
 type GiftListBadgeProps = {
-  duedate: string;
+  dueDate: string;
   isLarge: boolean;
 };
 
 /* ---------------------------------- component --------------------------------- */
 export default function GiftListBadge({
-  duedate,
+  dueDate,
   isLarge = true,
 }: GiftListBadgeProps) {
-  const dateObject: Date = new Date(duedate);
+  const dateObject: Date = new Date(dueDate);
   const dateTodayObject: Date = new Date();
 
   // 날짜만 비교하기 위해 시간을 제거
