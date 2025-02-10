@@ -58,10 +58,11 @@ const LoginButton = styled.button`
   justify-content: center;
   align-items: center;
   gap: 0.7rem;
-  padding: 0.5rem;
-  border-radius: 1rem;
+  padding: 0.75rem 0.5rem;
+  border-radius: 1.5rem;
   font-size: 1rem;
   font-weight: bold;
+  color: var(--black);
 
   & svg {
     font-size: 1.5rem;
@@ -83,7 +84,7 @@ export default function Login() {
         </LoginMiddleText>
       </LoginTextContainer>
 
-      <div style={{ paddingTop: '3rem' }} />
+      <div style={{ paddingTop: '1.5rem' }} />
 
       <LoginButton>
         <RiKakaoTalkFill />
