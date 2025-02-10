@@ -1,18 +1,17 @@
 'use client';
 
 import { srOnly } from '@/app/globalStyles';
+import { GiftDto } from '@/application/usecases/gift/dto/GiftDto';
 import Button from '@/components/Button';
 import ModalDialog from '@/components/ModalDialog';
 import Image from 'next/image';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { CgArrowsExpandRight } from 'react-icons/cg';
 import { FaRegTrashAlt } from 'react-icons/fa';
 import { LuMail } from 'react-icons/lu';
 import { TbBuildingStore } from 'react-icons/tb';
 import styled from 'styled-components';
-import { GiftInfo } from '@/app/giftData';
-import { useRouter } from 'next/navigation';
 
 /* ---------------------------------- style --------------------------------- */
 const ViewGiftContainer = styled.main`
@@ -123,7 +122,7 @@ const ViewGift = () => {
   const router = useRouter();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [giftInfo, setGiftInfo] = useState<GiftInfo | null>(null);
+  const [giftInfo, setGiftInfo] = useState<GiftDto | null>(null);
 
   useEffect(() => {
     if (!id) return;
@@ -182,7 +181,7 @@ const ViewGift = () => {
           브랜드: {brand}, 상품명: {productName}, 카테고리: {category},
           유효기간: {dueDate}
         </GiftImgText>
-        <GiftImg src={imageUrl} alt="기프티콘이미지" priority={true} fill />
+        <GiftImg src={imageUrl} alt={productName} priority={true} fill />
         <GiftBadge>
           <div aria-live="polite">D-1</div>
         </GiftBadge>

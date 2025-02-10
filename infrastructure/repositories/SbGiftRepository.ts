@@ -1,5 +1,3 @@
-import { GetGiftListDto } from '@/application/usecases/gift/dto/GetGiftListDto';
-import { GiftDto } from '@/application/usecases/gift/dto/GiftDto';
 import { Gift } from '@/domain/entities/Gift';
 import { GiftRepository } from '@/domain/repositories/GiftRepository';
 import { createClient } from '@/utils/supabase/server';
@@ -25,40 +23,59 @@ export class SbGiftRepository implements GiftRepository {
     }
   }
 
-  async getGiftList(): Promise<GetGiftListDto[]> {
+  async getTotalGiftCount(): Promise<number> {
     const supabase = await createClient();
+    const userId = '3891279432';
 
-    const { data, error } = await supabase
+    const { count, error } = await supabase
       .from('gift')
-      .select(
-        'id, category, product_name, brand, due_date, image_url, is_deleted, owner_user_id'
-      )
-      .order('due_date', { ascending: true });
+      .select('*', { count: 'exact', head: true })
+      .eq('owner_user_id', userId);
 
     if (error) {
       throw new Error(error.message);
     }
 
-    const giftList = data.map((gift) => ({
-      id: gift.id,
-      category: gift.category,
-      productName: gift.product_name,
-      brand: gift.brand,
-      dueDate: gift.due_date,
-      imageUrl: gift.image_url,
-      isDeleted: gift.is_deleted,
-      ownerUserId: gift.owner_user_id,
-    }));
-
-    return giftList || [];
+    return count || 0;
   }
 
-  async getGiftById(giftId: string): Promise<GiftDto> {
+  async getGiftList(from: number, to: number): Promise<Gift[]> {
+    const supabase = await createClient();
+    const userId = '3891279432';
+
+    const { data: giftList, error } = await supabase
+      .from('gift')
+      .select('*')
+      .eq('owner_user_id', userId)
+      .order('due_date', { ascending: true })
+      .range(from, to);
+
+    if (error) {
+      throw new Error(error.message);
+    }
+    console.log('giftList: ', giftList);
+
+    return (
+      giftList?.map((gift) => ({
+        id: gift.id,
+        category: gift.category,
+        productName: gift.product_name,
+        brand: gift.brand,
+        dueDate: gift.due_date,
+        barcode: gift.barcode,
+        imageUrl: gift.image_url,
+        isDeleted: gift.is_deleted,
+        ownerUserId: gift.owner_user_id,
+      })) || []
+    );
+  }
+
+  async getGiftById(giftId: string): Promise<Gift> {
     const supabase = await createClient();
 
     const { data, error } = await supabase
       .from('gift')
-      .select('id, brand, due_date, image_url, is_deleted, owner_user_id')
+      .select('*')
       .eq('id', giftId)
       .single();
 
@@ -68,8 +85,11 @@ export class SbGiftRepository implements GiftRepository {
 
     return {
       id: data.id,
+      category: data.category,
+      productName: data.product_name,
       brand: data.brand,
       dueDate: data.due_date,
+      barcode: data.barcode,
       imageUrl: data.image_url,
       isDeleted: data.is_deleted,
       ownerUserId: data.owner_user_id,

@@ -1,10 +1,9 @@
-import { GetGiftListDto } from '@/application/usecases/gift/dto/GetGiftListDto';
-import { GiftDto } from '@/application/usecases/gift/dto/GiftDto';
 import { Gift } from '../entities/Gift';
 
 export interface GiftRepository {
   createGift(giftInfo: Gift): Promise<void>; // 기프티콘 등록
-  getGiftList(): Promise<GetGiftListDto[]>; // 기프티콘 리스트 조회
-  getGiftById(giftId: string): Promise<GiftDto>; // 기프티콘 상세 조회
+  getTotalGiftCount(): Promise<number>; // 기프티콘 총 개수 조회
+  getGiftList(from: number, to: number): Promise<Gift[]>; // 기프티콘 리스트 조회
+  getGiftById(giftId: string): Promise<Gift>; // 기프티콘 상세 조회
   deleteGift(giftId: string): Promise<void>; // 기프티콘 삭제
 }
