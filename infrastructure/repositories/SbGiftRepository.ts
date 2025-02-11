@@ -100,6 +100,31 @@ export class SbGiftRepository implements GiftRepository {
     const supabase = await createClient();
 
     const { error } = await supabase.from('gift').delete().eq('id', giftId);
+
+    if (error) {
+      throw new Error(error.message);
+    }
+  }
+
+  async editGift(giftInfo: Gift): Promise<void> {
+    const supabase = await createClient();
+
+    const updatedGift = {
+      category: giftInfo.category,
+      product_name: giftInfo.productName,
+      brand: giftInfo.brand,
+      due_date: giftInfo.dueDate,
+      barcode: giftInfo.barcode,
+      image_url: giftInfo.imageUrl,
+      is_deleted: giftInfo.isDeleted,
+      owner_user_id: giftInfo.ownerUserId,
+    };
+
+    const { error } = await supabase
+      .from('gift')
+      .update(updatedGift)
+      .eq('id', giftInfo.id);
+
     if (error) {
       throw new Error(error.message);
     }

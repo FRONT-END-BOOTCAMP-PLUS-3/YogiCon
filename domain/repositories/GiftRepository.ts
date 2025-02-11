@@ -6,4 +6,5 @@ export interface GiftRepository {
   getGiftList(from: number, to: number): Promise<Gift[]>; // 기프티콘 리스트 조회
   getGiftById(giftId: string): Promise<Gift>; // 기프티콘 상세 조회
   deleteGift(giftId: string): Promise<void>; // 기프티콘 삭제
+  editGift(giftInfo: Gift): Promise<void>; // 기프티콘 수정
 }
