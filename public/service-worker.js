@@ -9,7 +9,7 @@ self.addEventListener('push', (event) => {
 });
 
 self.addEventListener('notificationclick', (event) => {
-  clients.openWindow('/'); // 링크 처리해줘야함
+  clients.openWindow('/user/gifts'); // 링크 처리해줘야함
 });
 
 self.addEventListener('install', () => {

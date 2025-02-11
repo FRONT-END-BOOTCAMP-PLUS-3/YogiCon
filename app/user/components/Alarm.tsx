@@ -3,7 +3,6 @@
 import { AlarmDto } from '@/application/usecases/alarm/dto/AlarmDto';
 import { CreateAlarmDto } from '@/application/usecases/alarm/dto/CreateAlarmDto';
 import ModalDialog from '@/components/ModalDialog';
-import { subscribePush } from '@/utils/subscribePush';
 import { useEffect, useState } from 'react';
 import Select, { SingleValue, StylesConfig } from 'react-select';
 import styled from 'styled-components';
