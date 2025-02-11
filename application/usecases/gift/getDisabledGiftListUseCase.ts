@@ -27,6 +27,7 @@ export const getDisabledGiftListUseCase = async (
     productName: gift.productName,
     brand: gift.brand,
     dueDate: new Date(gift.dueDate).toISOString().split('T')[0],
+    barcode: gift.barcode,
     imageUrl: gift.imageUrl,
     isDeleted: gift.isDeleted,
     ownerUserId: gift.ownerUserId,

@@ -6,6 +6,7 @@ export interface GiftDto {
   productName: string;
   brand: string;
   dueDate: string;
+  barcode: string;
   imageUrl: string;
   isDeleted: boolean;
   ownerUserId: string;
