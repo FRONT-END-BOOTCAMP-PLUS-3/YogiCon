@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 export default function useSubscribePush() {
   const [pushSubscription, setPushSubscription] =
     useState<PushSubscription | null>(null);
+
   useEffect(() => {
     if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
       console.warn('푸시 알림을 지원하지 않는 브라우저입니다.');
