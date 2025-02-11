@@ -20,7 +20,6 @@ const Container = styled(motion.div)<{ height: number }>`
 
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
-  box-shadow: 0px 0px 10px var(--disabled);
   height: ${({ height }) => height - 30}px;
   width: 100%;
   max-width: 768px;

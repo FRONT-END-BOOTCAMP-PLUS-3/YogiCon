@@ -9,9 +9,9 @@ import styled from 'styled-components';
 const Wrapper = styled.div`
   min-height: 120px;
   border-top-left-radius: 12px;
-  border-bottom-right-radius: 12px;
+  border-top-right-radius: 12px;
   position: relative;
-  padding: 0.75rem 0 0.25rem 0;
+  padding-top: 0.75rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -20,7 +20,7 @@ const Wrapper = styled.div`
 const Handle = styled.div`
   width: 100px;
   min-height: 4px;
-  border-radius: 2px;
+  border-radius: 0.125rem;
   background-color: var(--deepgray);
   margin: auto;
 `;
@@ -49,20 +49,21 @@ const DcText = styled.span`
 `;
 
 const GiftContainer = styled.div`
+  max-height: 116px;
   flex: 1;
   background-color: rgba(255, 192, 192, 0.5);
-  width: 90%;
+  width: 77%;
   margin: 5px 0;
   padding: 0 10px;
   display: flex;
   justify-content: center;
-  border-radius: 15px;
+  border-radius: 1rem;
 `;
 
 const Line = styled.hr`
   margin: 0;
   border: 1.2px solid var(--deepgray);
-  border-radius: 10px;
+  border-radius: 0.625rem;
   width: 90%;
 `;
 
