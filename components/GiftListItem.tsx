@@ -7,6 +7,7 @@ import { IoIosArrowForward } from 'react-icons/io';
 import { TbRestore, TbTrash } from 'react-icons/tb';
 import styled from 'styled-components';
 import GiftListBadge from './GiftListBadge';
+import useValidImageUrl from '@/hooks/useValidImageUrl';
 
 /* ---------------------------------- style --------------------------------- */
 const GiftContainer = styled.li`
@@ -189,11 +190,13 @@ const GiftListItem = forwardRef<HTMLLIElement, GiftListItemProps>(
 
     const isTrash: boolean = isDeleted || isExpired;
 
+    const validImageUrl: string = useValidImageUrl(imageUrl);
+
     return (
       <GiftContainer ref={ref} onClick={onClick}>
         <GiftLeftWrapper>
           <GiftLeftImage
-            src={imageUrl}
+            src={validImageUrl}
             alt="gifticon"
             width={100}
             height={100}

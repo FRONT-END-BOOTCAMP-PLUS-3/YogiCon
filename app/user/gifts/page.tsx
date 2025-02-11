@@ -89,7 +89,6 @@ const Home = () => {
     useState<CategoryListItem>('전체');
   const [searchWord, setSearchWord] = useState('');
   const [searchInputValue, setSearchInputValue] = useState('');
-  const [totalPage, setTotalPage] = useState(1);
   const [hasNextPage, setHasNextPage] = useState(true);
   const [page, setPage] = useState(1);
 
@@ -128,10 +127,16 @@ const Home = () => {
         }
 
         const giftListDto = await response.json();
-        console.log('조회된 기프티콘 리스트: ', giftListDto.data);
+        if (giftListDto.data.giftList.imageUrl)
+          console.log('조회된 기프티콘 리스트: ', giftListDto.data);
 
-        setGiftList((prev) => [...prev, ...giftListDto.data.giftList]);
-        setTotalPage(giftListDto.data.totalPage);
+        if (page === 1) {
+          setGiftList(giftListDto.data.giftList);
+          setHasNextPage(true);
+        } else {
+          setGiftList((prev) => [...prev, ...giftListDto.data.giftList]);
+        }
+
         setHasNextPage(giftListDto.data.hasNextPage);
       } catch (error) {
         console.error('기프티콘 리스트 조회 오류: ', error);
@@ -139,11 +144,12 @@ const Home = () => {
     };
 
     if (hasNextPage) fetchGiftList();
-  }, [searchWord, selectedCategory, page]);
+  }, [searchWord, selectedCategory, page, hasNextPage]);
 
   const handleCategoryButtonClick = (value: CategoryListItem) => () => {
     setSelectedCategory(value);
     setPage(1); // 새로운 카테고리 선택 시 페이지 초기화
+    setHasNextPage(true); // 새로운 카테고리 선택 시 hasNextPage 초기화
     setGiftList([]); // 기존 데이터 초기화
   };
 
@@ -153,6 +159,7 @@ const Home = () => {
     setPage(1);
     setGiftList([]);
   };
+
   const handleSearchInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchInputValue(e.target.value);
   };
@@ -165,6 +172,7 @@ const Home = () => {
     router.push('/user/gifts/create');
   };
 
+  console.log('page: ', page);
   return (
     <HomeContainer>
       <FilterSection aria-label="검색 및 필터링">

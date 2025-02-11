@@ -24,29 +24,20 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const selectedCategory = searchParams.get('selectedCategory');
+    const selectedCategory = searchParams.get('selectedCategory') ?? '전체';
     const searchWord = searchParams.get('searchWord') ?? '';
     const page = Number(searchParams.get('page')) || 1;
-    // const from = (page - 1) * 10;
-    // const to = page * 10 - 1;
 
     const giftRepository: GiftRepository = new SbGiftRepository();
-    // let giftList = await giftRepository.getGiftList(from, to);
-    let giftListDto = await getGiftListUseCase(giftRepository, page);
 
-    if (selectedCategory !== '전체') {
-      giftListDto.giftList = giftListDto.giftList.filter(
-        (gift) => gift.category === selectedCategory
-      );
-    }
+    const giftListDto = await getGiftListUseCase(
+      giftRepository,
+      page,
+      7,
+      selectedCategory,
+      searchWord
+    );
 
-    if (searchWord) {
-      giftListDto.giftList = giftListDto.giftList.filter(
-        (gift) =>
-          gift.productName.includes(searchWord) ||
-          gift.brand.includes(searchWord)
-      );
-    }
     return NextResponse.json(
       { message: '기프티콘 리스트 조회 성공', data: giftListDto },
       { status: 200 }
