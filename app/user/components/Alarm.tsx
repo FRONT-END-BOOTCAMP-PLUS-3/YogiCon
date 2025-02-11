@@ -3,6 +3,7 @@
 import { AlarmDto } from '@/application/usecases/alarm/dto/AlarmDto';
 import { CreateAlarmDto } from '@/application/usecases/alarm/dto/CreateAlarmDto';
 import ModalDialog from '@/components/ModalDialog';
+import { subscribePush } from '@/utils/subscribePush';
 import { useEffect, useState } from 'react';
 import Select, { SingleValue, StylesConfig } from 'react-select';
 import styled from 'styled-components';
@@ -190,13 +191,17 @@ const Alarm = () => {
     setAlarms((prev) => prev.filter((alarm) => alarm.id !== alarmId));
   };
 
-  const handleAddAlarmClick = () => {
-    if (Notification.permission === 'denied') {
-      alert('알림이 차단되었습니다. 설정에서 직접 변경해야 합니다.');
+  const handleAddAlarmClick = async () => {
+    const permission = await Notification.requestPermission();
+
+    if (permission !== 'granted') {
+      if (permission === 'denied') {
+        alert('알림이 차단되어 있습니다. 설정에서 직접 변경해야 합니다.');
+      }
+      return;
     }
-    Notification.requestPermission().then(() => {
-      openModal();
-    });
+
+    openModal();
   };
 
   useEffect(() => {
