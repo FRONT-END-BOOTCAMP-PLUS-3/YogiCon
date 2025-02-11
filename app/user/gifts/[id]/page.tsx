@@ -153,20 +153,33 @@ const ViewGift = () => {
     }
   };
 
-  const handleDeleteGift = async () => {
+  const handleSoftDeleteGift = async () => {
+    if (!id || !giftInfo) return;
     try {
-      const res = await fetch(`/api/user/gifts/${id}`, {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
+      const updateGiftInfo = {
+        ...giftInfo,
+        isDeleted: true,
+      };
+      console.log('updateGiftInfo', updateGiftInfo);
+      const response = await fetch(`/api/user/gifts/${id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updateGiftInfo),
       });
 
-      if (!res.ok) {
-        throw new Error('Response Error');
+      if (!response.ok) {
+        throw new Error('서버 업데이트 실패');
+      } else {
+        alert('임시삭제 성공');
       }
-      alert('해당 기프티콘이 삭제되었습니다.');
-      router.push('/user/gifts');
+
+      setGiftInfo((prev) => (prev ? { ...prev, isDeleted: true } : prev));
+      // router.push('/user/gifts/disabled');
     } catch (error) {
-      console.error('기프티콘 삭제에 실패했습니다.', error);
+      console.error('기프티콘 임시삭제 처리 실패:', error);
+      alert('임시삭제 처리 중 오류가 발생했습니다.');
     }
   };
 
@@ -206,7 +219,7 @@ const ViewGift = () => {
           <TbBuildingStore size={'45%'} />
           <IconButtonText>근처 매장 찾기</IconButtonText>
         </IconButton>
-        <IconButton type="button" onClick={handleDeleteGift}>
+        <IconButton type="button" onClick={handleSoftDeleteGift}>
           <FaRegTrashAlt size={'45%'} />
           <IconButtonText>삭제하기</IconButtonText>
         </IconButton>
@@ -217,7 +230,7 @@ const ViewGift = () => {
         <Button isLong={true} color={'sub'} onClick={handleEditClick}>
           수정하기
         </Button>
-        <Button isLong={true} color={'main'}>
+        <Button isLong={true} color={'main'} onClick={handleSoftDeleteGift}>
           사용 완료
         </Button>
       </LongButtonWrapper>

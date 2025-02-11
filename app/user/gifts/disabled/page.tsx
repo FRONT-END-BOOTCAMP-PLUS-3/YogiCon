@@ -90,6 +90,31 @@ const Trash = () => {
     if (hasNextPage) fetchTrashList();
   }, [page, hasNextPage]);
 
+  const handleDeleteGift = async (id: string) => {
+    try {
+      const res = await fetch(`/api/user/gifts/${id}`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      if (!res.ok) {
+        throw new Error('Response Error');
+      }
+      alert('해당 기프티콘이 삭제되었습니다.');
+      setTrashList((prev) => prev.filter((gift) => gift.id != id));
+    } catch (error) {
+      console.error('기프티콘 삭제에 실패했습니다.', error);
+    }
+  };
+
+  const handleRestoreGift = (id: string) => {
+    setTrashList((prev) =>
+      prev.map((gift) =>
+        gift.id === id ? { ...gift, isDeleted: false } : gift
+      )
+    );
+  };
+
   return (
     <TrashContainer $isEmpty={isEmpty}>
       {!isEmpty ? (
@@ -98,6 +123,9 @@ const Trash = () => {
             <GiftListItem
               key={item.id}
               ref={index === trashList.length - 1 ? lastElementRef : null}
+              handleTrashClick={() => handleDeleteGift(item.id)}
+              handleRestoreClick={() => handleRestoreGift(item.id)}
+              isDisabled={true}
               {...item}
             />
           ))}
