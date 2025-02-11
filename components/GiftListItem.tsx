@@ -21,7 +21,7 @@ const GiftContainer = styled.li`
   align-items: stretch;
   gap: 0.9rem;
   border-bottom: 1px solid var(--disabled);
-  background-color: var(--white);
+  background-color: transparent;
   transition: 0.3s ease all;
 `;
 
@@ -65,7 +65,7 @@ const GiftLeftExpiredText = styled.span`
 `;
 
 // 중앙
-const GiftCenterWrapper = styled.div<{ $isTrash: boolean }>`
+const GiftCenterWrapper = styled.div`
   width: 50%;
   display: flex;
   flex-direction: column;
@@ -150,6 +150,7 @@ type GiftListItemProps = {
   productName: string;
   dueDate: string;
   isDeleted: boolean;
+  isDisabled?: boolean;
   onClick?: () => void;
   handleTrashClick?: () => void;
   handleRestoreClick?: () => void;
@@ -165,30 +166,14 @@ const GiftListItem = forwardRef<HTMLLIElement, GiftListItemProps>(
       productName,
       dueDate,
       isDeleted,
+      isDisabled,
       onClick,
       handleTrashClick,
       handleRestoreClick,
     },
     ref
   ) => {
-    const dateObject: Date = new Date(dueDate);
-    const dueDateString: string = dateObject.toISOString().split('T')[0];
-    const dateTodayObject: Date = new Date();
-
-    const dueDateOnly: Date = new Date(
-      dateObject.getFullYear(),
-      dateObject.getMonth(),
-      dateObject.getDate()
-    );
-    const todayDateOnly: Date = new Date(
-      dateTodayObject.getFullYear(),
-      dateTodayObject.getMonth(),
-      dateTodayObject.getDate()
-    );
-
-    const isExpired: boolean = dueDateOnly.getTime() < todayDateOnly.getTime();
-
-    const isTrash: boolean = isDeleted || isExpired;
+    const isExpired = !isDeleted && isDisabled;
 
     const validImageUrl: string = useValidImageUrl(imageUrl);
 
@@ -201,7 +186,7 @@ const GiftListItem = forwardRef<HTMLLIElement, GiftListItemProps>(
             width={100}
             height={100}
           />
-          {isDeleted && !isExpired && (
+          {isDisabled && (
             <GiftLeftBadge>
               <GiftListBadge dueDate={dueDate} isLarge={false} />
             </GiftLeftBadge>
@@ -209,15 +194,15 @@ const GiftListItem = forwardRef<HTMLLIElement, GiftListItemProps>(
           {isExpired && <GiftLeftExpiredText>기한만료</GiftLeftExpiredText>}
         </GiftLeftWrapper>
 
-        <GiftCenterWrapper $isTrash={isTrash}>
+        <GiftCenterWrapper>
           <GiftCategoryText>{category}</GiftCategoryText>
           <GiftTitleText>
             [{brand}] {productName}
           </GiftTitleText>
-          <GiftDueDate>유효기간: ~{dueDateString}</GiftDueDate>
+          <GiftDueDate>유효기간: ~{dueDate.toString()}</GiftDueDate>
         </GiftCenterWrapper>
 
-        {isTrash ? (
+        {isDisabled ? (
           <GiftRightTrashWrapper>
             <GiftRightTrashButton
               type="button"
