@@ -5,6 +5,7 @@ import { GiftDto } from '@/application/usecases/gift/dto/GiftDto';
 import { useStore } from '@/stores/useStore';
 import { Location } from '@/types/Location';
 import { SelectedItem } from '@/types/SelectedItem';
+import { useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { MdMyLocation } from 'react-icons/md';
 import { RiResetLeftLine } from 'react-icons/ri';
@@ -77,8 +78,11 @@ const ResearchButton = styled.button`
 
 /* ---------------------------------- component --------------------------------- */
 export default function Shop() {
+  const searchParams = useSearchParams();
+  const giftId = searchParams.get('giftId');
+  const key = searchParams.get('key');
   const [selectedItemKey, setSelectedItemKey] = useState<SelectedItem | null>(
-    null
+    giftId && key ? { giftId, key: key } : null
   );
   const mapRef = useRef<any>(null);
   const [savedLocation, setSavedLocation] = useState<Location | null>(null);
