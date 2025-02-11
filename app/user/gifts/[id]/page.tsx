@@ -146,6 +146,13 @@ const ViewGift = () => {
 
   const { imageUrl, brand, category, dueDate, productName } = giftInfo;
   console.log('giftInfo: ', giftInfo);
+
+  const handleShopsClick = () => {
+    if (id && brand) {
+      router.push(`/user/shop?giftId=${id}&key=${brand}`);
+    }
+  };
+
   const handleDeleteGift = async () => {
     try {
       const res = await fetch(`/api/user/gifts/${id}`, {
@@ -195,7 +202,7 @@ const ViewGift = () => {
           <LuMail size={'45%'} />
           <IconButtonText>친구에게 양도하기</IconButtonText>
         </IconButton>
-        <IconButton type="button">
+        <IconButton type="button" onClick={handleShopsClick}>
           <TbBuildingStore size={'45%'} />
           <IconButtonText>근처 매장 찾기</IconButtonText>
         </IconButton>
