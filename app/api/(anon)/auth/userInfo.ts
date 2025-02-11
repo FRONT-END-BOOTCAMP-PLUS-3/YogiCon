@@ -1,3 +1,5 @@
+import { useUserStore } from '@/stores/userStore';
+
 export async function getUserInfo(accessToken: string) {
   if (!accessToken) {
     throw new Error('access token 없음');
@@ -19,7 +21,11 @@ export async function getUserInfo(accessToken: string) {
     if (!response.ok) {
       throw new Error(data.error || 'Failed to fetch user info');
     }
-    localStorage.setItem('user_info', JSON.stringify(data));
+
+    //zustand 저장
+    useUserStore.getState().setUserData(data);
+
+    //localStorage.setItem('user_info', JSON.stringify(data));
     return data;
   } catch (error) {
     console.error('사용자 정보 요청 중 오류 발생:', error);

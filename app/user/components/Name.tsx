@@ -1,5 +1,6 @@
 import { LuUserRound } from 'react-icons/lu';
 import styled from 'styled-components';
+import { useUserStore } from '@/stores/userStore';
 
 /* ---------------------------------- style --------------------------------- */
 const NameContainer = styled.div`
@@ -26,10 +27,9 @@ const NameStyle = styled.div`
 /* ---------------------------------- component --------------------------------- */
 const Name = () => {
   const getUsername = () => {
-    const userInfo = localStorage.getItem('user_info');
-    const parsedUserInfo = userInfo ? JSON.parse(userInfo) : null;
+    const userData = useUserStore();
 
-    const username = parsedUserInfo?.kakao_account?.profile?.nickname;
+    const username = userData?.userData?.kakao_account?.profile?.nickname;
     return username || 'Guest';
   };
   const username = getUsername();

@@ -10,6 +10,7 @@ import MyButton from './components/MyButton';
 import Name from './components/Name';
 import { getUserInfo } from '../api/(anon)/auth/userInfo';
 import { supabase } from '@/utils/supabase/supabase';
+import { useUserStore } from '@/stores/userStore';
 
 /* ---------------------------------- style --------------------------------- */
 const MyContainer = styled.div`
@@ -44,6 +45,10 @@ const My = () => {
   const [actionType, setActionType] = useState<'logout' | 'deleteID' | null>(
     null
   );
+
+  const { userData, clearUserData } = useUserStore();
+
+  console.log(userData);
 
   const saveUserToSupabase = async (userData: any) => {
     if (!userData.id || !userData.kakao_account?.profile?.nickname) {
@@ -146,13 +151,13 @@ const My = () => {
   const handleConfirm = () => {
     if (actionType === 'logout') {
       localStorage.removeItem('access_token'); //로그아웃 시 access_token 과 user_info 삭제
-      localStorage.removeItem('user_info');
+      clearUserData();
       router.push('/');
     } else if (actionType === 'deleteID') {
       deleteUserFromSupabase(userInfo.id);
       unlinkKakaoAccount(localStorage.getItem('access_token') || '');
       localStorage.removeItem('access_token');
-      localStorage.removeItem('user_info');
+      clearUserData();
       router.push('/');
     }
     closeModal();
