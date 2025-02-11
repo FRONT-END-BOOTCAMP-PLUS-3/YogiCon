@@ -159,8 +159,12 @@ const ViewGift = () => {
       alert('해당 기프티콘이 삭제되었습니다.');
       router.push('/user/gifts');
     } catch (error) {
-      alert('기프티콘 삭제에 실패했습니다.');
+      console.error('기프티콘 삭제에 실패했습니다.', error);
     }
+  };
+
+  const handleEditClick = () => {
+    router.push(`/user/gifts/${id}/edit`);
   };
 
   return (
@@ -203,7 +207,7 @@ const ViewGift = () => {
 
       {/* 하단 버튼 2개 */}
       <LongButtonWrapper>
-        <Button isLong={true} color={'sub'}>
+        <Button isLong={true} color={'sub'} onClick={handleEditClick}>
           수정하기
         </Button>
         <Button isLong={true} color={'main'}>
