@@ -8,6 +8,7 @@ import { TbRestore, TbTrash } from 'react-icons/tb';
 import styled from 'styled-components';
 import GiftListBadge from './GiftListBadge';
 import useValidImageUrl from '@/hooks/useValidImageUrl';
+import { usePathname } from 'next/navigation';
 
 /* ---------------------------------- style --------------------------------- */
 const GiftContainer = styled.li`
@@ -173,6 +174,8 @@ const GiftListItem = forwardRef<HTMLLIElement, GiftListItemProps>(
     },
     ref
   ) => {
+    const pathname = usePathname();
+    const isTrashPage = pathname === '/user/gifts/disabled';
     const isExpired = !isDeleted && isDisabled;
 
     const validImageUrl: string = useValidImageUrl(imageUrl);
@@ -186,12 +189,14 @@ const GiftListItem = forwardRef<HTMLLIElement, GiftListItemProps>(
             width={100}
             height={100}
           />
-          {isDisabled && (
+
+          {isExpired ? (
+            <GiftLeftExpiredText>기한만료</GiftLeftExpiredText>
+          ) : isTrashPage ? (
             <GiftLeftBadge>
               <GiftListBadge dueDate={dueDate} isLarge={false} />
             </GiftLeftBadge>
-          )}
-          {isExpired && <GiftLeftExpiredText>기한만료</GiftLeftExpiredText>}
+          ) : null}
         </GiftLeftWrapper>
 
         <GiftCenterWrapper>
