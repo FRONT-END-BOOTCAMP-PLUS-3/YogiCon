@@ -3,7 +3,7 @@
 
 import { searchShops } from '@/app/user/shop/components/searchShops';
 import useGeolocation from '@/hooks/useGeolocation';
-import { useStore } from '@/stores/useStore';
+import { useShopStore } from '@/stores/useShopStore';
 import { Location } from '@/types/Location';
 import { useEffect, useRef, useState } from 'react';
 import ReactDOMServer from 'react-dom/server';
@@ -24,7 +24,7 @@ const KakaoMap = ({ onMapLoad, searchKeyword }: KakaoMapProps) => {
   const apiKey: string | undefined = process.env.NEXT_PUBLIC_KAKAO_KEY;
   const { location } = useGeolocation();
   const [loadedMap, setLoadedMap] = useState<any>(null);
-  const { itemClicked, setItemClicked } = useStore();
+  const { itemClicked, setItemClicked } = useShopStore();
   const prevKeywordRef = useRef<string | null>(null);
 
   useEffect(() => {

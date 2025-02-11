@@ -2,7 +2,7 @@
 
 import { GiftDto } from '@/application/usecases/gift/dto/GiftDto';
 import GiftListItem from '@/components/GiftListItem';
-import { useStore } from '@/stores/useStore';
+import { useShopStore } from '@/stores/useShopStore';
 import { SelectedItem } from '@/types/SelectedItem';
 import styled from 'styled-components';
 
@@ -38,7 +38,7 @@ export default function BottomSheetContent({
   loading,
   lastElementRef,
 }: BottomSheetContentProps) {
-  const { setItemClicked } = useStore();
+  const { setItemClicked } = useShopStore();
   const handleItemClick = (giftId: string, key: string) => {
     setSelectedItemKey({ giftId, key });
     setItemClicked(true);

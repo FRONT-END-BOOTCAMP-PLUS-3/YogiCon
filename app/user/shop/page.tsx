@@ -2,7 +2,7 @@
 'use client';
 
 import { GiftDto } from '@/application/usecases/gift/dto/GiftDto';
-import { useStore } from '@/stores/useStore';
+import { useShopStore } from '@/stores/useShopStore';
 import { Location } from '@/types/Location';
 import { SelectedItem } from '@/types/SelectedItem';
 import { useSearchParams } from 'next/navigation';
@@ -92,7 +92,7 @@ export default function Shop() {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState<boolean>(true);
   const [headerGift, setHeaderGift] = useState<GiftDto | null>(null);
-  const { setItemClicked } = useStore();
+  const { setItemClicked } = useShopStore();
 
   const observer = useRef<IntersectionObserver | null>(null);
   const lastElementRef = useCallback(

@@ -7,7 +7,7 @@ type State = {
   setItemClicked: (key: boolean) => void;
 }
 
-export const useStore = create<State>((set) => ({
+export const useShopStore = create<State>((set) => ({
   itemClicked: false,
   setItemClicked: (key) => set({ itemClicked: key }),
 }))
