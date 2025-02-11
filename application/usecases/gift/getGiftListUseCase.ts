@@ -15,11 +15,13 @@ export const getGiftListUseCase = async (
   let giftList = await giftRepository.getGiftList(from, to);
   const totalCount = await giftRepository.getTotalGiftCount();
   const totalPage = Math.ceil(totalCount / size);
-  const now = new Date();
+  const now = new Date().toISOString().split('T')[0];
 
   // 홈 필터링(isDeleted가 false이고 dueDate 안 지난 것 )
   giftList = giftList.filter(
-    (gift) => !gift.isDeleted && new Date(gift.dueDate) > now
+    (gift) =>
+      !gift.isDeleted &&
+      new Date(gift.dueDate).toISOString().split('T')[0] >= now
   );
 
   // 카테고리 필터링

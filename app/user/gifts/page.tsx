@@ -127,8 +127,8 @@ const Home = () => {
         }
 
         const giftListDto = await response.json();
-        if (giftListDto.data.giftList.imageUrl)
-          console.log('조회된 기프티콘 리스트: ', giftListDto.data);
+
+        console.log('조회된 기프티콘 리스트: ', giftListDto.data);
 
         if (page === 1) {
           setGiftList(giftListDto.data.giftList);
