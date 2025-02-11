@@ -89,6 +89,7 @@ const FieldRow = styled.div`
 `;
 
 /* react-select 스타일 */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const customSelectStyles: StylesConfig<any, false> = {
   menuList: (provided) => ({
     ...provided,
@@ -189,6 +190,15 @@ const Alarm = () => {
     setAlarms((prev) => prev.filter((alarm) => alarm.id !== alarmId));
   };
 
+  const handleAddAlarmClick = () => {
+    if (Notification.permission === 'denied') {
+      alert('알림이 차단되었습니다. 설정에서 직접 변경해야 합니다.');
+    }
+    Notification.requestPermission().then(() => {
+      openModal();
+    });
+  };
+
   useEffect(() => {
     const fetchAlarms = async () => {
       try {
@@ -230,7 +240,7 @@ const Alarm = () => {
           </AlarmItem>
         ))}
         {alarms.length < 5 && (
-          <AddAlarmButton type="button" onClick={openModal}>
+          <AddAlarmButton type="button" onClick={handleAddAlarmClick}>
             + 알람 추가
           </AddAlarmButton>
         )}
@@ -245,7 +255,7 @@ const Alarm = () => {
           <FieldRow>
             <label htmlFor="daysBefore">기간 :</label>
             <Select
-              inputId="daysbefore"
+              inputId="daysBefore"
               name="daysBefore"
               styles={customSelectStyles}
               options={daysBeforeOptions}
