@@ -3,7 +3,7 @@
 
 import { searchShops } from '@/app/user/shop/components/searchShops';
 import useGeolocation from '@/hooks/useGeolocation';
-import EventBus from '@/types/EventBus';
+import { useStore } from '@/stores/useStore';
 import { Location } from '@/types/Location';
 import { useEffect, useRef, useState } from 'react';
 import ReactDOMServer from 'react-dom/server';
@@ -18,18 +18,13 @@ declare global {
 type KakaoMapProps = {
   onMapLoad: (map: any, initalLocation: Location) => void;
   searchKeyword: string | null;
-  setErrorMessage: (message: string) => void;
 };
 
-const KakaoMap = ({
-  onMapLoad,
-  searchKeyword,
-  setErrorMessage,
-}: KakaoMapProps) => {
+const KakaoMap = ({ onMapLoad, searchKeyword }: KakaoMapProps) => {
   const apiKey: string | undefined = process.env.NEXT_PUBLIC_KAKAO_KEY;
   const { location } = useGeolocation();
   const [loadedMap, setLoadedMap] = useState<any>(null);
-  const [clicked, setClicked] = useState<boolean>(false);
+  const { itemClicked, setItemClicked } = useStore();
   const prevKeywordRef = useRef<string | null>(null);
 
   useEffect(() => {
@@ -84,25 +79,15 @@ const KakaoMap = ({
   }, [apiKey, location, onMapLoad]);
 
   useEffect(() => {
-    const handleItemClicked = () => setClicked(true);
-
-    EventBus.on('itemClicked', handleItemClicked);
-
-    return () => {
-      EventBus.off('itemClicked', handleItemClicked);
-    };
-  }, []);
-
-  useEffect(() => {
     if (!loadedMap || !searchKeyword) return;
 
-    if (searchKeyword !== prevKeywordRef.current || clicked) {
+    if (searchKeyword !== prevKeywordRef.current || itemClicked) {
       console.log('장소 찾을게:', searchKeyword);
-      searchShops(loadedMap, searchKeyword, setErrorMessage);
+      searchShops(loadedMap, searchKeyword);
       prevKeywordRef.current = searchKeyword; // 최신 키워드 저장
-      setClicked(false); // clicked 리셋
+      setItemClicked(false); // itemClicked 리셋
     }
-  }, [loadedMap, searchKeyword, clicked]);
+  }, [itemClicked, loadedMap, searchKeyword, setItemClicked]);
 
   return <div id="map" style={{ height: '100%', width: '100%' }} />;
 };

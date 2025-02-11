@@ -50,6 +50,7 @@ type BottomSheetProps = {
   giftList: GiftDto[] | null;
   loading: boolean;
   headerGift: GiftDto | null;
+  lastElementRef?: (node: HTMLLIElement | null) => void;
 };
 
 /* ---------------------------------- component --------------------------------- */
@@ -58,6 +59,7 @@ function BottomSheet({
   giftList,
   loading,
   headerGift,
+  lastElementRef,
 }: BottomSheetProps) {
   const { sheet, content, moveSheetToBottom } = useBottomSheet();
   const { bottomSheetHeight } = useBottomSheetDimensions();
@@ -72,6 +74,7 @@ function BottomSheet({
           moveSheetToBottom={moveSheetToBottom}
           giftList={giftList}
           loading={loading}
+          lastElementRef={lastElementRef}
         />
       </BSContentBox>
     </Container>

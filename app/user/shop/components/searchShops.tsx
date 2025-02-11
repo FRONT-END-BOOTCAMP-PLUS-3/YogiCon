@@ -13,13 +13,9 @@ const customOverlays: any[] = [];
  * @param keyword - 검색할 장소 키워드 (예: '이태원 맛집')
  * @param onError - 검색 실패 시 실행할 콜백 함수 (예: ZERO_RESULT 상태)
  */
-export const searchShops = (
-  map: any,
-  keyword: string | null,
-  onError: (message: string) => void
-): void => {
+export const searchShops = (map: any, keyword: string | null): void => {
   if (!window.kakao) {
-    onError('Kakao 지도 API 로드 실패');
+    alert('Kakao 지도 API 로드 실패');
     return;
   }
 
@@ -54,10 +50,10 @@ export const searchShops = (
         console.log('중심:', center);
       } else if (status === window.kakao.maps.services.Status.ZERO_RESULT) {
         console.warn('검색 결과가 없습니다.');
-        onError(`"${keyword}"에 대한 검색 결과가 없습니다.`);
+        alert(`"${keyword}"에 대한 검색 결과가 없습니다.`);
       } else {
         console.error('장소 검색 실패', status);
-        onError('장소 검색 중 오류가 발생했습니다.');
+        alert('장소 검색 중 오류가 발생했습니다.');
       }
     },
     { location: center, radius: 1200 } // 옵션 객체에 지도 중심 좌표 전달 (검색 기준 좌표)

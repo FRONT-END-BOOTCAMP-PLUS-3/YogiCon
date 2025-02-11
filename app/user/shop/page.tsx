@@ -2,7 +2,7 @@
 'use client';
 
 import { GiftDto } from '@/application/usecases/gift/dto/GiftDto';
-import EventBus from '@/types/EventBus';
+import { useStore } from '@/stores/useStore';
 import { Location } from '@/types/Location';
 import { SelectedItem } from '@/types/SelectedItem';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -83,42 +83,73 @@ export default function Shop() {
   const mapRef = useRef<any>(null);
   const [savedLocation, setSavedLocation] = useState<Location | null>(null);
 
-  const [giftList, setGiftList] = useState<GiftDto[] | null>(null);
+  const [giftList, setGiftList] = useState<GiftDto[]>([]);
+  const [hasNextPage, setHasNextPage] = useState(true);
+  const [page, setPage] = useState(1);
   const [loading, setLoading] = useState<boolean>(true);
   const [headerGift, setHeaderGift] = useState<GiftDto | null>(null);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const { setItemClicked } = useStore();
+
+  const observer = useRef<IntersectionObserver | null>(null);
+  const lastElementRef = useCallback(
+    (node: HTMLLIElement | null) => {
+      if (!hasNextPage || !node) return;
+
+      if (observer.current) observer.current.disconnect();
+
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          console.log('마지막 요소 감지됨');
+          setPage((prevPage) => prevPage + 1);
+        }
+      });
+
+      if (node) observer.current.observe(node);
+    },
+    [hasNextPage]
+  );
 
   useEffect(() => {
-    if (errorMessage) {
-      alert(errorMessage);
-    }
-  }, [errorMessage]);
-
-  useEffect(() => {
-    const getGifts = async (): Promise<any> => {
+    const fetchGiftList = async () => {
       try {
         setLoading(true);
+        const query = {
+          select: '전체',
+          search: '',
+          page: page,
+        };
         // disabled 되지 않은 gift list 가져오는 api 사용
-        const res = await fetch('/api/user/shop', { method: 'GET' });
-        const result = await res.json();
+        const response = await fetch(
+          `/api/user/gifts?selectedCategory=${query.select}&searchWord=${query.search}&page=${query.page}`,
+          { method: 'GET' }
+        );
 
-        if (!result.success) {
-          console.error('API 오류:', result.message);
-          setGiftList([]);
-          return [];
+        if (!response.ok) {
+          alert('기프티콘 리스트를 불러오는데 실패했습니다.');
+          return;
         }
-        console.log('가져옴', result.data);
-        setGiftList(result.data);
+
+        const giftListDto = await response.json();
+        if (giftListDto.data.giftList.imageUrl)
+          console.log('조회된 기프티콘 리스트: ', giftListDto.data);
+
+        if (page === 1) {
+          setGiftList(giftListDto.data.giftList);
+          setHasNextPage(true);
+        } else {
+          setGiftList((prev) => [...prev, ...giftListDto.data.giftList]);
+        }
+
+        setHasNextPage(giftListDto.data.hasNextPage);
       } catch (error) {
         console.error('데이터 로드 실패:', error);
-        return [];
       } finally {
         setLoading(false);
       }
     };
 
-    getGifts();
-  }, []);
+    if (hasNextPage) fetchGiftList();
+  }, [hasNextPage, page]);
 
   useEffect(() => {
     const getGiftById = async (): Promise<any> => {
@@ -167,7 +198,7 @@ export default function Shop() {
   };
 
   const handleResearchClick = () => {
-    EventBus.emit('itemClicked', true);
+    setItemClicked(true);
   };
 
   return (
@@ -175,7 +206,6 @@ export default function Shop() {
       <KakaoMap
         onMapLoad={handleMapLoad}
         searchKeyword={selectedItemKey?.key ?? ''}
-        setErrorMessage={setErrorMessage}
       />
 
       <MyLocation type="button" onClick={findMyLocation}>
@@ -194,6 +224,7 @@ export default function Shop() {
         giftList={giftList}
         loading={loading}
         headerGift={headerGift}
+        lastElementRef={lastElementRef}
       />
     </ShopContainer>
   );
