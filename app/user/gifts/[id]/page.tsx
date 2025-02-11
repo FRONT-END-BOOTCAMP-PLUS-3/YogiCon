@@ -13,6 +13,7 @@ import { FaRegTrashAlt } from 'react-icons/fa';
 import { LuMail } from 'react-icons/lu';
 import { TbBuildingStore } from 'react-icons/tb';
 import styled from 'styled-components';
+import { kakaoTalkShare } from './components/kakaoTalkShare';
 
 /* ---------------------------------- style --------------------------------- */
 const ViewGiftContainer = styled.main`
@@ -114,6 +115,24 @@ const ViewGift = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [giftInfo, setGiftInfo] = useState<GiftDto | null>(null);
 
+  const loadKakaoSDK = () => {
+    if (typeof window === undefined) return;
+    const script = document.createElement('script');
+    script.src = 'https://developers.kakao.com/sdk/js/kakao.min.js';
+    script.defer = true;
+    script.onload = () => {
+      if (window.Kakao && !window.Kakao.isInitialized()) {
+        window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_KEY);
+        console.log('Kakao SDK Initialized:', window.Kakao.isInitialized());
+      }
+    };
+    document.head.appendChild(script);
+  };
+
+  useEffect(() => {
+    loadKakaoSDK();
+  }, []);
+
   useEffect(() => {
     if (!id) return;
 
@@ -211,7 +230,12 @@ const ViewGift = () => {
 
       {/* 아이콘 버튼 3개 */}
       <IconButtonWrapper>
-        <IconButton type="button">
+        <IconButton
+          type="button"
+          onClick={() =>
+            kakaoTalkShare({ productName, brand, dueDate, imageUrl })
+          }
+        >
           <LuMail size={'45%'} />
           <IconButtonText>친구에게 양도하기</IconButtonText>
         </IconButton>
