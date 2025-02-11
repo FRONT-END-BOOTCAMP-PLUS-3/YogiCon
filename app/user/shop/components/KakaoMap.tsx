@@ -22,13 +22,14 @@ type KakaoMapProps = {
 
 const KakaoMap = ({ onMapLoad, searchKeyword }: KakaoMapProps) => {
   const apiKey: string | undefined = process.env.NEXT_PUBLIC_KAKAO_KEY;
-  const { location } = useGeolocation();
+  const { location, error } = useGeolocation();
   const [loadedMap, setLoadedMap] = useState<any>(null);
   const { itemClicked, setItemClicked } = useShopStore();
   const prevKeywordRef = useRef<string | null>(null);
 
   useEffect(() => {
     if (!apiKey || !location) return;
+    if (error) alert(error);
 
     const script: HTMLScriptElement = document.createElement('script');
     script.async = true;
@@ -76,7 +77,7 @@ const KakaoMap = ({ onMapLoad, searchKeyword }: KakaoMapProps) => {
     return () => {
       document.head.removeChild(script);
     };
-  }, [apiKey, location, onMapLoad]);
+  }, [apiKey, error, location, onMapLoad]);
 
   useEffect(() => {
     if (!loadedMap || !searchKeyword) return;
