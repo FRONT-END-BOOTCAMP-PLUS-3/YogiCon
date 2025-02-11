@@ -1,9 +1,9 @@
 'use client';
 
-import { GiftInfo } from '@/app/giftData';
+import { GiftDto } from '@/application/usecases/gift/dto/GiftDto';
 import GiftListItem from '@/components/GiftListItem';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
 const TrashContainer = styled.main<{ $isEmpty: boolean }>`
@@ -36,38 +36,70 @@ const NoGiftText = styled.p`
 `;
 
 const Trash = () => {
-  const [trashList, setTrashList] = useState<GiftInfo[]>([]);
+  const [trashList, setTrashList] = useState<GiftDto[]>([]);
+  const [hasNextPage, setHasNextPage] = useState(true);
+  const [page, setPage] = useState(1);
   const isEmpty = trashList.length === 0;
+
+  const observer = useRef<IntersectionObserver | null>(null);
+  const lastElementRef = useCallback(
+    (node: HTMLLIElement | null) => {
+      if (!hasNextPage || !node) return;
+
+      if (observer.current) observer.current.disconnect();
+
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          console.log('마지막 요소 감지됨');
+          setPage((prevPage) => prevPage + 1);
+        }
+      });
+
+      if (node) observer.current.observe(node);
+    },
+    [hasNextPage]
+  );
 
   useEffect(() => {
     const fetchTrashList = async () => {
       try {
-        const res = await fetch(`/api/user/gifts/disabled`);
+        const res = await fetch(`/api/user/gifts/disabled?page=${page}`);
 
         if (!res.ok) {
-          throw new Error('Response Error');
+          alert('휴지통 기프티콘 리스트를 불러오는데 실패했습니다.');
+          return;
         }
 
-        const data = await res.json();
-        setTrashList(data);
-      } catch (err: unknown) {
-        if (err instanceof Error) {
-          console.error(err.message);
+        const disabledGiftListDto = await res.json();
+
+        if (page === 1) {
+          setTrashList(disabledGiftListDto.data.giftList);
+          setHasNextPage(true);
         } else {
-          console.error('An unexpected error occurred');
+          setTrashList((prev) => [
+            ...prev,
+            ...disabledGiftListDto.data.giftList,
+          ]);
         }
+        setHasNextPage(disabledGiftListDto.data.hasNextPage);
+      } catch (error) {
+        console.error('휴지통 기프티콘 리스트 조회 오류: ', error);
       }
     };
 
-    fetchTrashList();
-  }, []);
+    if (hasNextPage) fetchTrashList();
+  }, [page, hasNextPage]);
 
   return (
     <TrashContainer $isEmpty={isEmpty}>
       {!isEmpty ? (
         <GiftList>
-          {trashList.map((item) => (
-            <GiftListItem key={item.id} {...item} />
+          {trashList.map((item, index) => (
+            <GiftListItem
+              key={item.id}
+              ref={index === trashList.length - 1 ? lastElementRef : null}
+              {...item}
+            />
           ))}
         </GiftList>
       ) : (
