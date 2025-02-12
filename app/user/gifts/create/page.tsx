@@ -59,7 +59,8 @@ type InputFields = {
 /* -------------------------------- component ------------------------------- */
 const CreateGift = () => {
   const router = useRouter();
-  const { id: userId } = useUserStore((state) => state.userData);
+  const userData = useUserStore((state) => state.userData);
+  const userId = userData?.id;
 
   const [imageState, setImageState] = useState<ImageState>({
     imageFile: null,

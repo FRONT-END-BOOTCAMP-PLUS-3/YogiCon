@@ -79,7 +79,8 @@ const ResearchButton = styled.button`
 
 /* ---------------------------------- component --------------------------------- */
 export default function Shop() {
-  const { id: userId } = useUserStore((state) => state.userData);
+  const userData = useUserStore((state) => state.userData);
+  const userId = userData?.id;
   const searchParams = useSearchParams();
   const giftId = searchParams.get('giftId');
   const key = searchParams.get('key');
@@ -116,6 +117,8 @@ export default function Shop() {
   );
 
   useEffect(() => {
+    const abortController = new AbortController();
+
     const fetchGiftList = async () => {
       try {
         setLoading(true);
@@ -127,7 +130,7 @@ export default function Shop() {
         // disabled 되지 않은 gift list 가져오는 api 사용
         const response = await fetch(
           `/api/user/gifts?selectedCategory=${query.select}&searchWord=${query.search}&page=${query.page}&userId=${userId}`,
-          { method: 'GET' }
+          { signal: abortController.signal, method: 'GET' }
         );
 
         if (!response.ok) {
@@ -147,20 +150,28 @@ export default function Shop() {
         }
 
         setHasNextPage(giftListDto.data.hasNextPage);
-      } catch (error) {
-        console.error('데이터 로드 실패:', error);
+      } catch (err: unknown) {
+        if (!(err instanceof DOMException)) {
+          console.error('데이터 로드 실패: ', err);
+        }
       } finally {
         setLoading(false);
       }
     };
 
     if (hasNextPage) fetchGiftList();
+
+    return () => {
+      abortController.abort();
+    };
   }, [hasNextPage, page, userId]);
 
   useEffect(() => {
+    const abortController = new AbortController();
     const getGiftById = async (): Promise<any> => {
       try {
         const res = await fetch(`/api/user/gifts/${selectedItemKey!.giftId}`, {
+          signal: abortController.signal,
           method: 'GET',
         });
 
@@ -170,10 +181,8 @@ export default function Shop() {
         const data = await res.json();
         setHeaderGift(data.gift);
       } catch (err: unknown) {
-        if (err instanceof Error) {
-          console.error(err.message);
-        } else {
-          console.error('An unexpected error occurred');
+        if (!(err instanceof DOMException)) {
+          console.error(err);
         }
       }
     };
@@ -181,6 +190,10 @@ export default function Shop() {
     if (!selectedItemKey || !selectedItemKey.giftId) return;
 
     getGiftById();
+
+    return () => {
+      abortController.abort();
+    };
   }, [selectedItemKey]);
 
   const findMyLocation = () => {

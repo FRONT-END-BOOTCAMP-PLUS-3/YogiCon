@@ -85,7 +85,8 @@ const RegisterButton = styled.button`
 /* -------------------------------- page ------------------------------- */
 const Home = () => {
   const router = useRouter();
-  const { id: userId } = useUserStore((state) => state.userData);
+  const userData = useUserStore((state) => state.userData);
+  const userId = userData?.id;
 
   const [selectedCategory, setSelectedCategory] =
     useState<CategoryListItem>('전체');
@@ -117,10 +118,15 @@ const Home = () => {
   );
 
   useEffect(() => {
+    const abortController = new AbortController();
+
     const fetchGiftList = async () => {
       try {
         const response = await fetch(
-          `/api/user/gifts?selectedCategory=${selectedCategory}&searchWord=${searchWord}&page=${page}&userId=${userId}`
+          `/api/user/gifts?selectedCategory=${selectedCategory}&searchWord=${searchWord}&page=${page}&userId=${userId}`,
+          {
+            signal: abortController.signal,
+          }
         );
 
         if (!response.ok) {
@@ -140,12 +146,18 @@ const Home = () => {
         }
 
         setHasNextPage(giftListDto.data.hasNextPage);
-      } catch (error) {
-        console.error('기프티콘 리스트 조회 오류: ', error);
+      } catch (err: unknown) {
+        if (!(err instanceof DOMException)) {
+          console.error('기프티콘 리스트 조회 오류: ', err);
+        }
       }
     };
 
     if (hasNextPage) fetchGiftList();
+
+    return () => {
+      abortController.abort();
+    };
   }, [searchWord, selectedCategory, page, hasNextPage, userId]);
 
   const handleCategoryButtonClick = (value: CategoryListItem) => () => {
