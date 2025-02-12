@@ -15,7 +15,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
     if (!token) {
       router.push('/');
     }
-  }, []);
+  }, [router]);
 
   const hideNavbarPaths = ['/user/gifts/', '/user/shop'];
   const shouldHideNavbar = hideNavbarPaths.some((path) =>
