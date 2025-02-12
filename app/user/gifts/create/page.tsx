@@ -89,6 +89,13 @@ const CreateGift = () => {
 
   const [isFormFilled, setIsFormFilled] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [validTest, setValidTest] = useState<{
+    dueDate: { message: string; isValid: boolean };
+    barcode: { message: string; isValid: boolean };
+  }>({
+    dueDate: { message: '', isValid: false },
+    barcode: { message: '', isValid: false },
+  });
 
   useEffect(() => {
     const requiredFields: (keyof CreateGiftDto)[] = [
@@ -115,6 +122,57 @@ const CreateGift = () => {
   };
 
   const handleChange = (field: keyof CreateGiftDto, value: string) => {
+    if (field === 'dueDate') {
+      if (/^\d{8}$/.test(value)) {
+        setValidTest((prev) => ({
+          ...prev,
+          dueDate: { message: '날짜 형식이 올바릅니다.', isValid: false },
+        }));
+        const formattedDate = `${value.slice(0, 4)}-${value.slice(4, 6)}-${value.slice(6, 8)}`;
+        setGiftInfo((prev) => ({ ...prev, [field]: formattedDate }));
+        return;
+      }
+
+      if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+        setValidTest((prev) => ({
+          ...prev,
+          dueDate: { message: '날짜 형식이 올바릅니다.', isValid: false },
+        }));
+        setGiftInfo((prev) => ({ ...prev, [field]: value }));
+        return;
+      }
+
+      setValidTest((prev) => ({
+        ...prev,
+        dueDate: {
+          message:
+            '날짜 형식이 올바르지 않습니다. YYYYMMDD 또는 YYYY-MM-DD 형식으로 입력해주세요.',
+          isValid: true,
+        },
+      }));
+      setGiftInfo((prev) => ({ ...prev, [field]: value }));
+      return;
+    } else if (field === 'barcode') {
+      if (!/^\d+$/.test(value)) {
+        setValidTest((prev) => ({
+          ...prev,
+          barcode: {
+            message: '바코드에는 숫자만 들어갈 수 있습니다.',
+            isValid: true,
+          },
+        }));
+        setGiftInfo((prev) => ({ ...prev, [field]: value }));
+        return;
+      }
+
+      setValidTest((prev) => ({
+        ...prev,
+        barcode: { message: '바코드 형식이 올바릅니다.', isValid: false },
+      }));
+      setGiftInfo((prev) => ({ ...prev, [field]: value }));
+      return;
+    }
+
     setGiftInfo((prev) => ({ ...prev, [field]: value }));
   };
 
@@ -127,13 +185,15 @@ const CreateGift = () => {
       return;
     }
 
-    // dueDate 형식 변환 로직
-    if (/^\d{8}$/.test(giftInfo.dueDate)) {
-      giftInfo.dueDate = `${giftInfo.dueDate.slice(0, 4)}-${giftInfo.dueDate.slice(4, 6)}-${giftInfo.dueDate.slice(6, 8)}`;
-    } else if (!/^\d{4}-\d{2}-\d{2}$/.test(giftInfo.dueDate)) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(giftInfo.dueDate)) {
       alert(
         '날짜 형식이 올바르지 않습니다. YYYYMMDD 또는 YYYY-MM-DD 형식으로 입력해주세요.'
       );
+      return;
+    }
+
+    if (!/^\d+$/.test(giftInfo.barcode)) {
+      alert('바코드 번호 형식이 올바르지 않습니다. 숫자로만 입력해주세요.');
       return;
     }
 
@@ -201,6 +261,7 @@ const CreateGift = () => {
             key={field}
             label={label}
             value={giftInfo[field]}
+            validTest={validTest}
             onChange={(e) => handleChange(field, e.target.value)}
           />
         ))}
