@@ -4,10 +4,9 @@ import { AlarmDto } from './dto/AlarmDto';
 
 export const createAlarmUseCase = async (
   alarmInfo: CreateAlarmDto,
-  alarmRepository: AlarmRepository
+  alarmRepository: AlarmRepository,
+  userId: string
 ): Promise<AlarmDto> => {
-  const userId = '3891279432';
-
   const newAlarm = {
     id: '',
     daysBefore: alarmInfo.daysBefore,

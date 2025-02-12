@@ -4,6 +4,7 @@
 import { AlarmDto } from '@/application/usecases/alarm/dto/AlarmDto';
 import { CreateAlarmDto } from '@/application/usecases/alarm/dto/CreateAlarmDto';
 import ModalDialog from '@/components/ModalDialog';
+import { useUserStore } from '@/stores/userStore';
 import { useEffect, useState } from 'react';
 import Select, { SingleValue, StylesConfig } from 'react-select';
 import styled from 'styled-components';
@@ -90,7 +91,6 @@ const FieldRow = styled.div`
 `;
 
 /* react-select 스타일 */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const customSelectStyles: StylesConfig<any, false> = {
   menuList: (provided) => ({
     ...provided,
@@ -108,6 +108,8 @@ type Option<T> = {
 
 /* ---------------------------------- component --------------------------------- */
 const Alarm = () => {
+  const userData = useUserStore((state) => state.userData);
+  const userId = userData?.id;
   const [alarms, setAlarms] = useState<AlarmDto[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [newAlarm, setNewAlarm] = useState<CreateAlarmDto>({
@@ -166,10 +168,12 @@ const Alarm = () => {
     }
 
     if (alarms.length < 5) {
-      const response = await fetch('/api/user/alarms', {
+      const response = await fetch(`/api/user/alarms?userId=${userId}`, {
         method: 'POST',
         body: JSON.stringify(newAlarm),
       });
+
+      if (!response.ok) throw new Error('Response Error');
 
       const createdAlarm = await response.json();
 
@@ -194,7 +198,7 @@ const Alarm = () => {
   useEffect(() => {
     const fetchAlarms = async () => {
       try {
-        const res = await fetch(`/api/user/alarms`);
+        const res = await fetch(`/api/user/alarms?userId=${userId}`);
 
         if (!res.ok) {
           throw new Error('Response Error');
@@ -212,7 +216,7 @@ const Alarm = () => {
     };
 
     fetchAlarms();
-  }, []);
+  }, [userId]);
 
   return (
     <AlarmContainer>
