@@ -1,4 +1,4 @@
-import { supabase } from '@/utils/supabase/supabase';
+import { supabase } from '@/utils/supabase/client';
 
 const SbUserRepository = async (userData: any) => {
   if (!userData.id || !userData.kakao_account?.profile?.nickname) {

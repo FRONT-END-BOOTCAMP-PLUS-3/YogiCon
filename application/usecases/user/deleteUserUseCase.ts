@@ -1,5 +1,5 @@
 // /usecases/logoutUsecase.ts
-import { supabase } from '@/utils/supabase/supabase';
+import { supabase } from '@/utils/supabase/client';
 
 export async function deleteUserUsecase(
   accessToken: string,
