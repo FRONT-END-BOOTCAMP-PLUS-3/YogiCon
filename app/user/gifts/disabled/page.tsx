@@ -3,6 +3,7 @@
 import { GiftDto } from '@/application/usecases/gift/dto/GiftDto';
 import GiftListItem from '@/components/GiftListItem';
 import { useUserStore } from '@/stores/userStore';
+import { deleteImageFromStorage } from '@/utils/supabase/storage';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -100,6 +101,18 @@ const Trash = () => {
 
   const handleDeleteGift = async (id: string) => {
     try {
+      const response = await fetch(`/api/user/gifts/${id}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      if (!response.ok) {
+        throw new Error('Response Error');
+      }
+      const data = await response.json();
+      const fileName = data.gift.imageUrl.split('/').pop();
+      await deleteImageFromStorage(fileName);
+
       const res = await fetch(`/api/user/gifts/${id}`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
@@ -108,6 +121,7 @@ const Trash = () => {
       if (!res.ok) {
         throw new Error('Response Error');
       }
+
       alert('해당 기프티콘이 삭제되었습니다.');
       setTrashList((prev) => prev.filter((gift) => gift.id != id));
     } catch (error) {
