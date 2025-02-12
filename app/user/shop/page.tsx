@@ -79,8 +79,7 @@ const ResearchButton = styled.button`
 
 /* ---------------------------------- component --------------------------------- */
 export default function Shop() {
-  const userData = useUserStore((state) => state.userData);
-  const userId = userData?.id;
+  const { id: userId } = useUserStore((state) => state.userData);
   const searchParams = useSearchParams();
   const giftId = searchParams.get('giftId');
   const key = searchParams.get('key');

@@ -85,8 +85,7 @@ const RegisterButton = styled.button`
 /* -------------------------------- page ------------------------------- */
 const Home = () => {
   const router = useRouter();
-  const userData = useUserStore((state) => state.userData);
-  const userId = userData?.id;
+  const { id: userId } = useUserStore((state) => state.userData);
 
   const [selectedCategory, setSelectedCategory] =
     useState<CategoryListItem>('전체');

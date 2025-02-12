@@ -119,8 +119,7 @@ const ExpandedGiftImg = styled.img`
 const ViewGift = () => {
   const { id } = useParams();
   const router = useRouter();
-  const userData = useUserStore((state) => state.userData);
-  const userId = userData?.id;
+  const { id: userId } = useUserStore((state) => state.userData);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [giftInfo, setGiftInfo] = useState<GiftDto | null>(null);

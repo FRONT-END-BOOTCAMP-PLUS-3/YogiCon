@@ -108,8 +108,7 @@ type Option<T> = {
 
 /* ---------------------------------- component --------------------------------- */
 const Alarm = () => {
-  const userData = useUserStore((state) => state.userData);
-  const userId = userData?.id;
+  const { id: userId } = useUserStore((state) => state.userData);
   const [alarms, setAlarms] = useState<AlarmDto[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [newAlarm, setNewAlarm] = useState<CreateAlarmDto>({

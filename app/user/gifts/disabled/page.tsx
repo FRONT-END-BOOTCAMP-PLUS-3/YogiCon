@@ -40,8 +40,7 @@ const NoGiftText = styled.p`
 
 const Trash = () => {
   const router = useRouter();
-  const userData = useUserStore((state) => state.userData);
-  const userId = userData?.id;
+  const { id: userId } = useUserStore((state) => state.userData);
 
   const [trashList, setTrashList] = useState<GiftDto[]>([]);
   const [hasNextPage, setHasNextPage] = useState(true);
