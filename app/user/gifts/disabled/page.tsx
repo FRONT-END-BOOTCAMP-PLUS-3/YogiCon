@@ -109,7 +109,7 @@ const Trash = () => {
         throw new Error('Response Error');
       }
       alert('해당 기프티콘이 삭제되었습니다.');
-      setTrashList((prev) => prev.filter((gift) => gift.id != id));
+      router.push('/user/gifts');
     } catch (error) {
       console.error('기프티콘 삭제에 실패했습니다.', error);
     }
@@ -148,7 +148,7 @@ const Trash = () => {
       }
 
       alert('해당 기프티콘을 복원했습니다.');
-      router.push('/user/gifts/');
+      router.push('/user/gifts');
     } catch (error) {
       console.error('기프티콘 임시삭제 처리 실패:', error);
       alert('임시삭제 처리 중 오류가 발생했습니다.');

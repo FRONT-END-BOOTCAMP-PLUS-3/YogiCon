@@ -259,7 +259,7 @@ const EditGift = () => {
 
       if (response.ok) {
         alert('기프티콘 수정이 완료되었습니다.');
-        router.push(`/user/gifts/${id}`);
+        router.push(`/user/gifts`);
       } else {
         alert('기프티콘 수정에 실패했습니다.');
       }
