@@ -220,17 +220,19 @@ const GiftListItem = forwardRef<HTMLLIElement, GiftListItemProps>(
               <TbTrash />
               &nbsp;영구삭제
             </GiftRightTrashButton>
-            <GiftRightTrashButton
-              type="button"
-              $restore={true}
-              onClick={(e) => {
-                e.stopPropagation();
-                handleRestoreClick?.();
-              }}
-            >
-              <TbRestore />
-              &nbsp;복원
-            </GiftRightTrashButton>
+            {!isExpired && (
+              <GiftRightTrashButton
+                type="button"
+                $restore={true}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleRestoreClick?.();
+                }}
+              >
+                <TbRestore />
+                &nbsp;복원
+              </GiftRightTrashButton>
+            )}
           </GiftRightTrashWrapper>
         ) : (
           <GiftRightWrapper>
