@@ -2,7 +2,6 @@
 
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
-import { getAccessToken } from '@/app/api/(anon)/auth/callback/login';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -30,7 +29,12 @@ const Callback = () => {
 
     const fetchToken = async () => {
       try {
-        const token = await getAccessToken(authCode);
+        const response = await fetch('/api', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'login', authCode }),
+        });
+        const { token } = await response.json();
 
         localStorage.setItem('access_token', token);
 

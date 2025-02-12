@@ -27,9 +27,9 @@ const NameStyle = styled.div`
 /* ---------------------------------- component --------------------------------- */
 const Name = () => {
   const getUsername = () => {
-    const userData = useUserStore();
+    const { userData } = useUserStore();
 
-    const username = userData?.userData?.kakao_account?.profile?.nickname;
+    const username = userData?.nickname;
     return username || 'Guest';
   };
   const username = getUsername();
