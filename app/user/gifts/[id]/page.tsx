@@ -15,6 +15,7 @@ import { LuMail } from 'react-icons/lu';
 import { TbBuildingStore } from 'react-icons/tb';
 import styled from 'styled-components';
 import { kakaoTalkShare } from './components/kakaoTalkShare';
+import { useUserStore } from '@/stores/userStore';
 
 declare global {
   interface Window {
@@ -118,6 +119,8 @@ const ExpandedGiftImg = styled.img`
 const ViewGift = () => {
   const { id } = useParams();
   const router = useRouter();
+  const userData = useUserStore((state) => state.userData);
+  const userId = userData?.id;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [giftInfo, setGiftInfo] = useState<GiftDto | null>(null);
@@ -188,7 +191,7 @@ const ViewGift = () => {
         isDeleted: true,
       };
       console.log('updateGiftInfo', updateGiftInfo);
-      const response = await fetch(`/api/user/gifts/${id}`, {
+      const response = await fetch(`/api/user/gifts/${id}?userId=${userId}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

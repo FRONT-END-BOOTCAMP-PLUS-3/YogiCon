@@ -15,6 +15,7 @@ export async function GET(request: NextRequest) {
         { status: 400 }
       );
     }
+
     const giftRepository: GiftRepository = new SbGiftRepository();
     const gift = await getGiftUseCase(giftRepository, giftId);
 
@@ -56,10 +57,18 @@ export async function PATCH(request: NextRequest) {
   try {
     const url = new URL(request.url);
     const giftId = url.pathname.split('/').pop();
+    const userId = url.searchParams.get('userId');
 
     if (!giftId) {
       return NextResponse.json(
         { error: 'giftId가 필요합니다.' },
+        { status: 400 }
+      );
+    }
+
+    if (!userId) {
+      return NextResponse.json(
+        { error: 'userId가 필요합니다.' },
         { status: 400 }
       );
     }
@@ -72,7 +81,7 @@ export async function PATCH(request: NextRequest) {
       ...body,
     };
 
-    await editGiftUseCase(giftRepository, giftInfo);
+    await editGiftUseCase(giftRepository, giftInfo, userId);
     return NextResponse.json(
       { message: '기프티콘 수정 성공' },
       { status: 200 }

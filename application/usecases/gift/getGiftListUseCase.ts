@@ -7,13 +7,14 @@ export const getGiftListUseCase = async (
   page: number = 1,
   size: number = 7,
   selectedCategory: string = '전체',
-  searchWord: string = ''
+  searchWord: string = '',
+  userId: string
 ): Promise<GiftListDto> => {
   const from = (page - 1) * size;
   const to = page * size - 1;
 
-  let giftList = await giftRepository.getGiftList(from, to);
-  const totalCount = await giftRepository.getTotalGiftCount();
+  let giftList = await giftRepository.getGiftList(from, to, userId);
+  const totalCount = await giftRepository.getTotalGiftCount(userId);
   const totalPage = Math.ceil(totalCount / size);
 
   // 한국 시간(KST) 기준 오늘 날짜

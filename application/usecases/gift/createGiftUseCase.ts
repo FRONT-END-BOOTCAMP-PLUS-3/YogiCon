@@ -4,9 +4,10 @@ import { CreateGiftDto } from './dto/CreateGiftDto';
 
 export const createGiftUseCase = async (
   giftRepository: GiftRepository,
-  giftInfo: CreateGiftDto
+  giftInfo: CreateGiftDto,
+  userId: string
 ): Promise<void> => {
-  const userId = '3891279432';
+  // const userId = '3891279432';
 
   // string으로 받은 dueDate를 Date로 변환
   const parseDueDate = new Date(giftInfo.dueDate);

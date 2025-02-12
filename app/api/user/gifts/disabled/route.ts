@@ -7,13 +7,22 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const page = Number(searchParams.get('page')) || 1;
+    const userId = searchParams.get('userId');
+
+    if (!userId) {
+      return NextResponse.json(
+        { error: 'userId가 필요합니다.' },
+        { status: 400 }
+      );
+    }
 
     const giftRepository: GiftRepository = new SbGiftRepository();
 
     const giftListDto = await getDisabledGiftListUseCase(
       giftRepository,
       page,
-      7
+      7,
+      userId
     );
 
     return NextResponse.json(

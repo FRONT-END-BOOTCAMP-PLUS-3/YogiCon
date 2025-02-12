@@ -17,6 +17,7 @@ import { LuPlus } from 'react-icons/lu';
 import styled from 'styled-components';
 import CategoryFilter from './components/CategoryFilter';
 import SearchForm from './components/SearchForm';
+import { useUserStore } from '@/stores/userStore';
 
 /* ---------------------------------- style --------------------------------- */
 const HomeContainer = styled.div`
@@ -84,6 +85,8 @@ const RegisterButton = styled.button`
 /* -------------------------------- page ------------------------------- */
 const Home = () => {
   const router = useRouter();
+  const userData = useUserStore((state) => state.userData);
+  const userId = userData?.id;
 
   const [selectedCategory, setSelectedCategory] =
     useState<CategoryListItem>('전체');
@@ -118,7 +121,7 @@ const Home = () => {
     const fetchGiftList = async () => {
       try {
         const response = await fetch(
-          `/api/user/gifts?selectedCategory=${selectedCategory}&searchWord=${searchWord}&page=${page}`
+          `/api/user/gifts?selectedCategory=${selectedCategory}&searchWord=${searchWord}&page=${page}&userId=${userId}`
         );
 
         if (!response.ok) {
@@ -144,7 +147,7 @@ const Home = () => {
     };
 
     if (hasNextPage) fetchGiftList();
-  }, [searchWord, selectedCategory, page, hasNextPage]);
+  }, [searchWord, selectedCategory, page, hasNextPage, userId]);
 
   const handleCategoryButtonClick = (value: CategoryListItem) => () => {
     setSelectedCategory(value);

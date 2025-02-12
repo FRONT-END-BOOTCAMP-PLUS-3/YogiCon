@@ -2,6 +2,7 @@
 
 import { GiftDto } from '@/application/usecases/gift/dto/GiftDto';
 import GiftListItem from '@/components/GiftListItem';
+import { useUserStore } from '@/stores/userStore';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -38,6 +39,8 @@ const NoGiftText = styled.p`
 
 const Trash = () => {
   const router = useRouter();
+  const userData = useUserStore((state) => state.userData);
+  const userId = userData?.id;
 
   const [trashList, setTrashList] = useState<GiftDto[]>([]);
   const [hasNextPage, setHasNextPage] = useState(true);
@@ -66,7 +69,9 @@ const Trash = () => {
   useEffect(() => {
     const fetchTrashList = async () => {
       try {
-        const res = await fetch(`/api/user/gifts/disabled?page=${page}`);
+        const res = await fetch(
+          `/api/user/gifts/disabled?page=${page}&userId=${userId}`
+        );
 
         if (!res.ok) {
           alert('휴지통 기프티콘 리스트를 불러오는데 실패했습니다.');
@@ -91,7 +96,7 @@ const Trash = () => {
     };
 
     if (hasNextPage) fetchTrashList();
-  }, [page, hasNextPage]);
+  }, [page, hasNextPage, userId]);
 
   const handleDeleteGift = async (id: string) => {
     try {
@@ -130,7 +135,7 @@ const Trash = () => {
         ...trashInfo,
         isDeleted: false,
       };
-      const response = await fetch(`/api/user/gifts/${id}`, {
+      const response = await fetch(`/api/user/gifts/${id}?userId=${userId}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

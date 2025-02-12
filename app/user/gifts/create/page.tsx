@@ -13,6 +13,7 @@ import styled from 'styled-components';
 import CategoryDropDown from './components/CategoryDropDown';
 import GiftInfoField from './components/GiftInfoField';
 import ImageUpload from './components/ImageUpload';
+import { useUserStore } from '@/stores/userStore';
 
 /* ---------------------------------- style --------------------------------- */
 const CreateGiftContainer = styled.div`
@@ -58,6 +59,8 @@ type InputFields = {
 /* -------------------------------- component ------------------------------- */
 const CreateGift = () => {
   const router = useRouter();
+  const userData = useUserStore((state) => state.userData);
+  const userId = userData?.id;
 
   const [imageState, setImageState] = useState<ImageState>({
     imageFile: null,
@@ -210,7 +213,7 @@ const CreateGift = () => {
 
     const updateGiftInfo = { ...giftInfo, imageUrl };
 
-    const response = await fetch('/api/user/gifts', {
+    const response = await fetch(`/api/user/gifts?userId=${userId}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

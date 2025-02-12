@@ -16,6 +16,7 @@ import styled from 'styled-components';
 import CategoryDropDown from './components/CategoryDropDown';
 import GiftInfoField from './components/GiftInfoField';
 import ImageUpload from './components/ImageUpload';
+import { useUserStore } from '@/stores/userStore';
 
 /* ---------------------------------- style --------------------------------- */
 const EditGiftContainer = styled.div`
@@ -62,6 +63,8 @@ type InputFields = {
 const EditGift = () => {
   const { id } = useParams();
   const router = useRouter();
+  const userData = useUserStore((state) => state.userData);
+  const userId = userData?.id;
 
   const [imageState, setImageState] = useState<ImageState>({
     imageFile: null,
@@ -246,7 +249,7 @@ const EditGift = () => {
 
     const updateGiftInfo = { ...giftInfo, imageUrl };
     try {
-      const response = await fetch(`/api/user/gifts/${id}`, {
+      const response = await fetch(`/api/user/gifts/${id}?userId=${userId}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

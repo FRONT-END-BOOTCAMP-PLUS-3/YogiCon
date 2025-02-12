@@ -5,13 +5,14 @@ import { GiftListDto } from './dto/GiftListDto';
 export const getDisabledGiftListUseCase = async (
   giftRepository: GiftRepository,
   page: number = 1,
-  size: number = 7
+  size: number = 7,
+  userId: string
 ): Promise<GiftListDto> => {
   const from = (page - 1) * size;
   const to = page * size - 1;
 
-  const giftList = await giftRepository.getGiftList(from, to);
-  const totalCount = await giftRepository.getTotalGiftCount();
+  const giftList = await giftRepository.getGiftList(from, to, userId);
+  const totalCount = await giftRepository.getTotalGiftCount(userId);
   const totalPage = Math.ceil(totalCount / size);
 
   // 한국 시간(KST) 기준 오늘 날짜

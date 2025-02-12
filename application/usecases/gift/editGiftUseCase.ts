@@ -4,9 +4,10 @@ import { EditGiftDto } from './dto/EditGiftDto';
 
 export const editGiftUseCase = async (
   giftRepository: GiftRepository,
-  giftInfo: EditGiftDto
+  giftInfo: EditGiftDto,
+  userId: string
 ): Promise<void> => {
-  const userId = '3891279432';
+  // const userId = '3891279432';
 
   const parseDueDate = new Date(giftInfo.dueDate);
 

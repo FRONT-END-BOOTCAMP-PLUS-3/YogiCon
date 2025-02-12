@@ -23,9 +23,9 @@ export class SbGiftRepository implements GiftRepository {
     }
   }
 
-  async getTotalGiftCount(): Promise<number> {
+  async getTotalGiftCount(userId: string): Promise<number> {
     const supabase = await createClient();
-    const userId = '3891279432';
+    // const userId = '3891279432';
 
     const { count, error } = await supabase
       .from('gift')
@@ -39,9 +39,9 @@ export class SbGiftRepository implements GiftRepository {
     return count || 0;
   }
 
-  async getGiftList(from: number, to: number): Promise<Gift[]> {
+  async getGiftList(from: number, to: number, userId: string): Promise<Gift[]> {
     const supabase = await createClient();
-    const userId = '3891279432';
+    // const userId = '3891279432';
 
     const { data: giftList, error } = await supabase
       .from('gift')
