@@ -2,6 +2,8 @@
 import styled from 'styled-components';
 import { RiKakaoTalkFill } from 'react-icons/ri';
 import Link from 'next/link';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 const LoginContainer = styled.div`
   height: 100vh;
@@ -72,11 +74,18 @@ const LoginButton = styled(Link)`
 `;
 
 export default function Login() {
+  const router = useRouter();
   const clientId = process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY;
   const redirectUri = 'http://localhost:3000/auth/callback';
   const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(
     redirectUri
   )}&response_type=code`;
+
+  useEffect(() => {
+    if (localStorage.getItem('access_token')) {
+      router.push('/user');
+    }
+  });
 
   return (
     <LoginContainer>
