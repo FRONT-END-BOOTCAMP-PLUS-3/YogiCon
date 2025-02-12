@@ -150,6 +150,7 @@ type GiftListItemProps = {
   brand: string;
   productName: string;
   dueDate: string;
+  dueDate: string;
   isDeleted: boolean;
   isDisabled?: boolean;
   onClick?: () => void;
