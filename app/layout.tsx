@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { GlobalStyles } from './globalStyles';
 import { useRouter } from 'next/navigation';
 
