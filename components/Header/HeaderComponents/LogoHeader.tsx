@@ -41,7 +41,7 @@ const LogoHeader = ({ pathname }: LogoHeaderProps) => {
   };
 
   const headerText = headerComponents[pathname] || 'YOGICON'; // 기본값 설정
-  const isHome = pathname === '/';
+  const isHome = pathname === '/user/gifts';
 
   return (
     <>

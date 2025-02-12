@@ -14,7 +14,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
     if (!token) {
       router.push('/');
     }
-  }, []);
+  }, [router]);
   return (
     // <!DOCTYPE html>
     <html lang="en">
