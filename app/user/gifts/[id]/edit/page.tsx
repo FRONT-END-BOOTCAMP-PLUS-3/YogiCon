@@ -1,26 +1,28 @@
 'use client';
 
-import { CreateGiftDto } from '@/application/usecases/gift/dto/CreateGiftDto';
+import { EditGiftDto } from '@/application/usecases/gift/dto/EditGiftDto';
 import Button from '@/components/Button';
 // import ModalDialog from '@/components/ModalDialog';
 import { Categories } from '@/types/Categories';
 import { ImageState } from '@/types/ImageState';
-import { uploadImageToStorage } from '@/utils/supabase/storage';
+import {
+  deleteImageFromStorage,
+  uploadImageToStorage,
+} from '@/utils/supabase/storage';
 // import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import CategoryDropDown from './components/CategoryDropDown';
 import GiftInfoField from './components/GiftInfoField';
 import ImageUpload from './components/ImageUpload';
-import { useUserStore } from '@/stores/userStore';
 
 /* ---------------------------------- style --------------------------------- */
-const CreateGiftContainer = styled.div`
+const EditGiftContainer = styled.div`
   padding: 1rem 2.5rem 5rem 2.5rem;
 `;
 
-// const CreateGiftImage = styled(Image)`
+// const EditGiftImage = styled(Image)`
 //   width: 6.375rem;
 //   aspect-ratio: 1;
 //   height: auto;
@@ -42,7 +44,7 @@ const CreateGiftContainer = styled.div`
 //   line-height: 1.5;
 // `;
 
-const CreateGiftText = styled.h2`
+const EditGiftText = styled.h2`
   margin: 1.75rem 0;
   font-size: 1.1875rem;
   font-weight: bold;
@@ -53,14 +55,13 @@ const InputForm = styled.form``;
 /* ---------------------------------- type ---------------------------------- */
 type InputFields = {
   label: string;
-  field: keyof Omit<CreateGiftDto, 'imageUrl' | 'isDeleted' | 'ownerUserId'>;
+  field: keyof Omit<EditGiftDto, 'imageUrl' | 'isDeleted' | 'ownerUserId'>;
 };
 
 /* -------------------------------- component ------------------------------- */
-const CreateGift = () => {
+const EditGift = () => {
+  const { id } = useParams();
   const router = useRouter();
-  const userData = useUserStore((state) => state.userData);
-  const userId = userData?.id;
 
   const [imageState, setImageState] = useState<ImageState>({
     imageFile: null,
@@ -69,10 +70,11 @@ const CreateGift = () => {
   });
 
   const [giftInfo, setGiftInfo] = useState<
-    Omit<CreateGiftDto, 'category'> & {
+    Omit<EditGiftDto, 'category'> & {
       category: Categories | '';
     }
   >({
+    id: '',
     brand: '',
     productName: '',
     barcode: '',
@@ -82,6 +84,36 @@ const CreateGift = () => {
     isDeleted: false,
     ownerUserId: '',
   });
+
+  useEffect(() => {
+    if (!id) return;
+
+    const fetchGiftInfo = async () => {
+      try {
+        const res = await fetch(`/api/user/gifts/${id}`, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+        });
+
+        if (!res.ok) {
+          throw new Error('Response Error');
+        }
+
+        const data = await res.json();
+        console.log('기프티콘 데이터: ', data);
+        setGiftInfo(data.gift);
+        setImageState({
+          imageFile: null,
+          imageSrc: data.gift.imageUrl,
+          imageUrl: data.gift.imageUrl,
+        });
+      } catch (error) {
+        console.error('기프티콘 상세 조회 오류: ', error);
+      }
+    };
+
+    fetchGiftInfo();
+  }, [id]);
 
   const inputFields: InputFields[] = [
     { label: '업체명', field: 'brand' },
@@ -101,7 +133,7 @@ const CreateGift = () => {
   });
 
   useEffect(() => {
-    const requiredFields: (keyof CreateGiftDto)[] = [
+    const requiredFields: (keyof EditGiftDto)[] = [
       'brand',
       'productName',
       'barcode',
@@ -124,7 +156,7 @@ const CreateGift = () => {
   //   setIsModalOpen(true);
   // };
 
-  const handleChange = (field: keyof CreateGiftDto, value: string) => {
+  const handleChange = (field: keyof EditGiftDto, value: string) => {
     if (field === 'dueDate') {
       if (/^\d{8}$/.test(value)) {
         setValidTest((prev) => ({
@@ -183,10 +215,7 @@ const CreateGift = () => {
     e.preventDefault();
     console.log(giftInfo);
 
-    if (!imageState.imageFile) {
-      alert('기프티콘 이미지를 입력하세요.');
-      return;
-    }
+    let imageUrl: string | null = giftInfo.imageUrl;
 
     if (!/^\d{4}-\d{2}-\d{2}$/.test(giftInfo.dueDate)) {
       alert(
@@ -200,37 +229,53 @@ const CreateGift = () => {
       return;
     }
 
-    // 이미지 업로드 및 기프티콘 정보 저장
-    const imageUrl = await uploadImageToStorage(imageState.imageFile);
+    if (imageState.imageFile) {
+      const newImageUrl = await uploadImageToStorage(imageState.imageFile);
+      if (!newImageUrl) {
+        setImageState({
+          ...imageState,
+          imageUrl: '',
+        });
+        return;
+      }
 
-    if (!imageUrl) {
-      setImageState({
-        ...imageState,
-        imageUrl: '',
-      });
-      return;
+      imageUrl = newImageUrl;
+    } else {
+      console.log('기존 이미지 URL 유지:', imageUrl);
     }
 
     const updateGiftInfo = { ...giftInfo, imageUrl };
+    try {
+      const response = await fetch(`/api/user/gifts/${id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updateGiftInfo),
+      });
 
-    const response = await fetch(`/api/user/gifts?userId=${userId}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(updateGiftInfo),
-    });
-
-    if (response.ok) {
-      alert('기프티콘 등록이 완료되었습니다.');
-      router.push('/user/gifts');
-    } else {
-      alert('기프티콘 등록에 실패했습니다.');
+      if (response.ok) {
+        alert('기프티콘 수정이 완료되었습니다.');
+        router.push(`/user/gifts`);
+      } else {
+        alert('기프티콘 수정에 실패했습니다.');
+      }
+    } catch (error) {
+      console.error('기프티콘 수정 중 오류 발생:', error);
     }
   };
 
+  const handleDeleteImage = async () => {
+    const fileName = imageState.imageUrl.split('/').pop();
+    if (fileName) {
+      await deleteImageFromStorage(fileName);
+    }
+  };
+
+  if (!giftInfo) return <div>Loading...</div>;
+
   return (
-    <CreateGiftContainer>
+    <EditGiftContainer>
       {/* <Button isLong={false} color="main" onClick={handleModal}>
         정보입력확인모달창
       </Button>
@@ -242,7 +287,7 @@ const CreateGift = () => {
         }}
       >
         <ModalBox>
-          <CreateGiftImage
+          <EditGiftImage
             src="/create_gift_image.png"
             alt="등록캐릭터"
             width={102}
@@ -255,9 +300,13 @@ const CreateGift = () => {
           </ModalText>
         </ModalBox>
       </ModalDialog> */}
-      <CreateGiftText>사진 등록</CreateGiftText>
-      <ImageUpload imageState={imageState} setImageState={setImageState} />
-      <CreateGiftText>기프티콘 정보</CreateGiftText>
+      <EditGiftText>사진 등록</EditGiftText>
+      <ImageUpload
+        imageState={imageState}
+        setImageState={setImageState}
+        onDeleteImage={handleDeleteImage}
+      />
+      <EditGiftText>기프티콘 정보</EditGiftText>
       <InputForm onSubmit={handleSubmit}>
         {inputFields.map(({ label, field }) => (
           <GiftInfoField
@@ -277,11 +326,11 @@ const CreateGift = () => {
           isLong={true}
           color={isFormFilled ? 'main' : 'disabled'}
         >
-          등록하기
+          수정하기
         </Button>
       </InputForm>
-    </CreateGiftContainer>
+    </EditGiftContainer>
   );
 };
 
-export default CreateGift;
+export default EditGift;

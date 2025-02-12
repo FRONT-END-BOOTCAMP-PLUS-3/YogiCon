@@ -1,4 +1,4 @@
-import { supabase } from '@/utils/supabase/client';
+import { supabaseClient } from '@/utils/supabase/client';
 
 const SbUserRepository = async (userData: any) => {
   if (!userData.id || !userData.kakao_account?.profile?.nickname) {
@@ -15,7 +15,7 @@ const SbUserRepository = async (userData: any) => {
 
   try {
     // 유저 조회
-    let { data: existingUser, error: selectError } = await supabase
+    let { data: existingUser, error: selectError } = await supabaseClient
       .from('user')
       .select('*')
       .eq('id', userToSave.id)
@@ -25,7 +25,7 @@ const SbUserRepository = async (userData: any) => {
       console.log('[Supabase] 기존 사용자 존재:', existingUser);
       return existingUser;
     }
-    const { data: registeredUserInfo } = await supabase
+    const { data: registeredUserInfo } = await supabaseClient
       .from('user')
       .insert(userToSave)
       .select()
