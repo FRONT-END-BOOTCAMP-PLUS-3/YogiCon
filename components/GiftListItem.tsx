@@ -146,7 +146,7 @@ type GiftListItemProps = {
   category: Categories;
   brand: string;
   productName: string;
-  duedate: string;
+  dueDate: string;
   isDeleted: boolean;
   onClick?: () => void;
   handleTrashClick?: () => void;
@@ -159,13 +159,13 @@ export default function GiftListItem({
   category,
   brand,
   productName,
-  duedate,
+  dueDate,
   isDeleted,
   onClick,
   handleTrashClick,
   handleRestoreClick,
 }: GiftListItemProps) {
-  const dateObject: Date = new Date(duedate);
+  const dateObject: Date = new Date(dueDate);
   const dueDateString: string = dateObject.toISOString().split('T')[0];
   const dateTodayObject: Date = new Date();
 
@@ -190,7 +190,7 @@ export default function GiftListItem({
         <GiftLeftImage src={imageUrl} alt="gifticon" width={100} height={100} />
         {isDeleted && !isExpired && (
           <GiftLeftBadge>
-            <GiftListBadge duedate={duedate} isLarge={false} />
+            <GiftListBadge dueDate={dueDate} isLarge={false} />
           </GiftLeftBadge>
         )}
         {isExpired && <GiftLeftExpiredText>기한만료</GiftLeftExpiredText>}
@@ -231,7 +231,7 @@ export default function GiftListItem({
         </GiftRightTrashWrapper>
       ) : (
         <GiftRightWrapper>
-          <GiftListBadge duedate={duedate} isLarge={true} />
+          <GiftListBadge dueDate={dueDate} isLarge={true} />
           <IoIosArrowForward size={30} style={{ color: 'var(--disabled)' }} />
         </GiftRightWrapper>
       )}
