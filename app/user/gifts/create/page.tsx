@@ -121,26 +121,48 @@ const CreateGift = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(giftInfo);
+
     if (!imageState.imageFile) {
       alert('기프티콘 이미지를 입력하세요.');
       return;
-    } else {
-      const imageUrl = await uploadImageToStorage(imageState.imageFile);
-      const updateGiftInfo = { ...giftInfo, imageUrl };
-      const response = await fetch('/api/user/gifts', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(updateGiftInfo),
-      });
+    }
 
-      if (response.ok) {
-        alert('기프티콘 등록이 완료되었습니다.');
-        router.push('/user/gifts');
-      } else {
-        alert('기프티콘 등록에 실패했습니다.');
-      }
+    // dueDate 형식 변환 로직
+    if (/^\d{8}$/.test(giftInfo.dueDate)) {
+      giftInfo.dueDate = `${giftInfo.dueDate.slice(0, 4)}-${giftInfo.dueDate.slice(4, 6)}-${giftInfo.dueDate.slice(6, 8)}`;
+    } else if (!/^\d{4}-\d{2}-\d{2}$/.test(giftInfo.dueDate)) {
+      alert(
+        '날짜 형식이 올바르지 않습니다. YYYYMMDD 또는 YYYY-MM-DD 형식으로 입력해주세요.'
+      );
+      return;
+    }
+
+    // 이미지 업로드 및 기프티콘 정보 저장
+    const imageUrl = await uploadImageToStorage(imageState.imageFile);
+
+    if (!imageUrl) {
+      setImageState({
+        ...imageState,
+        imageUrl: '',
+      });
+      return;
+    }
+
+    const updateGiftInfo = { ...giftInfo, imageUrl };
+
+    const response = await fetch('/api/user/gifts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(updateGiftInfo),
+    });
+
+    if (response.ok) {
+      alert('기프티콘 등록이 완료되었습니다.');
+      router.push('/user/gifts');
+    } else {
+      alert('기프티콘 등록에 실패했습니다.');
     }
   };
 

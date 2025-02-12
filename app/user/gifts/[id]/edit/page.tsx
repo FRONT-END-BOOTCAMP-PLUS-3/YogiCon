@@ -5,7 +5,10 @@ import Button from '@/components/Button';
 import ModalDialog from '@/components/ModalDialog';
 import { Categories } from '@/types/Categories';
 import { ImageState } from '@/types/ImageState';
-import { uploadImageToStorage } from '@/utils/supabase/storage';
+import {
+  deleteImageFromStorage,
+  uploadImageToStorage,
+} from '@/utils/supabase/storage';
 import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -154,10 +157,31 @@ const EditGift = () => {
     e.preventDefault();
     console.log(giftInfo);
 
-    let imageUrl = giftInfo.imageUrl;
+    let imageUrl: string | null = giftInfo.imageUrl;
+
+    // dueDate 형식 변환 로직
+    if (/^\d{8}$/.test(giftInfo.dueDate)) {
+      giftInfo.dueDate = `${giftInfo.dueDate.slice(0, 4)}-${giftInfo.dueDate.slice(4, 6)}-${giftInfo.dueDate.slice(6, 8)}`;
+    } else if (!/^\d{4}-\d{2}-\d{2}$/.test(giftInfo.dueDate)) {
+      alert(
+        '날짜 형식이 올바르지 않습니다. YYYYMMDD 또는 YYYY-MM-DD 형식으로 입력해주세요.'
+      );
+      return;
+    }
 
     if (imageState.imageFile) {
-      imageUrl = await uploadImageToStorage(imageState.imageFile);
+      const newImageUrl = await uploadImageToStorage(imageState.imageFile);
+      if (!newImageUrl) {
+        setImageState({
+          ...imageState,
+          imageUrl: '',
+        });
+        return;
+      }
+
+      imageUrl = newImageUrl;
+    } else {
+      console.log('기존 이미지 URL 유지:', imageUrl);
     }
 
     const updateGiftInfo = { ...giftInfo, imageUrl };
@@ -178,6 +202,13 @@ const EditGift = () => {
       }
     } catch (error) {
       console.error('기프티콘 수정 중 오류 발생:', error);
+    }
+  };
+
+  const handleDeleteImage = async () => {
+    const fileName = imageState.imageUrl.split('/').pop();
+    if (fileName) {
+      await deleteImageFromStorage(fileName);
     }
   };
 
@@ -210,7 +241,11 @@ const EditGift = () => {
         </ModalBox>
       </ModalDialog>
       <EditGiftText>사진 등록</EditGiftText>
-      <ImageUpload imageState={imageState} setImageState={setImageState} />
+      <ImageUpload
+        imageState={imageState}
+        setImageState={setImageState}
+        onDeleteImage={handleDeleteImage}
+      />
       <EditGiftText>기프티콘 정보</EditGiftText>
       <InputForm onSubmit={handleSubmit}>
         {inputFields.map(({ label, field }) => (

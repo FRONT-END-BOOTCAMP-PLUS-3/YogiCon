@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { srOnly } from '@/app/globalStyles';
@@ -14,6 +15,12 @@ import { LuMail } from 'react-icons/lu';
 import { TbBuildingStore } from 'react-icons/tb';
 import styled from 'styled-components';
 import { kakaoTalkShare } from './components/kakaoTalkShare';
+
+declare global {
+  interface Window {
+    Kakao: any;
+  }
+}
 
 /* ---------------------------------- style --------------------------------- */
 const ViewGiftContainer = styled.main`
@@ -172,8 +179,9 @@ const ViewGift = () => {
     }
   };
 
-  const handleSoftDeleteGift = async () => {
+  const handleSoftDeleteGift = async (isDeleted: boolean, isUsed: boolean) => {
     if (!id || !giftInfo) return;
+
     try {
       const updateGiftInfo = {
         ...giftInfo,
@@ -190,12 +198,14 @@ const ViewGift = () => {
 
       if (!response.ok) {
         throw new Error('서버 업데이트 실패');
-      } else {
-        alert('임시삭제 성공');
       }
-
-      setGiftInfo((prev) => (prev ? { ...prev, isDeleted: true } : prev));
-      // router.push('/user/gifts/disabled');
+      if (isDeleted) {
+        alert('해당 기프티콘을 삭제했습니다.');
+      }
+      if (isUsed) {
+        alert('해당 기프티콘을 사용했습니다.');
+      }
+      router.push('/user/gifts/disabled');
     } catch (error) {
       console.error('기프티콘 임시삭제 처리 실패:', error);
       alert('임시삭제 처리 중 오류가 발생했습니다.');
@@ -243,7 +253,10 @@ const ViewGift = () => {
           <TbBuildingStore size={'45%'} />
           <IconButtonText>근처 매장 찾기</IconButtonText>
         </IconButton>
-        <IconButton type="button" onClick={handleSoftDeleteGift}>
+        <IconButton
+          type="button"
+          onClick={() => handleSoftDeleteGift(true, false)}
+        >
           <FaRegTrashAlt size={'45%'} />
           <IconButtonText>삭제하기</IconButtonText>
         </IconButton>
@@ -254,7 +267,11 @@ const ViewGift = () => {
         <Button isLong={true} color={'sub'} onClick={handleEditClick}>
           수정하기
         </Button>
-        <Button isLong={true} color={'main'} onClick={handleSoftDeleteGift}>
+        <Button
+          isLong={true}
+          color={'main'}
+          onClick={() => handleSoftDeleteGift(false, true)}
+        >
           사용 완료
         </Button>
       </LongButtonWrapper>
