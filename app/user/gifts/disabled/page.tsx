@@ -109,7 +109,7 @@ const Trash = () => {
         throw new Error('Response Error');
       }
       alert('해당 기프티콘이 삭제되었습니다.');
-      router.push('/user/gifts');
+      setTrashList((prev) => prev.filter((gift) => gift.id != id));
     } catch (error) {
       console.error('기프티콘 삭제에 실패했습니다.', error);
     }
