@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-export default function useSubscribePush() {
+export default function useSubscribePush(userId: string) {
   useEffect(() => {
     const registerServiceWorker = async () => {
       return await navigator.serviceWorker.register('/service-worker.js');
@@ -26,13 +26,16 @@ export default function useSubscribePush() {
         }
 
         try {
-          const response = await fetch('/api/user/subscription', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(subscription),
-          });
+          const response = await fetch(
+            `/api/user/subscription?userId=${userId}`,
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(subscription),
+            }
+          );
 
           if (!response.ok) {
             throw new Error(`서버 오류: ${response.status}`);
@@ -45,5 +48,5 @@ export default function useSubscribePush() {
         console.error(err);
       }
     );
-  }, []);
+  }, [userId]);
 }

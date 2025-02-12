@@ -6,7 +6,8 @@ import useSubscribePush from '@/hooks/useSubscribePush';
 import { usePathname } from 'next/navigation';
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
-  useSubscribePush();
+  const userId = '3891279432';
+  useSubscribePush(userId);
   const pathname = usePathname();
 
   const hideNavbarPaths = ['/user/gifts/', '/user/shop'];
