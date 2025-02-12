@@ -2,18 +2,16 @@ import { GiftRepository } from '@/domain/repositories/GiftRepository';
 import { GiftDto } from './dto/GiftDto';
 import { GiftListDto } from './dto/GiftListDto';
 
-export const getGiftListUseCase = async (
+export const getDisabledGiftListUseCase = async (
   giftRepository: GiftRepository,
   page: number = 1,
   size: number = 7,
-  selectedCategory: string = '전체',
-  searchWord: string = '',
   userId: string
 ): Promise<GiftListDto> => {
   const from = (page - 1) * size;
   const to = page * size - 1;
 
-  let giftList = await giftRepository.getGiftList(from, to, userId);
+  const giftList = await giftRepository.getGiftList(from, to, userId);
   const totalCount = await giftRepository.getTotalGiftCount(userId);
   const totalPage = Math.ceil(totalCount / size);
 
@@ -22,29 +20,13 @@ export const getGiftListUseCase = async (
   now.setHours(9, 0, 0, 0); // UTC+9 기준으로 변환
   const nowString = now.toISOString().split('T')[0]; // "YYYY-MM-DD"
 
-  // 홈 필터링 (isDeleted가 false이고, dueDate가 아직 안 지난 것)
-  giftList = giftList.filter((gift) => {
-    const dueDate = new Date(gift.dueDate + 'T00:00:00'); // 로컬 시간 변환
-    dueDate.setHours(9, 0, 0, 0); // UTC+9 적용
+  // 휴지통 필터링(isDeleted가 true거나 dueDate 지난 것 )
+  const filteredGiftList = giftList.filter((gift) => {
+    const dueDate = new Date(gift.dueDate + 'T00:00:00'); // 로컬 시간 기준 변환
+    dueDate.setHours(9, 0, 0, 0); // UTC+9로 변환
 
-    return !gift.isDeleted && dueDate.toISOString().split('T')[0] >= nowString;
+    return gift.isDeleted || dueDate.toISOString().split('T')[0] < nowString;
   });
-
-  // 카테고리 필터링
-  let filteredGiftList = giftList;
-  if (selectedCategory !== '전체') {
-    filteredGiftList = giftList.filter(
-      (gift) => gift.category === selectedCategory
-    );
-  }
-
-  // 검색어 필터링
-  if (searchWord.trim()) {
-    filteredGiftList = filteredGiftList.filter(
-      (gift) =>
-        gift.productName.includes(searchWord) || gift.brand.includes(searchWord)
-    );
-  }
 
   const newGiftList: GiftDto[] = filteredGiftList.map((gift) => {
     const formattedDueDate = new Date(gift.dueDate + 'T00:00:00'); // 로컬 시간 변환

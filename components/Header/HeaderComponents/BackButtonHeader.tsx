@@ -40,11 +40,15 @@ const BackButtonHeader = ({ pathname }: BackButtonHeaderProps) => {
     '/user/gifts/': '기프티콘 상세',
   };
 
-  const matchingKey = Object.keys(headerMatcher).find((key) =>
-    pathname.startsWith(key)
-  );
+  const isGiftEditPage = /^\/user\/gifts\/[^/]+\/edit$/.test(pathname);
 
-  const headerText = matchingKey ? headerMatcher[matchingKey] : '제목';
+  const headerText = isGiftEditPage
+    ? '기프티콘 수정'
+    : Object.keys(headerMatcher).find((key) => pathname.startsWith(key))
+      ? headerMatcher[
+          Object.keys(headerMatcher).find((key) => pathname.startsWith(key))!
+        ]
+      : '제목';
 
   return (
     <>

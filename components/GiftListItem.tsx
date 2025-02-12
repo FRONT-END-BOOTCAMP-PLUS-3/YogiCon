@@ -1,11 +1,14 @@
 'use client';
 
+import { Categories } from '@/types/Categories';
 import Image from 'next/image';
+import { forwardRef } from 'react';
 import { IoIosArrowForward } from 'react-icons/io';
 import { TbRestore, TbTrash } from 'react-icons/tb';
 import styled from 'styled-components';
 import GiftListBadge from './GiftListBadge';
-import { Categories } from '@/types/Categories';
+import useValidImageUrl from '@/hooks/useValidImageUrl';
+import { usePathname } from 'next/navigation';
 
 /* ---------------------------------- style --------------------------------- */
 const GiftContainer = styled.li`
@@ -19,7 +22,7 @@ const GiftContainer = styled.li`
   align-items: stretch;
   gap: 0.9rem;
   border-bottom: 1px solid var(--disabled);
-  background-color: var(--white);
+  background-color: transparent;
   transition: 0.3s ease all;
 `;
 
@@ -63,7 +66,7 @@ const GiftLeftExpiredText = styled.span`
 `;
 
 // 중앙
-const GiftCenterWrapper = styled.div<{ $isTrash: boolean }>`
+const GiftCenterWrapper = styled.div`
   width: 50%;
   display: flex;
   flex-direction: column;
@@ -148,93 +151,100 @@ type GiftListItemProps = {
   productName: string;
   dueDate: string;
   isDeleted: boolean;
+  isDisabled?: boolean;
   onClick?: () => void;
   handleTrashClick?: () => void;
   handleRestoreClick?: () => void;
 };
 
 /* -------------------------------- component ------------------------------- */
-export default function GiftListItem({
-  imageUrl,
-  category,
-  brand,
-  productName,
-  dueDate,
-  isDeleted,
-  onClick,
-  handleTrashClick,
-  handleRestoreClick,
-}: GiftListItemProps) {
-  const dateObject: Date = new Date(dueDate);
-  const dueDateString: string = dateObject.toISOString().split('T')[0];
-  const dateTodayObject: Date = new Date();
+const GiftListItem = forwardRef<HTMLLIElement, GiftListItemProps>(
+  (
+    {
+      imageUrl,
+      category,
+      brand,
+      productName,
+      dueDate,
+      isDeleted,
+      isDisabled,
+      onClick,
+      handleTrashClick,
+      handleRestoreClick,
+    },
+    ref
+  ) => {
+    const pathname = usePathname();
+    const isTrashPage = pathname === '/user/gifts/disabled';
+    const isExpired = !isDeleted && isDisabled;
 
-  const dueDateOnly: Date = new Date(
-    dateObject.getFullYear(),
-    dateObject.getMonth(),
-    dateObject.getDate()
-  );
-  const todayDateOnly: Date = new Date(
-    dateTodayObject.getFullYear(),
-    dateTodayObject.getMonth(),
-    dateTodayObject.getDate()
-  );
+    const validImageUrl: string = useValidImageUrl(imageUrl);
 
-  const isExpired: boolean = dueDateOnly.getTime() < todayDateOnly.getTime();
+    return (
+      <GiftContainer ref={ref} onClick={onClick}>
+        <GiftLeftWrapper>
+          <GiftLeftImage
+            src={validImageUrl}
+            alt="gifticon"
+            width={100}
+            height={100}
+          />
 
-  const isTrash: boolean = isDeleted || isExpired;
+          {isExpired ? (
+            <GiftLeftExpiredText>기한만료</GiftLeftExpiredText>
+          ) : isTrashPage ? (
+            <GiftLeftBadge>
+              <GiftListBadge dueDate={dueDate} isLarge={false} />
+            </GiftLeftBadge>
+          ) : null}
+        </GiftLeftWrapper>
 
-  return (
-    <GiftContainer onClick={onClick}>
-      <GiftLeftWrapper>
-        <GiftLeftImage src={imageUrl} alt="gifticon" width={100} height={100} />
-        {isDeleted && !isExpired && (
-          <GiftLeftBadge>
-            <GiftListBadge dueDate={dueDate} isLarge={false} />
-          </GiftLeftBadge>
+        <GiftCenterWrapper>
+          <GiftCategoryText>{category}</GiftCategoryText>
+          <GiftTitleText>
+            [{brand}] {productName}
+          </GiftTitleText>
+          <GiftDueDate>유효기간: ~{dueDate.toString()}</GiftDueDate>
+        </GiftCenterWrapper>
+
+        {isDisabled ? (
+          <GiftRightTrashWrapper>
+            <GiftRightTrashButton
+              type="button"
+              $restore={false}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleTrashClick?.();
+              }}
+            >
+              <TbTrash />
+              &nbsp;영구삭제
+            </GiftRightTrashButton>
+            {!isExpired && (
+              <GiftRightTrashButton
+                type="button"
+                $restore={true}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleRestoreClick?.();
+                }}
+              >
+                <TbRestore />
+                &nbsp;복원
+              </GiftRightTrashButton>
+            )}
+          </GiftRightTrashWrapper>
+        ) : (
+          <GiftRightWrapper>
+            <GiftListBadge dueDate={dueDate} isLarge={true} />
+            <IoIosArrowForward size={30} style={{ color: 'var(--disabled)' }} />
+          </GiftRightWrapper>
         )}
-        {isExpired && <GiftLeftExpiredText>기한만료</GiftLeftExpiredText>}
-      </GiftLeftWrapper>
+      </GiftContainer>
+    );
+  }
+);
 
-      <GiftCenterWrapper $isTrash={isTrash}>
-        <GiftCategoryText>{category}</GiftCategoryText>
-        <GiftTitleText>
-          [{brand}] {productName}
-        </GiftTitleText>
-        <GiftDueDate>유효기간: ~{dueDateString}</GiftDueDate>
-      </GiftCenterWrapper>
+GiftListItem.displayName = 'GiftListItem'; // forwardRef 사용 시 필수
 
-      {isTrash ? (
-        <GiftRightTrashWrapper>
-          <GiftRightTrashButton
-            type="button"
-            $restore={false}
-            onClick={(e) => {
-              e.stopPropagation();
-              handleTrashClick?.();
-            }}
-          >
-            <TbTrash />
-            &nbsp;영구삭제
-          </GiftRightTrashButton>
-          <GiftRightTrashButton
-            type="button"
-            $restore={true}
-            onClick={(e) => {
-              e.stopPropagation();
-              handleRestoreClick?.();
-            }}
-          >
-            <TbRestore />
-            &nbsp;복원
-          </GiftRightTrashButton>
-        </GiftRightTrashWrapper>
-      ) : (
-        <GiftRightWrapper>
-          <GiftListBadge dueDate={dueDate} isLarge={true} />
-          <IoIosArrowForward size={30} style={{ color: 'var(--disabled)' }} />
-        </GiftRightWrapper>
-      )}
-    </GiftContainer>
-  );
-}
+export default GiftListItem;

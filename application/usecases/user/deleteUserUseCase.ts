@@ -1,5 +1,5 @@
 // /usecases/logoutUsecase.ts
-import { supabase } from '@/utils/supabase/client';
+import { supabaseClient } from '@/utils/supabase/client';
 
 export async function deleteUserUsecase(
   accessToken: string,
@@ -21,7 +21,7 @@ export async function deleteUserUsecase(
   }
 
   // Supabase에서 사용자 삭제
-  const { error } = await supabase.from('user').delete().eq('id', userId);
+  const { error } = await supabaseClient.from('user').delete().eq('id', userId);
   if (error) {
     throw new Error(error.message);
   }
