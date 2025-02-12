@@ -2,10 +2,20 @@
 
 import Header from '@/components/Header/Header';
 import Navbar from '@/components/Navbar';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
+  const router = useRouter();
+
+  useEffect(() => {
+    const token = localStorage.getItem('access_token');
+
+    if (!token) {
+      router.push('/');
+    }
+  }, []);
 
   const hideNavbarPaths = ['/user/gifts/', '/user/shop'];
   const shouldHideNavbar = hideNavbarPaths.some((path) =>

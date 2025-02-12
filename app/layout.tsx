@@ -1,9 +1,20 @@
 /* eslint-disable @next/next/no-page-custom-font */
 'use client';
 
+import { useEffect } from 'react';
 import { GlobalStyles } from './globalStyles';
+import { useRouter } from 'next/navigation';
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
+  const router = useRouter();
+
+  useEffect(() => {
+    const token = localStorage.getItem('access_token');
+
+    if (!token) {
+      router.push('/');
+    }
+  }, []);
   return (
     // <!DOCTYPE html>
     <html lang="en">

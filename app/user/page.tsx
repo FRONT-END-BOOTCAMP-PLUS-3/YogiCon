@@ -1,13 +1,14 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import ModalDialog from '@/components/ModalDialog';
 import Alarm from './components/Alarm';
 import MyButton from './components/MyButton';
 import Name from './components/Name';
+import { useUserStore } from '@/stores/userStore';
 
 /* ---------------------------------- style --------------------------------- */
 const MyContainer = styled.div`
@@ -38,10 +39,39 @@ const ModalContent = styled.div`
 /* ---------------------------------- component --------------------------------- */
 const My = () => {
   const router = useRouter();
-
+  const [userInfo, setUserInfo] = useState<any>(null);
   const [actionType, setActionType] = useState<'logout' | 'deleteID' | null>(
     null
   );
+
+  // zustand 스토어 관련 함수
+  const { setUserData, clearUserData } = useUserStore();
+
+  // 페이지 로드 시 access token을 사용해 사용자 정보를 API를 통해 가져옴
+  useEffect(() => {
+    const accessToken = localStorage.getItem('access_token');
+    if (!accessToken) return;
+
+    const fetchUserInfo = async () => {
+      try {
+        const response = await fetch('/api', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'loadUser', accessToken }),
+        });
+        const userInfo = await response.json();
+        setUserInfo(userInfo);
+        console.log(userInfo);
+        // zustand 스토어에 사용자 정보를 저장
+        setUserData(userInfo);
+        console.log();
+      } catch (error) {
+        console.error('사용자 정보를 불러오지 못했습니다.', error);
+      }
+    };
+
+    fetchUserInfo();
+  }, [router, setUserData]);
 
   const openModal = (type: 'logout' | 'deleteID') => {
     setActionType(type);
@@ -51,12 +81,31 @@ const My = () => {
     setActionType(null);
   };
 
-  const handleConfirm = () => {
+  // 로그아웃 및 회원 탈퇴 시 API 엔드포인트를 호출
+  const handleConfirm = async () => {
+    const accessToken = localStorage.getItem('access_token');
     if (actionType === 'logout') {
-      console.log('로그아웃 실행');
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('user-storage');
+      clearUserData();
       router.push('/');
     } else if (actionType === 'deleteID') {
-      console.log('회원탈퇴 실행');
+      try {
+        await fetch('/api', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'deleteAccount',
+            accessToken,
+            userId: userInfo?.id,
+          }),
+        });
+      } catch (error) {
+        console.error('회원 탈퇴 처리 중 오류 발생:', error);
+      }
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('user-storage');
+      clearUserData();
       router.push('/');
     }
     closeModal();

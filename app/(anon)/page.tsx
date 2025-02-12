@@ -1,6 +1,7 @@
 'use client';
 import styled from 'styled-components';
 import { RiKakaoTalkFill } from 'react-icons/ri';
+import Link from 'next/link';
 
 const LoginContainer = styled.div`
   height: 100vh;
@@ -51,7 +52,7 @@ const LoginMiddleStyledDiv = styled.div`
   z-index: -1;
 `;
 
-const LoginButton = styled.button`
+const LoginButton = styled(Link)`
   border: none;
   background-color: #fee500;
   display: flex;
@@ -71,6 +72,12 @@ const LoginButton = styled.button`
 `;
 
 export default function Login() {
+  const clientId = process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY;
+  const redirectUri = 'http://localhost:3000/auth/callback';
+  const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(
+    redirectUri
+  )}&response_type=code`;
+
   return (
     <LoginContainer>
       <LoginTextContainer>
@@ -86,7 +93,7 @@ export default function Login() {
 
       <div style={{ paddingTop: '1.5rem' }} />
 
-      <LoginButton>
+      <LoginButton href={kakaoAuthUrl}>
         <RiKakaoTalkFill />
         <span>카카오로 계속하기</span>
       </LoginButton>
