@@ -1,5 +1,6 @@
 import { LuUserRound } from 'react-icons/lu';
 import styled from 'styled-components';
+import { useUserStore } from '@/stores/userStore';
 
 /* ---------------------------------- style --------------------------------- */
 const NameContainer = styled.div`
@@ -26,7 +27,9 @@ const NameStyle = styled.div`
 /* ---------------------------------- component --------------------------------- */
 const Name = () => {
   const getUsername = () => {
-    const username = '';
+    const { userData } = useUserStore();
+
+    const username = userData?.nickname;
     return username || 'Guest';
   };
   const username = getUsername();
