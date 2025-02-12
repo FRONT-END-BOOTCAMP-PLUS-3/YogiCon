@@ -6,10 +6,9 @@ import { useRouter } from 'next/navigation';
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
-  const [accessToken, setAccessToken] = useState<string | null>(null);
+
   useEffect(() => {
     const token = localStorage.getItem('access_token');
-    setAccessToken(token);
 
     if (!token) {
       router.push('/');
