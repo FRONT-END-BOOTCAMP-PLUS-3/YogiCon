@@ -77,6 +77,7 @@ export default function Login() {
   const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(
     redirectUri
   )}&response_type=code`;
+
   return (
     <LoginContainer>
       <LoginTextContainer>
