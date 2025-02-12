@@ -10,12 +10,16 @@ export const getGiftUseCase = async (
     throw new Error('기프티콘을 찾을 수 없습니다.');
   }
 
+  const formattedDueDate = new Date(gift.dueDate + 'T00:00:00'); // 로컬 시간 변환
+  formattedDueDate.setHours(9, 0, 0, 0); // UTC+9 적용
+
   const newGift: GiftDto = {
+
     id: gift.id,
     category: gift.category,
     productName: gift.productName,
     brand: gift.brand,
-    dueDate: new Date(gift.dueDate).toISOString().split('T')[0],
+    dueDate: formattedDueDate.toISOString().split('T')[0], // 한국 시간 기준 변환
     barcode: gift.barcode,
     imageUrl: gift.imageUrl,
     isDeleted: gift.isDeleted,
