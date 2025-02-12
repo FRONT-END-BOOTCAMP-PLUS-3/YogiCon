@@ -156,7 +156,7 @@ export default function Shop() {
     };
 
     if (hasNextPage) fetchGiftList();
-  }, [hasNextPage, page]);
+  }, [hasNextPage, page, userId]);
 
   useEffect(() => {
     const getGiftById = async (): Promise<any> => {
