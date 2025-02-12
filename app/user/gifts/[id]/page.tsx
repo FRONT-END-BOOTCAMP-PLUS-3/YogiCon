@@ -208,7 +208,7 @@ const ViewGift = () => {
       if (isUsed) {
         alert('해당 기프티콘을 사용했습니다.');
       }
-      router.push('/user/gifts/disabled');
+      router.push('/user/gifts');
     } catch (error) {
       console.error('기프티콘 임시삭제 처리 실패:', error);
       alert('임시삭제 처리 중 오류가 발생했습니다.');
