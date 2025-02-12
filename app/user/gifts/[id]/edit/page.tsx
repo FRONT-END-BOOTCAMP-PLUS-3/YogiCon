@@ -2,14 +2,14 @@
 
 import { EditGiftDto } from '@/application/usecases/gift/dto/EditGiftDto';
 import Button from '@/components/Button';
-import ModalDialog from '@/components/ModalDialog';
+// import ModalDialog from '@/components/ModalDialog';
 import { Categories } from '@/types/Categories';
 import { ImageState } from '@/types/ImageState';
 import {
   deleteImageFromStorage,
   uploadImageToStorage,
 } from '@/utils/supabase/storage';
-import Image from 'next/image';
+// import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
@@ -22,27 +22,27 @@ const EditGiftContainer = styled.div`
   padding: 1rem 2.5rem 5rem 2.5rem;
 `;
 
-const EditGiftImage = styled(Image)`
-  width: 6.375rem;
-  aspect-ratio: 1;
-  height: auto;
-`;
+// const EditGiftImage = styled(Image)`
+//   width: 6.375rem;
+//   aspect-ratio: 1;
+//   height: auto;
+// `;
 
-const ModalBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.75rem;
-  margin: 1.75rem 0;
-`;
+// const ModalBox = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   gap: 1.75rem;
+//   margin: 1.75rem 0;
+// `;
 
-const ModalText = styled.p`
-  font-size: 1.25rem;
-  white-space: pre;
-  text-align: center;
-  word-break: keep-all;
-  line-height: 1.5;
-`;
+// const ModalText = styled.p`
+//   font-size: 1.25rem;
+//   white-space: pre;
+//   text-align: center;
+//   word-break: keep-all;
+//   line-height: 1.5;
+// `;
 
 const EditGiftText = styled.h2`
   margin: 1.75rem 0;
@@ -123,7 +123,7 @@ const EditGift = () => {
   ];
 
   const [isFormFilled, setIsFormFilled] = useState<boolean>(false);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  // const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [validTest, setValidTest] = useState<{
     dueDate: { message: string; isValid: boolean };
     barcode: { message: string; isValid: boolean };
@@ -152,9 +152,9 @@ const EditGift = () => {
     setIsFormFilled(allFieldsFilled);
   }, [giftInfo]);
 
-  const handleModal = () => {
-    setIsModalOpen(true);
-  };
+  // const handleModal = () => {
+  //   setIsModalOpen(true);
+  // };
 
   const handleChange = (field: keyof EditGiftDto, value: string) => {
     if (field === 'dueDate') {
@@ -276,7 +276,7 @@ const EditGift = () => {
 
   return (
     <EditGiftContainer>
-      <Button isLong={false} color="main" onClick={handleModal}>
+      {/* <Button isLong={false} color="main" onClick={handleModal}>
         정보입력확인모달창
       </Button>
       <ModalDialog
@@ -299,7 +299,7 @@ const EditGift = () => {
             {'이 있을 수 있으니\n꼭 체크해주세요!'}
           </ModalText>
         </ModalBox>
-      </ModalDialog>
+      </ModalDialog> */}
       <EditGiftText>사진 등록</EditGiftText>
       <ImageUpload
         imageState={imageState}
