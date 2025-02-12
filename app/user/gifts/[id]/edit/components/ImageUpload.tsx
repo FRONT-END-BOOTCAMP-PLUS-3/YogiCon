@@ -2,7 +2,7 @@
 
 import { srOnly } from '@/app/globalStyles';
 import { ImageState } from '@/types/ImageState';
-import { useId } from 'react';
+import { useId, useState } from 'react';
 import { FiPlus } from 'react-icons/fi';
 import styled from 'styled-components';
 
@@ -67,12 +67,18 @@ const NoImageBox = styled.div`
 type ImageUploadProps = {
   imageState: ImageState;
   setImageState: React.Dispatch<React.SetStateAction<ImageState>>;
+  onDeleteImage?: () => Promise<void>;
 };
 
 /* -------------------------------- component ------------------------------- */
 
-const ImageUpload = ({ imageState, setImageState }: ImageUploadProps) => {
+const ImageUpload = ({
+  imageState,
+  setImageState,
+  onDeleteImage,
+}: ImageUploadProps) => {
   const id = useId();
+  const [isFirstDelete, setIsFirstDelete] = useState(true);
 
   const setImagePreview = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
@@ -91,7 +97,24 @@ const ImageUpload = ({ imageState, setImageState }: ImageUploadProps) => {
       imageUrl: '',
     });
 
+    setIsFirstDelete(false);
     e.target.value = '';
+  };
+
+  const handleDeleteImage = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    if (!imageState.imageUrl) {
+      setImageState({ imageFile: null, imageSrc: '', imageUrl: '' });
+      return;
+    }
+
+    if (isFirstDelete && onDeleteImage) {
+      await onDeleteImage();
+      setIsFirstDelete(false);
+    }
+
+    setImageState({ imageFile: null, imageSrc: '', imageUrl: '' });
   };
 
   return (
@@ -99,13 +122,7 @@ const ImageUpload = ({ imageState, setImageState }: ImageUploadProps) => {
       {imageState.imageSrc ? (
         <PreviewImageBox>
           <PreviewImage src={imageState.imageSrc} alt="giftImage" />
-          <DeleteButton
-            type="button"
-            onClick={(e) => {
-              e.preventDefault();
-              setImageState({ imageFile: null, imageSrc: '', imageUrl: '' });
-            }}
-          >
+          <DeleteButton type="button" onClick={handleDeleteImage}>
             x
           </DeleteButton>
         </PreviewImageBox>
