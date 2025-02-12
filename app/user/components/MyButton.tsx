@@ -11,7 +11,7 @@ type MyButtonProps = {
 
 const StyledButton = styled.button<{ id: string }>`
   display: flex;
-  height: 3.75rem;
+  min-height: 3.75rem;
   align-items: center;
   padding-left: 1.69rem;
   justify-content: space-between;
