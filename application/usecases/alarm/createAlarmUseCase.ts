@@ -6,7 +6,7 @@ export const createAlarmUseCase = async (
   alarmInfo: CreateAlarmDto,
   alarmRepository: AlarmRepository
 ): Promise<AlarmDto> => {
-  const userId = 'fc0e7623-88a7-4312-969f-7d57b8df2501';
+  const userId = '3891279432';
 
   const newAlarm = {
     id: '',

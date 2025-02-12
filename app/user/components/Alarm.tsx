@@ -89,6 +89,7 @@ const FieldRow = styled.div`
 `;
 
 /* react-select 스타일 */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const customSelectStyles: StylesConfig<any, false> = {
   menuList: (provided) => ({
     ...provided,
