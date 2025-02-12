@@ -12,6 +12,7 @@ import { RiResetLeftLine } from 'react-icons/ri';
 import styled from 'styled-components';
 import BottomSheet from './components/BottomSheet';
 import KakaoMap from './components/KakaoMap';
+import { useUserStore } from '@/stores/userStore';
 
 /* ---------------------------------- style --------------------------------- */
 const ShopContainer = styled.div`
@@ -78,6 +79,8 @@ const ResearchButton = styled.button`
 
 /* ---------------------------------- component --------------------------------- */
 export default function Shop() {
+  const userData = useUserStore((state) => state.userData);
+  const userId = userData?.id;
   const searchParams = useSearchParams();
   const giftId = searchParams.get('giftId');
   const key = searchParams.get('key');
@@ -124,7 +127,7 @@ export default function Shop() {
         };
         // disabled 되지 않은 gift list 가져오는 api 사용
         const response = await fetch(
-          `/api/user/gifts?selectedCategory=${query.select}&searchWord=${query.search}&page=${query.page}`,
+          `/api/user/gifts?selectedCategory=${query.select}&searchWord=${query.search}&page=${query.page}&userId=${userId}`,
           { method: 'GET' }
         );
 
