@@ -18,7 +18,7 @@ export const editGiftUseCase = async (
     dueDate: parseDueDate,
     barcode: giftInfo.barcode,
     imageUrl: giftInfo.imageUrl,
-    isDeleted: false,
+    isDeleted: giftInfo.isDeleted,
     ownerUserId: userId,
   };
   console.log('editedGift: ', editedGift);

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { srOnly } from '@/app/globalStyles';
@@ -14,6 +15,12 @@ import { LuMail } from 'react-icons/lu';
 import { TbBuildingStore } from 'react-icons/tb';
 import styled from 'styled-components';
 import { kakaoTalkShare } from './components/kakaoTalkShare';
+
+declare global {
+  interface Window {
+    Kakao: any;
+  }
+}
 
 /* ---------------------------------- style --------------------------------- */
 const ViewGiftContainer = styled.main`
@@ -174,6 +181,7 @@ const ViewGift = () => {
 
   const handleSoftDeleteGift = async () => {
     if (!id || !giftInfo) return;
+
     try {
       const updateGiftInfo = {
         ...giftInfo,
@@ -190,12 +198,10 @@ const ViewGift = () => {
 
       if (!response.ok) {
         throw new Error('서버 업데이트 실패');
-      } else {
-        alert('임시삭제 성공');
       }
 
-      setGiftInfo((prev) => (prev ? { ...prev, isDeleted: true } : prev));
-      // router.push('/user/gifts/disabled');
+      alert('해당 기프티콘을 사용하거나 삭제했습니다.');
+      router.push('/user/gifts/disabled');
     } catch (error) {
       console.error('기프티콘 임시삭제 처리 실패:', error);
       alert('임시삭제 처리 중 오류가 발생했습니다.');

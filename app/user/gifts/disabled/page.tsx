@@ -3,6 +3,7 @@
 import { GiftDto } from '@/application/usecases/gift/dto/GiftDto';
 import GiftListItem from '@/components/GiftListItem';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
@@ -36,6 +37,8 @@ const NoGiftText = styled.p`
 `;
 
 const Trash = () => {
+  const router = useRouter();
+
   const [trashList, setTrashList] = useState<GiftDto[]>([]);
   const [hasNextPage, setHasNextPage] = useState(true);
   const [page, setPage] = useState(1);
@@ -107,12 +110,44 @@ const Trash = () => {
     }
   };
 
-  const handleRestoreGift = (id: string) => {
-    setTrashList((prev) =>
-      prev.map((gift) =>
-        gift.id === id ? { ...gift, isDeleted: false } : gift
-      )
-    );
+  const handleRestoreGift = async (id: string) => {
+    let trashInfo;
+
+    if (!id) return;
+    try {
+      const res = await fetch(`/api/user/gifts/${id}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      if (!res.ok) {
+        throw new Error('Response Error');
+      }
+
+      const data = await res.json();
+      trashInfo = data.gift;
+      const updateTrashInfo = {
+        ...trashInfo,
+        isDeleted: false,
+      };
+      const response = await fetch(`/api/user/gifts/${id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updateTrashInfo),
+      });
+
+      if (!response.ok) {
+        throw new Error('서버 업데이트 실패');
+      }
+
+      alert('해당 기프티콘을 복원했습니다.');
+      router.push('/user/gifts/');
+    } catch (error) {
+      console.error('기프티콘 임시삭제 처리 실패:', error);
+      alert('임시삭제 처리 중 오류가 발생했습니다.');
+    }
   };
 
   return (
