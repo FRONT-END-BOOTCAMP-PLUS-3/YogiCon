@@ -2,6 +2,8 @@ import { useEffect } from 'react';
 
 export default function useSubscribePush(userId: string) {
   useEffect(() => {
+    const abortController = new AbortController();
+
     const registerServiceWorker = async () => {
       return await navigator.serviceWorker.register('/service-worker.js');
     };
@@ -29,6 +31,7 @@ export default function useSubscribePush(userId: string) {
           const response = await fetch(
             `/api/user/subscription?userId=${userId}`,
             {
+              signal: abortController.signal,
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -48,5 +51,9 @@ export default function useSubscribePush(userId: string) {
         console.error(err);
       }
     );
+
+    return () => {
+      abortController.abort();
+    };
   }, [userId]);
 }
