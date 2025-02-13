@@ -31,7 +31,7 @@ const BadgeDayText = styled.p<{ $isLarge: boolean }>`
 /* ---------------------------------- type --------------------------------- */
 type GiftListBadgeProps = {
   dueDate: string;
-  isLarge: boolean;
+  isLarge?: boolean;
 };
 
 /* ---------------------------------- component --------------------------------- */

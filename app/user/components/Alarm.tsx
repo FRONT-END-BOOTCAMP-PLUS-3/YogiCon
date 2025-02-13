@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { AlarmDto } from '@/application/usecases/alarm/dto/AlarmDto';
 import { CreateAlarmDto } from '@/application/usecases/alarm/dto/CreateAlarmDto';
 import ModalDialog from '@/components/ModalDialog';
+import { useUserStore } from '@/stores/userStore';
 import { useEffect, useState } from 'react';
 import Select, { SingleValue, StylesConfig } from 'react-select';
 import styled from 'styled-components';
@@ -107,6 +109,8 @@ type Option<T> = {
 
 /* ---------------------------------- component --------------------------------- */
 const Alarm = () => {
+  const userData = useUserStore((state) => state.userData);
+  const userId = userData?.id;
   const [alarms, setAlarms] = useState<AlarmDto[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [newAlarm, setNewAlarm] = useState<CreateAlarmDto>({
@@ -165,10 +169,12 @@ const Alarm = () => {
     }
 
     if (alarms.length < 5) {
-      const response = await fetch('/api/user/alarms', {
+      const response = await fetch(`/api/user/alarms?userId=${userId}`, {
         method: 'POST',
         body: JSON.stringify(newAlarm),
       });
+
+      if (!response.ok) throw new Error('Response Error');
 
       const createdAlarm = await response.json();
 
@@ -204,9 +210,13 @@ const Alarm = () => {
   };
 
   useEffect(() => {
+    const abortController = new AbortController();
+
     const fetchAlarms = async () => {
       try {
-        const res = await fetch(`/api/user/alarms`);
+        const res = await fetch(`/api/user/alarms?userId=${userId}`, {
+          signal: abortController.signal,
+        });
 
         if (!res.ok) {
           throw new Error('Response Error');
@@ -215,16 +225,18 @@ const Alarm = () => {
         const data = await res.json();
         setAlarms(data);
       } catch (err: unknown) {
-        if (err instanceof Error) {
-          console.error(err.message);
-        } else {
-          console.error('An unexpected error occurred');
+        if (!(err instanceof DOMException)) {
+          console.error(err);
         }
       }
     };
 
     fetchAlarms();
-  }, []);
+
+    return () => {
+      abortController.abort();
+    };
+  }, [userId]);
 
   return (
     <AlarmContainer>

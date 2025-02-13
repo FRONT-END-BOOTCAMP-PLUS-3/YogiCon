@@ -1,7 +1,9 @@
 'use client';
 
-import { useBottomSheetDimensions } from '@/hooks/bottomSheetOption';
+import { GiftDto } from '@/application/usecases/gift/dto/GiftDto';
 import useBottomSheet from '@/hooks/useBottomSheet';
+import { useBottomSheetDimensions } from '@/hooks/useBottomSheetOption';
+import { SelectedItem } from '@/types/SelectedItem';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import BottomSheetContent from './BottomSheetContent';
@@ -14,11 +16,10 @@ const Container = styled(motion.div)<{ height: number }>`
 
   position: fixed;
   z-index: 1;
-  top: calc(100vh - 120px); /*시트가 얼마나 높이 위치할지*/
+  top: calc(100vh - 135px); /*시트가 얼마나 높이 위치할지*/
 
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
-  box-shadow: 0px 0px 10px var(--disabled);
   height: ${({ height }) => height - 30}px;
   width: 100%;
   max-width: 768px;
@@ -45,14 +46,20 @@ const BSContentBox = styled.div`
 
 /* ---------------------------------- type --------------------------------- */
 type BottomSheetProps = {
-  selectedItemKey: string | null;
-  setSelectedItemKey: (key: string) => void;
+  setSelectedItemKey: (selectedItem: SelectedItem) => void;
+  giftList: GiftDto[] | null;
+  loading: boolean;
+  headerGift: GiftDto | null;
+  lastElementRef?: (node: HTMLLIElement | null) => void;
 };
 
 /* ---------------------------------- component --------------------------------- */
 function BottomSheet({
-  selectedItemKey,
   setSelectedItemKey,
+  giftList,
+  loading,
+  headerGift,
+  lastElementRef,
 }: BottomSheetProps) {
   const { sheet, content, moveSheetToBottom } = useBottomSheet();
   const { bottomSheetHeight } = useBottomSheetDimensions();
@@ -60,12 +67,14 @@ function BottomSheet({
   if (bottomSheetHeight === null) return null;
   return (
     <Container ref={sheet} height={bottomSheetHeight}>
-      <BottomSheetHeader />
+      <BottomSheetHeader headerGift={headerGift} />
       <BSContentBox ref={content}>
         <BottomSheetContent
-          selectedItemKey={selectedItemKey}
           setSelectedItemKey={setSelectedItemKey}
           moveSheetToBottom={moveSheetToBottom}
+          giftList={giftList}
+          loading={loading}
+          lastElementRef={lastElementRef}
         />
       </BSContentBox>
     </Container>

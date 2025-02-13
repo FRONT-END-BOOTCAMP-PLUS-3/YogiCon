@@ -1,17 +1,27 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { srOnly } from '@/app/globalStyles';
+import { GiftDto } from '@/application/usecases/gift/dto/GiftDto';
 import Button from '@/components/Button';
+import GiftListBadge from '@/components/GiftListBadge';
 import ModalDialog from '@/components/ModalDialog';
 import Image from 'next/image';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { CgArrowsExpandRight } from 'react-icons/cg';
 import { FaRegTrashAlt } from 'react-icons/fa';
 import { LuMail } from 'react-icons/lu';
 import { TbBuildingStore } from 'react-icons/tb';
 import styled from 'styled-components';
-import { GiftInfo } from '@/app/giftData';
+import { kakaoTalkShare } from './components/kakaoTalkShare';
+import { useUserStore } from '@/stores/userStore';
+
+declare global {
+  interface Window {
+    Kakao: any;
+  }
+}
 
 /* ---------------------------------- style --------------------------------- */
 const ViewGiftContainer = styled.main`
@@ -40,17 +50,6 @@ const GiftBadge = styled.div`
   position: absolute;
   top: -1.5rem;
   right: -1.5rem;
-  width: 3rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background-color: var(--warning);
-  color: var(--white);
-  font-size: 1.125rem;
-  font-weight: bold;
-  letter-spacing: -0.02rem;
 `;
 const ExpandButton = styled.button`
   position: absolute;
@@ -119,38 +118,108 @@ const ExpandedGiftImg = styled.img`
 /* -------------------------------- component ------------------------------- */
 const ViewGift = () => {
   const { id } = useParams();
+  const router = useRouter();
+  const { id: userId } = useUserStore((state) => state.userData);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [giftInfo, setGiftInfo] = useState<GiftInfo | null>(null);
+  const [giftInfo, setGiftInfo] = useState<GiftDto | null>(null);
+
+  const loadKakaoSDK = () => {
+    if (typeof window === undefined) return;
+    const script = document.createElement('script');
+    script.src = 'https://developers.kakao.com/sdk/js/kakao.min.js';
+    script.defer = true;
+    script.onload = () => {
+      if (window.Kakao && !window.Kakao.isInitialized()) {
+        window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_KEY);
+        console.log('Kakao SDK Initialized:', window.Kakao.isInitialized());
+      }
+    };
+    document.head.appendChild(script);
+  };
+
+  useEffect(() => {
+    loadKakaoSDK();
+  }, []);
 
   useEffect(() => {
     if (!id) return;
+    const abortController = new AbortController();
 
     const fetchGiftInfo = async () => {
       try {
-        const res = await fetch(`/api/user/gifts/${id}`);
+        const res = await fetch(`/api/user/gifts/${id}`, {
+          signal: abortController.signal,
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+        });
 
         if (!res.ok) {
           throw new Error('Response Error');
         }
 
         const data = await res.json();
-        setGiftInfo(data);
+        setGiftInfo(data.gift);
       } catch (err: unknown) {
-        if (err instanceof Error) {
-          console.error(err.message);
-        } else {
-          console.error('An unexpected error occurred');
+        if (!(err instanceof DOMException)) {
+          console.error(err);
         }
       }
     };
 
     fetchGiftInfo();
+    return () => {
+      abortController.abort();
+    };
   }, [id]);
 
   if (!giftInfo) return <div>Loading...</div>;
 
   const { imageUrl, brand, category, dueDate, productName } = giftInfo;
+  console.log('giftInfo: ', giftInfo);
+
+  const handleShopsClick = () => {
+    if (id && brand) {
+      router.push(`/user/shop?giftId=${id}&key=${brand}`);
+    }
+  };
+
+  const handleSoftDeleteGift = async (isDeleted: boolean, isUsed: boolean) => {
+    if (!id || !giftInfo) return;
+
+    try {
+      const updateGiftInfo = {
+        ...giftInfo,
+        isDeleted: true,
+      };
+      console.log('updateGiftInfo', updateGiftInfo);
+      const response = await fetch(`/api/user/gifts/${id}?userId=${userId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updateGiftInfo),
+      });
+
+      if (!response.ok) {
+        throw new Error('서버 업데이트 실패');
+      }
+      if (isDeleted) {
+        alert('해당 기프티콘을 삭제했습니다.');
+      }
+      if (isUsed) {
+        alert('해당 기프티콘을 사용했습니다.');
+      }
+      router.push('/user/gifts');
+    } catch (error) {
+      console.error('기프티콘 임시삭제 처리 실패:', error);
+      alert('임시삭제 처리 중 오류가 발생했습니다.');
+    }
+  };
+
+  const handleEditClick = () => {
+    router.push(`/user/gifts/${id}/edit`);
+  };
 
   return (
     <ViewGiftContainer>
@@ -161,8 +230,8 @@ const ViewGift = () => {
           유효기간: {dueDate}
         </GiftImgText>
         <GiftImg src={imageUrl} alt={productName} priority={true} fill />
-        <GiftBadge>
-          <div aria-live="polite">D-1</div>
+        <GiftBadge aria-live="polite">
+          <GiftListBadge dueDate={dueDate} />
         </GiftBadge>
         <ExpandButton
           type="button"
@@ -176,15 +245,23 @@ const ViewGift = () => {
 
       {/* 아이콘 버튼 3개 */}
       <IconButtonWrapper>
-        <IconButton type="button">
+        <IconButton
+          type="button"
+          onClick={() =>
+            kakaoTalkShare({ productName, brand, dueDate, imageUrl })
+          }
+        >
           <LuMail size={'45%'} />
           <IconButtonText>친구에게 양도하기</IconButtonText>
         </IconButton>
-        <IconButton type="button">
+        <IconButton type="button" onClick={handleShopsClick}>
           <TbBuildingStore size={'45%'} />
           <IconButtonText>근처 매장 찾기</IconButtonText>
         </IconButton>
-        <IconButton type="button">
+        <IconButton
+          type="button"
+          onClick={() => handleSoftDeleteGift(true, false)}
+        >
           <FaRegTrashAlt size={'45%'} />
           <IconButtonText>삭제하기</IconButtonText>
         </IconButton>
@@ -192,10 +269,14 @@ const ViewGift = () => {
 
       {/* 하단 버튼 2개 */}
       <LongButtonWrapper>
-        <Button isLong={true} color={'sub'}>
+        <Button isLong={true} color={'sub'} onClick={handleEditClick}>
           수정하기
         </Button>
-        <Button isLong={true} color={'main'}>
+        <Button
+          isLong={true}
+          color={'main'}
+          onClick={() => handleSoftDeleteGift(false, true)}
+        >
           사용 완료
         </Button>
       </LongButtonWrapper>

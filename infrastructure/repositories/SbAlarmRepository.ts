@@ -38,17 +38,18 @@ export class SbAlarmRepository implements AlarmRepository {
     const { data, error } = await supabase
       .from('alarm')
       .insert(newAlarm)
-      .select();
+      .select()
+      .single();
 
     if (error) {
       throw new Error(error.message);
     }
 
     const alarm = {
-      id: data[0].id,
-      daysBefore: data[0].days_before,
-      hour: data[0].hour,
-      userId: data[0].user_id,
+      id: data.id,
+      daysBefore: data.days_before,
+      hour: data.hour,
+      userId: data.user_id,
     };
 
     return alarm;

@@ -98,7 +98,7 @@ const ImageUpload = ({ imageState, setImageState }: ImageUploadProps) => {
     <ImageLabel htmlFor={id}>
       {imageState.imageSrc ? (
         <PreviewImageBox>
-          <PreviewImage src={imageState.imageSrc} alt="conImage" />
+          <PreviewImage src={imageState.imageSrc} alt="giftImage" />
           <DeleteButton
             type="button"
             onClick={(e) => {

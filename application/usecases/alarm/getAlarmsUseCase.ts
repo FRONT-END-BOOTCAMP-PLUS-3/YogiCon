@@ -2,10 +2,9 @@ import { AlarmRepository } from '@/domain/repositories/AlarmRepository';
 import { AlarmDto } from './dto/AlarmDto';
 
 export const getAlarmsUseCase = async (
-  alarmRepository: AlarmRepository
+  alarmRepository: AlarmRepository,
+  userId: string
 ): Promise<AlarmDto[]> => {
-  const userId = '3891279432';
-
   const alarms = await alarmRepository.getAll(userId);
 
   return alarms.map((alarm) => ({

@@ -1,11 +1,14 @@
 'use client';
 
+import { Categories } from '@/types/Categories';
 import Image from 'next/image';
+import { forwardRef } from 'react';
 import { IoIosArrowForward } from 'react-icons/io';
 import { TbRestore, TbTrash } from 'react-icons/tb';
 import styled from 'styled-components';
 import GiftListBadge from './GiftListBadge';
-import { Categories } from '@/types/Categories';
+import useValidImageUrl from '@/hooks/useValidImageUrl';
+import { usePathname } from 'next/navigation';
 
 /* ---------------------------------- style --------------------------------- */
 const GiftContainer = styled.li`
@@ -19,7 +22,7 @@ const GiftContainer = styled.li`
   align-items: stretch;
   gap: 0.9rem;
   border-bottom: 1px solid var(--disabled);
-  background-color: var(--white);
+  background-color: transparent;
   transition: 0.3s ease all;
 `;
 
@@ -63,7 +66,7 @@ const GiftLeftExpiredText = styled.span`
 `;
 
 // 중앙
-const GiftCenterWrapper = styled.div<{ $isTrash: boolean }>`
+const GiftCenterWrapper = styled.div`
   width: 50%;
   display: flex;
   flex-direction: column;
@@ -148,6 +151,7 @@ type GiftListItemProps = {
   productName: string;
   dueDate: string;
   isDeleted: boolean;
+  isDisabled?: boolean;
   onClick?: () => void;
   handleTrashClick?: () => void;
   handleRestoreClick?: () => void;
@@ -196,12 +200,12 @@ export default function GiftListItem({
         {isExpired && <GiftLeftExpiredText>기한만료</GiftLeftExpiredText>}
       </GiftLeftWrapper>
 
-      <GiftCenterWrapper $isTrash={isTrash}>
+      <GiftCenterWrapper>
         <GiftCategoryText>{category}</GiftCategoryText>
         <GiftTitleText>
           [{brand}] {productName}
         </GiftTitleText>
-        <GiftDueDate>유효기간: ~{dueDateString}</GiftDueDate>
+        <GiftDueDate>유효기간: ~{dueDate.toString()}</GiftDueDate>
       </GiftCenterWrapper>
 
       {isTrash ? (

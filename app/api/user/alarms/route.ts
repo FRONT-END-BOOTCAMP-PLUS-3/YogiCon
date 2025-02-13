@@ -6,15 +6,23 @@ import { AlarmRepository } from '@/domain/repositories/AlarmRepository';
 import { SbAlarmRepository } from '@/infrastructure/repositories/SbAlarmRepository';
 import { NextResponse } from 'next/server';
 
-export async function GET() {
+export async function GET(req: Request) {
+  const { searchParams } = new URL(req.url);
+  const userId = searchParams.get('userId');
+
+  if (!userId)
+    return NextResponse.json('userId가 필요합니다.', { status: 400 });
+
   const alarmRepository: AlarmRepository = new SbAlarmRepository();
 
-  const AlarmsDto: AlarmDto[] = await getAlarmsUseCase(alarmRepository);
+  const AlarmsDto: AlarmDto[] = await getAlarmsUseCase(alarmRepository, userId);
 
   return NextResponse.json(AlarmsDto, { status: 200 });
 }
 
 export async function POST(req: Request) {
+  const { searchParams } = new URL(req.url);
+  const userId = searchParams.get('userId');
   const newAlarm = await req.json();
 
   if (!newAlarm) {
@@ -23,12 +31,15 @@ export async function POST(req: Request) {
       { status: 400 }
     );
   }
+  if (!userId)
+    return NextResponse.json('userId가 필요합니다.', { status: 400 });
 
   const alarmRepository: AlarmRepository = new SbAlarmRepository();
 
   const createdAlarm: AlarmDto = await createAlarmUseCase(
     newAlarm,
-    alarmRepository
+    alarmRepository,
+    userId
   );
 
   return NextResponse.json(createdAlarm, { status: 200 });
