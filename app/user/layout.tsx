@@ -2,16 +2,10 @@
 
 import Header from '@/components/Header/Header';
 import Navbar from '@/components/Navbar';
-import useSubscribePush from '@/hooks/useSubscribePush';
-import { useUserStore } from '@/stores/userStore';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
-  const userData = useUserStore((state) => state.userData);
-  const userId = userData?.id;
-  useSubscribePush(userId);
-
   const pathname = usePathname();
   const router = useRouter();
 

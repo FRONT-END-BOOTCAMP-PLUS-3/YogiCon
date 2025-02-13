@@ -5,6 +5,7 @@ import { AlarmDto } from '@/application/usecases/alarm/dto/AlarmDto';
 import { CreateAlarmDto } from '@/application/usecases/alarm/dto/CreateAlarmDto';
 import ModalDialog from '@/components/ModalDialog';
 import { useUserStore } from '@/stores/userStore';
+import { subscribePush } from '@/utils/subscribePush';
 import { useEffect, useState } from 'react';
 import Select, { SingleValue, StylesConfig } from 'react-select';
 import styled from 'styled-components';
@@ -197,6 +198,7 @@ const Alarm = () => {
   };
 
   const handleAddAlarmClick = async () => {
+    subscribePush(userId);
     const permission = await Notification.requestPermission();
 
     if (permission !== 'granted') {

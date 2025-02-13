@@ -66,6 +66,7 @@ export const GlobalStyles = createGlobalStyle`
     margin:0;
     border:0;
     outline: none;
+    color: var(--black);
   }
   // global variables
   :root {
