@@ -34,11 +34,14 @@ const GiftLeftWrapper = styled.div`
   background-color: var(--white);
   position: relative;
   transition: 0.3s ease all;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const GiftLeftImage = styled(Image)`
-  width: 100%;
-  height: 100%;
+  width: 90%;
+  height: 90%;
   object-fit: contain;
 `;
 
