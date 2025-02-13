@@ -4,7 +4,7 @@ export async function loginUsecase(authCode: string): Promise<string> {
   }
 
   const clientId = process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY;
-  const redirectUri = 'http://localhost:3000/auth/callback';
+  const redirectUri = `${process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI}`;
   const tokenUrl = 'https://kauth.kakao.com/oauth/token';
 
   const params = new URLSearchParams({

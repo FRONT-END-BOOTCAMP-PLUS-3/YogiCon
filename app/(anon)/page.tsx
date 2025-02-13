@@ -76,7 +76,7 @@ const LoginButton = styled(Link)`
 export default function Login() {
   const router = useRouter();
   const clientId = process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY;
-  const redirectUri = 'http://localhost:3000/auth/callback';
+  const redirectUri = `${process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI}`;
   const kakaoAuthUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(
     redirectUri
   )}&response_type=code`;
