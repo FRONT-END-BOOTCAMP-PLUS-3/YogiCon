@@ -27,7 +27,9 @@ const HomeContainer = styled.div`
 `;
 
 const FilterSection = styled.section`
-  position: sticky;
+  position: fixed;
+  width: 100%;
+  max-width: 768px;
   top: 1.95rem;
   z-index: 9998;
   background-color: var(--white);
@@ -199,6 +201,7 @@ const Home = () => {
           onSelect={handleCategoryButtonClick}
         />
       </FilterSection>
+      <div style={{ paddingBottom: '10rem' }} />
 
       <GiftListSection aria-label="기프티콘 목록" $isEmpty={isEmpty}>
         {!isEmpty ? (
