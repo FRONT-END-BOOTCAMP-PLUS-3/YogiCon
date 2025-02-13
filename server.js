@@ -143,6 +143,7 @@ async function sendNotifications(currentTime, userId, subscription) {
       const notificationPayload = JSON.stringify({
         title: '📢 기프티콘 유효기간이 얼마 남지 않았어요!',
         body: `${alarmGift.product_name} 기프티콘이 ${alarmGift.days_before}일 뒤에 사라져요!`,
+        link: `/user/gifts/${alarmGift.id}`,
       });
 
       return webpush.sendNotification(subscription, notificationPayload);

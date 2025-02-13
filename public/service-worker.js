@@ -9,7 +9,8 @@ self.addEventListener('push', (event) => {
 });
 
 self.addEventListener('notificationclick', (event) => {
-  clients.openWindow('/user/gifts'); // 링크 처리해줘야함
+  const data = JSON.parse(event.data.text());
+  clients.openWindow(`${data.link}`); // 링크 처리해줘야함
 });
 
 self.addEventListener('install', () => {
