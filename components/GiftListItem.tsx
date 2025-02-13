@@ -8,6 +8,7 @@ import { TbRestore, TbTrash } from 'react-icons/tb';
 import styled from 'styled-components';
 import GiftListBadge from './GiftListBadge';
 import useValidImageUrl from '@/hooks/useValidImageUrl';
+import { usePathname } from 'next/navigation';
 
 /* ---------------------------------- style --------------------------------- */
 const GiftContainer = styled.li`
@@ -174,8 +175,12 @@ const GiftListItem = forwardRef<HTMLLIElement, GiftListItemProps>(
     },
     ref
   ) => {
+    const pathname = usePathname();
+    const isTrashPage = pathname === '/user/gifts/disabled';
     const isExpired = !isDeleted && isDisabled;
+
     const validImageUrl: string = useValidImageUrl(imageUrl);
+
     return (
       <GiftContainer ref={ref} onClick={onClick}>
         <GiftLeftWrapper>
@@ -185,13 +190,16 @@ const GiftListItem = forwardRef<HTMLLIElement, GiftListItemProps>(
             width={100}
             height={100}
           />
-          {isDisabled && (
+
+          {isExpired ? (
+            <GiftLeftExpiredText>기한만료</GiftLeftExpiredText>
+          ) : isTrashPage ? (
             <GiftLeftBadge>
               <GiftListBadge dueDate={dueDate} isLarge={false} />
             </GiftLeftBadge>
-          )}
-          {isExpired && <GiftLeftExpiredText>기한만료</GiftLeftExpiredText>}
+          ) : null}
         </GiftLeftWrapper>
+
         <GiftCenterWrapper>
           <GiftCategoryText>{category}</GiftCategoryText>
           <GiftTitleText>
@@ -199,6 +207,7 @@ const GiftListItem = forwardRef<HTMLLIElement, GiftListItemProps>(
           </GiftTitleText>
           <GiftDueDate>유효기간: ~{dueDate.toString()}</GiftDueDate>
         </GiftCenterWrapper>
+
         {isDisabled ? (
           <GiftRightTrashWrapper>
             <GiftRightTrashButton
@@ -212,17 +221,19 @@ const GiftListItem = forwardRef<HTMLLIElement, GiftListItemProps>(
               <TbTrash />
               &nbsp;영구삭제
             </GiftRightTrashButton>
-            <GiftRightTrashButton
-              type="button"
-              $restore={true}
-              onClick={(e) => {
-                e.stopPropagation();
-                handleRestoreClick?.();
-              }}
-            >
-              <TbRestore />
-              &nbsp;복원
-            </GiftRightTrashButton>
+            {!isExpired && (
+              <GiftRightTrashButton
+                type="button"
+                $restore={true}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleRestoreClick?.();
+                }}
+              >
+                <TbRestore />
+                &nbsp;복원
+              </GiftRightTrashButton>
+            )}
           </GiftRightTrashWrapper>
         ) : (
           <GiftRightWrapper>
@@ -234,5 +245,7 @@ const GiftListItem = forwardRef<HTMLLIElement, GiftListItemProps>(
     );
   }
 );
+
 GiftListItem.displayName = 'GiftListItem'; // forwardRef 사용 시 필수
+
 export default GiftListItem;
