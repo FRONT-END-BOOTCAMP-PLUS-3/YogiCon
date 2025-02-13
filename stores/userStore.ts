@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, createJSONStorage } from 'zustand/middleware';
 
 interface UserState {
   userData: any;
@@ -8,7 +8,7 @@ interface UserState {
 }
 
 export const useUserStore = create<UserState>()(
-  persist<UserState>(
+  persist(
     (set) => ({
       userData: null,
       setUserData: (data) => {
@@ -20,7 +20,7 @@ export const useUserStore = create<UserState>()(
     }),
     {
       name: 'user-storage',
-      getStorage: () => localStorage,
+      storage: createJSONStorage(() => localStorage),
     }
   )
 );

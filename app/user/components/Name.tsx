@@ -26,9 +26,8 @@ const NameStyle = styled.div`
 `;
 /* ---------------------------------- component --------------------------------- */
 const Name = () => {
+  const { userData } = useUserStore();
   const getUsername = () => {
-    const { userData } = useUserStore();
-
     const username = userData?.nickname;
     return username || 'Guest';
   };
