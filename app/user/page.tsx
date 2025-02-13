@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { useRouter } from 'next/navigation';
@@ -14,6 +15,8 @@ import { useUserStore } from '@/stores/userStore';
 const MyContainer = styled.div`
   background-color: var(--lightgray);
   height: calc(100vh - 1.5rem);
+  overflow-y: auto;
+  padding-bottom: 6.5rem;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;

@@ -68,10 +68,14 @@ const Trash = () => {
   );
 
   useEffect(() => {
+    const abortController = new AbortController();
     const fetchTrashList = async () => {
       try {
         const res = await fetch(
-          `/api/user/gifts/disabled?page=${page}&userId=${userId}`
+          `/api/user/gifts/disabled?page=${page}&userId=${userId}`,
+          {
+            signal: abortController.signal,
+          }
         );
 
         if (!res.ok) {
@@ -91,12 +95,18 @@ const Trash = () => {
           ]);
         }
         setHasNextPage(disabledGiftListDto.data.hasNextPage);
-      } catch (error) {
-        console.error('휴지통 기프티콘 리스트 조회 오류: ', error);
+      } catch (err: unknown) {
+        if (!(err instanceof DOMException)) {
+          console.error('휴지통 기프티콘 리스트 조회 오류: ', err);
+        }
       }
     };
 
     if (hasNextPage) fetchTrashList();
+
+    return () => {
+      abortController.abort();
+    };
   }, [page, hasNextPage, userId]);
 
   const handleDeleteGift = async (id: string) => {

@@ -196,9 +196,13 @@ const Alarm = () => {
   };
 
   useEffect(() => {
+    const abortController = new AbortController();
+
     const fetchAlarms = async () => {
       try {
-        const res = await fetch(`/api/user/alarms?userId=${userId}`);
+        const res = await fetch(`/api/user/alarms?userId=${userId}`, {
+          signal: abortController.signal,
+        });
 
         if (!res.ok) {
           throw new Error('Response Error');
@@ -207,15 +211,17 @@ const Alarm = () => {
         const data = await res.json();
         setAlarms(data);
       } catch (err: unknown) {
-        if (err instanceof Error) {
-          console.error(err.message);
-        } else {
-          console.error('An unexpected error occurred');
+        if (!(err instanceof DOMException)) {
+          console.error(err);
         }
       }
     };
 
     fetchAlarms();
+
+    return () => {
+      abortController.abort();
+    };
   }, [userId]);
 
   return (

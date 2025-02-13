@@ -119,8 +119,7 @@ const ExpandedGiftImg = styled.img`
 const ViewGift = () => {
   const { id } = useParams();
   const router = useRouter();
-  const userData = useUserStore((state) => state.userData);
-  const userId = userData?.id;
+  const { id: userId } = useUserStore((state) => state.userData);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [giftInfo, setGiftInfo] = useState<GiftDto | null>(null);
@@ -145,10 +144,12 @@ const ViewGift = () => {
 
   useEffect(() => {
     if (!id) return;
+    const abortController = new AbortController();
 
     const fetchGiftInfo = async () => {
       try {
         const res = await fetch(`/api/user/gifts/${id}`, {
+          signal: abortController.signal,
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
         });
@@ -160,15 +161,16 @@ const ViewGift = () => {
         const data = await res.json();
         setGiftInfo(data.gift);
       } catch (err: unknown) {
-        if (err instanceof Error) {
-          console.error(err.message);
-        } else {
-          console.error('An unexpected error occurred');
+        if (!(err instanceof DOMException)) {
+          console.error(err);
         }
       }
     };
 
     fetchGiftInfo();
+    return () => {
+      abortController.abort();
+    };
   }, [id]);
 
   if (!giftInfo) return <div>Loading...</div>;

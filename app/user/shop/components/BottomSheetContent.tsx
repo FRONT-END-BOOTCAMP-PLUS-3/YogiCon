@@ -1,7 +1,9 @@
 'use client';
 
-import { giftList } from '@/app/giftData';
+import { GiftDto } from '@/application/usecases/gift/dto/GiftDto';
 import GiftListItem from '@/components/GiftListItem';
+import { useShopStore } from '@/stores/useShopStore';
+import { SelectedItem } from '@/types/SelectedItem';
 import styled from 'styled-components';
 
 /* ---------------------------------- style --------------------------------- */
@@ -21,35 +23,49 @@ const BSContentList = styled.ul`
 
 /* ---------------------------------- type --------------------------------- */
 type BottomSheetContentProps = {
-  selectedItemKey: string | null;
-  setSelectedItemKey: (key: string) => void;
+  setSelectedItemKey: (selectedItem: SelectedItem) => void;
   moveSheetToBottom: () => void;
+  giftList: GiftDto[] | null;
+  loading: boolean;
+  lastElementRef?: (node: HTMLLIElement | null) => void;
 };
 
 /* ---------------------------------- component --------------------------------- */
 export default function BottomSheetContent({
   setSelectedItemKey,
   moveSheetToBottom,
+  giftList,
+  loading,
+  lastElementRef,
 }: BottomSheetContentProps) {
-  const handleItemClick = (key: string) => {
-    setSelectedItemKey(key);
+  const { setItemClicked } = useShopStore();
+  const handleItemClick = (giftId: string, key: string) => {
+    setSelectedItemKey({ giftId, key });
+    setItemClicked(true);
     moveSheetToBottom();
   };
 
   return (
     <BSContentContainer>
-      <BSContentList>
-        {giftList.map((gift, index) => (
-          <GiftListItem
-            key={index}
-            {...gift}
-            onClick={() => handleItemClick(`${gift.brand}`)}
-          />
-        ))}
-      </BSContentList>
+      {giftList && (
+        <BSContentList>
+          {giftList.map((gift: GiftDto, index) => (
+            <GiftListItem
+              key={index}
+              {...gift}
+              ref={index === giftList.length - 1 ? lastElementRef : null}
+              onClick={() => handleItemClick(`${gift.id}`, `${gift.brand}`)}
+            />
+          ))}
+        </BSContentList>
+      )}
 
       <div style={{ padding: '1.25rem 0', textAlign: 'center' }}>
-        <p>더 이상 기프티콘이 없어요!</p>
+        {loading ? (
+          <p>기프티콘을 불러오는 중입니다 ...</p>
+        ) : (
+          <p>더 이상 기프티콘이 없어요!</p>
+        )}
       </div>
     </BSContentContainer>
   );
